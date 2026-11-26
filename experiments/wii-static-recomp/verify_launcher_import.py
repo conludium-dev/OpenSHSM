@@ -3,6 +3,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest import mock
 import json
+import os
 import shutil
 import unittest
 
@@ -17,6 +18,9 @@ class LauncherImport(ImportInputs):
     def setUp(self):
         super().setUp()
         self.user = self.root / 'user'
+        self.language = mock.patch.dict(os.environ, {'OPENSHSM_LANGUAGE': 'en'})
+        self.language.start()
+        self.addCleanup(self.language.stop)
 
     def test_managed_copy_and_reuse(self):
         game = launcher.import_game(self.source, self.user, extracted=True)
@@ -60,7 +64,7 @@ class LauncherImport(ImportInputs):
     def test_cancel_and_noninteractive_no_mutation(self):
         with mock.patch.object(launcher, 'show_import', return_value=None):
             self.assertIsNone(launcher.resolve_game_data(None, self.user))
-        with self.assertRaisesRegex(ValueError, 'Нет Wii DATA'):
+        with self.assertRaisesRegex(ValueError, 'No Wii DATA'):
             launcher.resolve_game_data(None, self.user, interactive=False)
         self.assertFalse(self.user.exists())
 
@@ -72,7 +76,7 @@ class LauncherImport(ImportInputs):
         self.assertEqual((self.user / 'wii-import/import.json').read_bytes(), before)
         alias = self.root / 'user-alias'
         self.link(alias, self.user, directory=True)
-        with self.assertRaisesRegex(ValueError, 'ссылкой'):
+        with self.assertRaisesRegex(ValueError, 'symlink'):
             launcher.import_game(self.source, alias, extracted=True)
 
     def test_both_owner_launchers_cancel_before_validation_or_process(self):
@@ -86,7 +90,7 @@ class LauncherImport(ImportInputs):
         for owner in (macos, windows):
             with mock.patch.object(launcher, 'show_import', side_effect=AssertionError('Opened Tk')):
                 for options in ({'check_only': True}, {'show_launcher': False}):
-                    with self.assertRaisesRegex(ValueError, 'Нет Wii DATA'):
+                    with self.assertRaisesRegex(ValueError, 'No Wii DATA'):
                         owner.launch(self.root, None, self.user, **options)
                 with self.assertRaisesRegex(ValueError, '--import-image'):
                     owner.launch(self.root, None, self.user, check_only=True, image=self.image)

@@ -28,18 +28,18 @@
     },
     {
       "path": "OpenSHSM.command",
-      "bytes": 317,
-      "sha256": "c378ddf4219f8c71b45b12ebee67699d7a2fe1f3ed53f8931b6e1f8300aa25ea"
+      "bytes": 810,
+      "sha256": "6ca6b291d1c78bd1edcf4ca6c287c30104f2f5feeb56f2a365305d3791f93bec"
     },
     {
       "path": "README.md",
-      "bytes": 20011,
-      "sha256": "e02317fb36e86ada0f22ee1eea16b8de06e118ddf934ad8a8f7b7ffe4b008ead"
+      "bytes": 20309,
+      "sha256": "759c7ceaf70ecad91ea98c870508419a751f85ca9e6528b4a81610d3cf21bfd7"
     },
     {
       "path": "REPOSITORY-CHECKLIST.md",
-      "bytes": 1642,
-      "sha256": "00263950e7348cf784612eb7e7c568d5aa5719dd0d7c35649c07672c1ef7b163"
+      "bytes": 1709,
+      "sha256": "3d574d5e1b948a942791ba2bb7d782fe66a29889c1557fd5bc876740b406111d"
     },
     {
       "path": "experiments/wii-static-recomp/BuildVersion.h",
@@ -1343,8 +1343,8 @@
     },
     {
       "path": "experiments/wii-static-recomp/build_and_play_current.py",
-      "bytes": 9479,
-      "sha256": "c3024e4372bd7c971033c4ad815a575d0c73976b2058b61eb926681a466714ad"
+      "bytes": 10328,
+      "sha256": "473e1e232059022b25c2a4a373b968afb328e12151bcdad8a4f875286fcdf5ae"
     },
     {
       "path": "experiments/wii-static-recomp/build_audio_init_boot.py",
@@ -3918,23 +3918,28 @@
     },
     {
       "path": "experiments/wii-static-recomp/launch_stock_owner_macos.py",
-      "bytes": 7609,
-      "sha256": "8a72de474dc4db0c188bbeb041e820f172ecb0c07f863b8d4da1a20833561e36"
+      "bytes": 7897,
+      "sha256": "3da7d8599fbd3990952959211165de1b3a798c006e434c28fb1463a1d3d269c1"
     },
     {
       "path": "experiments/wii-static-recomp/launch_stock_owner_windows.py",
-      "bytes": 7894,
-      "sha256": "a23d7baee226f7984d8f366b6475c45fd9683987139778bcb4ea0301631608d3"
+      "bytes": 7988,
+      "sha256": "d2c0ca66b514af4f9c62a91b21853b41a56bdefb000a221bcb943cd47191dc8d"
     },
     {
       "path": "experiments/wii-static-recomp/launcher_import.py",
-      "bytes": 8436,
-      "sha256": "aba94804a9a1a28d2dec0dad5f803a765176af04b302e999c8d157dcc68d1726"
+      "bytes": 10128,
+      "sha256": "3e8b4adb602dbb8dc6de466fbc29a029a306cfb07d3f2ed3da65469c7cc4b3ad"
+    },
+    {
+      "path": "experiments/wii-static-recomp/launcher_locale.py",
+      "bytes": 1821,
+      "sha256": "1d93fbd0854d366da1e6d3947a735a5fad397c2c5dbaec6ccc2ace89494f98e1"
     },
     {
       "path": "experiments/wii-static-recomp/launcher_settings.py",
-      "bytes": 9368,
-      "sha256": "a0045ca7e3c01624dca791082941258a7fb74116393043c03d298ba13d4b2943"
+      "bytes": 10774,
+      "sha256": "fcf8ea325e3d5aa41ea51de9616d132698eff30b8bf8fe562a69f83ec9d157b0"
     },
     {
       "path": "experiments/wii-static-recomp/link_recovered_stock_preview.py",
@@ -4493,8 +4498,8 @@
     },
     {
       "path": "experiments/wii-static-recomp/prepare_public_repository.py",
-      "bytes": 29782,
-      "sha256": "c99de173ff7edcbe53ccaea4cdf0223efbc7b7d3d3d0e35358b579dad5d9fdee"
+      "bytes": 30147,
+      "sha256": "332de8f9ed2ce85f3d4402ee747a9f0ead8ba14c2ed15f230d2a566d051c31ba"
     },
     {
       "path": "experiments/wii-static-recomp/prepare_stock_axwii_reference.py",
@@ -6468,8 +6473,8 @@
     },
     {
       "path": "experiments/wii-static-recomp/stock_desktop_input_host_patch.py",
-      "bytes": 6631,
-      "sha256": "adb9be5b54f58ffa0cc464e7542287af8a4c136a46046d76d3af8c40409ecc05"
+      "bytes": 7976,
+      "sha256": "a6bc2e114778a8a7c9b8ede6f26078854c484d13ddd690fdea4faa5adb569e74"
     },
     {
       "path": "experiments/wii-static-recomp/stock_desktop_input_patch.py",
@@ -6553,8 +6558,8 @@
     },
     {
       "path": "experiments/wii-static-recomp/stock_desktop_settings_patch.py",
-      "bytes": 6464,
-      "sha256": "76e90aeb8cf95e716a2bffb0e921c0924772b42e7c328f3a4eeaadd060840e66"
+      "bytes": 7099,
+      "sha256": "7608ff4e6b42813fe8d0762630cf1056f7fec8c63afcb7787c2254471a1322ec"
     },
     {
       "path": "experiments/wii-static-recomp/stock_dispatch_lookup.cpp",
@@ -6583,8 +6588,8 @@
     },
     {
       "path": "experiments/wii-static-recomp/stock_display_settings.h",
-      "bytes": 3101,
-      "sha256": "08680a6483480fd8e2aadeb60aca4958a7b2ac7665f572ba933373a9cf0a4c20"
+      "bytes": 3447,
+      "sha256": "e910496d727861b8a0c4f28f2a0ea7291fcadfd383bb2f533c91bd24449f22ad"
     },
     {
       "path": "experiments/wii-static-recomp/stock_division_probe.cpp",
@@ -7802,6 +7807,11 @@
       "sha256": "d11b1d3d6d5ee727f493df43697d3a515e473786ba0b142dda0b84e894c2bbe0"
     },
     {
+      "path": "experiments/wii-static-recomp/stock_ui_locale.h",
+      "bytes": 875,
+      "sha256": "ec7b7de39356a6c1a364428ed2dcb80de7812c87082ba52ba2362ff79ca1e921"
+    },
+    {
       "path": "experiments/wii-static-recomp/stock_vertex_sources_patch.py",
       "bytes": 6471,
       "sha256": "0791089552467796c2ed124de3a2d02171d16dc59a675f4636581911a4808080"
@@ -8958,8 +8968,13 @@
     },
     {
       "path": "experiments/wii-static-recomp/verify_launcher_import.py",
-      "bytes": 5110,
-      "sha256": "f9a7b26455d394ea9357a292a0d871edfae43c66ff81585d5faa0cfa546eb74a"
+      "bytes": 5260,
+      "sha256": "dfcb2e1340bdeb5e08dc84f8ed4b231bed68bd70b004ad629153cf64081b40a9"
+    },
+    {
+      "path": "experiments/wii-static-recomp/verify_launcher_locale.py",
+      "bytes": 1356,
+      "sha256": "fae8e6ebf014d06011e9e31008950aadd8240b3956f427eda24f6d1b99766fc2"
     },
     {
       "path": "experiments/wii-static-recomp/verify_loader_snapshot_dolphin.py",

@@ -10,6 +10,7 @@ import sys
 
 from export_stock_wii_us_copy import digest
 from verify_wii_us_copy import audit_copy
+from launcher_locale import runtime_environment
 
 
 class BoundedCapture:
@@ -114,6 +115,7 @@ def launch(build_dir, game_data, user_dir, check_only=False, *, show_launcher=Tr
         NWII_SKIP_BOOT_NOTICES='1', OPENSHSM_AXWII_MIXER='1')
     from launcher_settings import controller_icon_environment
     environment.update(controller_icon_environment(user_dir))
+    environment.update(runtime_environment())
     with (user_dir / 'runtime.log').open('wb') as prefix, \
             (user_dir / 'runtime-tail.log').open('wb') as tail:
         capture = BoundedCapture(prefix, tail)

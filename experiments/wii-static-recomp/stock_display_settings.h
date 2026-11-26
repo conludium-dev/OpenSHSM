@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <runtime/config.h>
 #include <string>
+#include "stock_ui_locale.h"
 
 namespace openshsm::experiment {
 
@@ -23,7 +24,8 @@ inline void save_display_settings(SDL_Window* window) {
     auto& config = nwii::runtime::Config::get();
     if (!config.save_display(config.window_width, config.window_height, config.fullscreen)) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenSHSM",
-            "Настройки применены, но сохранить config.toml не удалось.", window);
+            ui_text("Settings were applied, but config.toml could not be saved.",
+                "Настройки применены, но сохранить config.toml не удалось."), window);
     }
 }
 
@@ -40,16 +42,20 @@ inline void show_display_settings(SDL_Window* window) {
     SDL_SetRelativeMouseMode(SDL_FALSE);
     SDL_ShowCursor(SDL_ENABLE);
     const SDL_MessageBoxButtonData buttons[] = {
-        {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "Закрыть"},
+        {SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, ui_text("Close", "Закрыть")},
         {0, 1, "960 × 540"}, {0, 2, "1280 × 720"}, {0, 3, "1600 × 900"},
-        {0, 4, "1920 × 1080"}, {0, 5, "2560 × 1440"}, {0, 6, "Оконный режим"},
-        {0, 7, "Полный экран"}};
+        {0, 4, "1920 × 1080"}, {0, 5, "2560 × 1440"},
+        {0, 6, ui_text("Windowed", "Оконный режим")},
+        {0, 7, ui_text("Fullscreen", "Полный экран")}};
     SDL_MessageBoxData box{};
     box.flags = SDL_MESSAGEBOX_INFORMATION;
     box.window = window;
-    box.title = "OpenSHSM — экран";
-    box.message = "Разрешение окна. Полный экран использует разрешение рабочего стола.\n"
-        "Режим можно переключать клавишей F11.";
+    box.title = ui_text("OpenSHSM — display", "OpenSHSM — экран");
+    box.message = ui_text(
+        "Window resolution. Fullscreen uses the desktop resolution.\n"
+        "Press F11 to switch modes.",
+        "Разрешение окна. Полный экран использует разрешение рабочего стола.\n"
+        "Режим можно переключать клавишей F11.");
     box.numbuttons = int(sizeof(buttons) / sizeof(buttons[0]));
     box.buttons = buttons;
     int selected = 0;

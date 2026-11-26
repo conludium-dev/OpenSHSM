@@ -59,11 +59,18 @@ def host(text):
         '              && e.key.keysym.scancode == SDL_SCANCODE_F1 && !e.key.repeat) {')
     text = text.replace('Shift/Ctrl/боковая кнопка: бег', 'Shift: бег; пробел/Ctrl: действие C')
     text = text.replace('C/пробел/средняя кнопка: фаер', 'C/средняя кнопка: действие Z')
-    return replace_once(text, '              "F10: отпустить/захватить мышь; F1: эта справка\\n"\n',
-        '              "F10: отпустить/захватить мышь; F1: эта справка\\n"\n'
-        '              "F2: настройки экрана; F11: полный экран / окно; F3: FPS\\n"\n'
-        '              "Чувствительность обзора: config.toml, раздел [input]\\n"\n'
-        '              "mouse_look_sensitivity / gamepad_look_sensitivity: 0.05–5, по умолчанию 1\\n"\n')
+    text = text.replace('Shift/Ctrl/side button: run', 'Shift: run; Space/Ctrl: C action')
+    text = text.replace('C/Space/middle button: flare', 'C/middle button: Z action')
+    text = replace_once(text, '                "F10: release/capture mouse; F1: this help\\n"\n',
+        '                "F10: release/capture mouse; F1: this help\\n"\n'
+        '                "F2: display settings; F11: fullscreen/windowed; F3: FPS\\n"\n'
+        '                "Look sensitivity: [input] section in config.toml\\n"\n'
+        '                "mouse_look_sensitivity / gamepad_look_sensitivity: 0.05–5, default 1\\n"\n')
+    return replace_once(text, '                "F10: отпустить/захватить мышь; F1: эта справка\\n"\n',
+        '                "F10: отпустить/захватить мышь; F1: эта справка\\n"\n'
+        '                "F2: настройки экрана; F11: полный экран / окно; F3: FPS\\n"\n'
+        '                "Чувствительность обзора: config.toml, раздел [input]\\n"\n'
+        '                "mouse_look_sensitivity / gamepad_look_sensitivity: 0.05–5, по умолчанию 1\\n"\n')
 
 
 SAVE_DISPLAY = r'''bool Config::save_display(int width, int height, bool fullscreen_value) {

@@ -10,6 +10,7 @@ import uuid
 
 from prepare_wii_us_copy import prepare, prepare_image
 from verify_wii_us_copy import audit_copy
+from launcher_locale import text
 
 
 def default_user_dir():
@@ -32,22 +33,25 @@ def find_dolphin_tool():
 def import_game(source, user_dir, dolphin_tool=None, *, extracted=False):
     user_dir = Path(user_dir).expanduser().absolute()
     if user_dir.is_symlink():
-        raise ValueError('Каталог пользователя не должен быть ссылкой.')
+        raise ValueError(text('User directory must not be a symlink.',
+            'Каталог пользователя не должен быть ссылкой.'))
     target = user_dir / 'wii-import'
     if target.exists() or target.is_symlink():
-        raise ValueError('Данные уже существуют: ' + str(target))
+        raise ValueError(text('Data already exists: ', 'Данные уже существуют: ') + str(target))
     user_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
     partial = user_dir / ('wii-import.partial-' + uuid.uuid4().hex)
     if extracted:
         report = prepare(source, partial)
     else:
         if not dolphin_tool:
-            raise ValueError('Выберите исполняемый DolphinTool с командой extract.')
+            raise ValueError(text('Select a DolphinTool executable that supports the extract command.',
+                'Выберите исполняемый DolphinTool с командой extract.'))
         report = prepare_image(source, dolphin_tool, partial)
     report['destination'] = str(target / 'DATA')
     (partial / 'import.json').write_text(json.dumps(report, indent=2) + '\n')
     if target.exists() or target.is_symlink():
-        raise RuntimeError('Другой импорт уже создал ' + str(target))
+        raise RuntimeError(text('Another import already created ',
+            'Другой импорт уже создал ') + str(target))
     partial.rename(target)
     return target / 'DATA'
 
@@ -58,31 +62,38 @@ def show_import(user_dir):
         from tkinter import filedialog, messagebox, ttk
         root = tk.Tk()
     except Exception as error:
-        raise RuntimeError('Для первого запуска нужен Python 3.11+ с Tk и рабочим дисплеем. '
+        raise RuntimeError(text('First launch requires Python 3.11+ with Tk and a working display. '
+            'You can use --import-only --no-settings --import-image IMAGE --dolphin-tool TOOL.',
+            'Для первого запуска нужен Python 3.11+ с Tk и рабочим дисплеем. '
             'Можно использовать --import-only --no-settings --import-image IMAGE '
-            '--dolphin-tool TOOL.') from error
-    root.title('OpenSHSM — подготовка Wii-копии')
+            '--dolphin-tool TOOL.')) from error
+    root.title(text('OpenSHSM — prepare Wii copy', 'OpenSHSM — подготовка Wii-копии'))
     root.resizable(True, False)
     frame = ttk.Frame(root, padding=18)
     frame.grid(sticky='nsew')
     frame.columnconfigure(1, weight=1)
     root.columnconfigure(0, weight=1)
-    ttk.Label(frame, text='Выберите собственную Wii US R5WEA4, revision 0.\n'
+    ttk.Label(frame, text=text('Select your own Wii US R5WEA4, revision 0 copy.\n'
+        'Data will be extracted and verified before launch.\n'
+        'A PS2 copy is not required. DolphinTool is installed separately.',
+        'Выберите собственную Wii US R5WEA4, revision 0.\n'
         'Данные будут извлечены и проверены перед запуском.\n'
-        'PS2-копия не требуется. DolphinTool устанавливается отдельно.').grid(
+        'PS2-копия не требуется. DolphinTool устанавливается отдельно.')).grid(
         row=0, column=0, columnspan=3, sticky='w', pady=(0, 12))
     source = tk.StringVar()
     tool = tk.StringVar(value=find_dolphin_tool())
     extracted = tk.BooleanVar(value=False)
-    status = tk.StringVar(value='Данные: ' + str(Path(user_dir) / 'wii-import'))
+    status = tk.StringVar(value=text('Data: ', 'Данные: ') + str(Path(user_dir) / 'wii-import'))
     events = queue.Queue()
     running = False
     result = None
 
     def choose_source():
-        chosen = filedialog.askdirectory(parent=root, title='Извлечённая Wii DATA') if extracted.get() else \
-            filedialog.askopenfilename(parent=root, title='Собственный Wii-образ',
-                filetypes=[('Wii images', '*.iso *.rvz *.wbfs *.wia *.gcz'), ('All files', '*')])
+        chosen = filedialog.askdirectory(parent=root,
+            title=text('Extracted Wii DATA', 'Извлечённая Wii DATA')) if extracted.get() else \
+            filedialog.askopenfilename(parent=root, title=text('Your Wii image', 'Собственный Wii-образ'),
+                filetypes=[(text('Wii images', 'Образы Wii'), '*.iso *.rvz *.wbfs *.wia *.gcz'),
+                    (text('All files', 'Все файлы'), '*')])
         if chosen:
             source.set(chosen)
 
@@ -93,21 +104,24 @@ def show_import(user_dir):
 
     def close():
         if running:
-            messagebox.showinfo('OpenSHSM', 'Дождитесь завершения извлечения и проверки.', parent=root)
+            messagebox.showinfo('OpenSHSM', text('Wait for extraction and verification to finish.',
+                'Дождитесь завершения извлечения и проверки.'), parent=root)
         else:
             root.destroy()
 
     def start():
         nonlocal running
         if not source.get().strip() or (not extracted.get() and not tool.get().strip()):
-            messagebox.showerror('OpenSHSM', 'Выберите источник и DolphinTool для образа.', parent=root)
+            messagebox.showerror('OpenSHSM', text('Select a source and DolphinTool for an image.',
+                'Выберите источник и DolphinTool для образа.'), parent=root)
             return
         selected, selected_tool, is_extracted = source.get(), tool.get(), extracted.get()
         running = True
         for widget in controls:
             widget.configure(state='disabled')
         progress.start()
-        status.set('Извлечение и SHA-256 проверка файлов. Это может занять несколько минут…')
+        status.set(text('Extracting and verifying file SHA-256 hashes. This may take several minutes…',
+            'Извлечение и SHA-256 проверка файлов. Это может занять несколько минут…'))
 
         def worker():
             try:
@@ -132,28 +146,31 @@ def show_import(user_dir):
         else:
             for widget in controls:
                 widget.configure(state='normal')
-            status.set('Импорт не завершён. Частичные данные сохранены для диагностики.')
-            messagebox.showerror('OpenSHSM — ошибка импорта', value, parent=root)
+            status.set(text('Import did not finish. Partial data was preserved for diagnostics.',
+                'Импорт не завершён. Частичные данные сохранены для диагностики.'))
+            messagebox.showerror(text('OpenSHSM — import error', 'OpenSHSM — ошибка импорта'),
+                value, parent=root)
 
     controls = []
-    for row, label, variable, command in [(1, 'Wii-образ / DATA', source, choose_source),
+    for row, label, variable, command in [(1, text('Wii image / DATA', 'Wii-образ / DATA'), source, choose_source),
             (2, 'DolphinTool', tool, choose_tool)]:
         ttk.Label(frame, text=label).grid(row=row, column=0, sticky='w', padx=(0, 8))
         entry = ttk.Entry(frame, textvariable=variable, width=54)
         entry.grid(row=row, column=1, sticky='ew', pady=4)
-        button = ttk.Button(frame, text='Обзор…', command=command)
+        button = ttk.Button(frame, text=text('Browse…', 'Обзор…'), command=command)
         button.grid(row=row, column=2, padx=(8, 0))
         controls.extend([entry, button])
-    mode = ttk.Checkbutton(frame, text='Уже извлечённая DATA (без DolphinTool)', variable=extracted)
+    mode = ttk.Checkbutton(frame, text=text('Already extracted DATA (without DolphinTool)',
+        'Уже извлечённая DATA (без DolphinTool)'), variable=extracted)
     mode.grid(row=3, column=0, columnspan=3, sticky='w', pady=8)
     controls.append(mode)
     progress = ttk.Progressbar(frame, mode='indeterminate')
     progress.grid(row=4, column=0, columnspan=3, sticky='ew')
     ttk.Label(frame, textvariable=status, wraplength=640).grid(
         row=5, column=0, columnspan=3, sticky='w', pady=8)
-    button = ttk.Button(frame, text='Подготовить данные', command=start)
+    button = ttk.Button(frame, text=text('Prepare data', 'Подготовить данные'), command=start)
     button.grid(row=6, column=1, sticky='e')
-    cancel = ttk.Button(frame, text='Отмена', command=close)
+    cancel = ttk.Button(frame, text=text('Cancel', 'Отмена'), command=close)
     cancel.grid(row=6, column=2, padx=(8, 0))
     controls.extend([button, cancel])
     root.protocol('WM_DELETE_WINDOW', close)
@@ -164,20 +181,24 @@ def show_import(user_dir):
 def resolve_game_data(game_data, user_dir, *, interactive=True, image=None, dolphin_tool=None):
     if game_data is not None:
         if image is not None:
-            raise ValueError('--game-data и --import-image несовместимы.')
+            raise ValueError(text('--game-data and --import-image cannot be combined.',
+                '--game-data и --import-image несовместимы.'))
         return Path(audit_copy(game_data)['source'])
     user_dir = Path(user_dir).expanduser()
     if user_dir.is_symlink():
-        raise ValueError('Каталог пользователя не должен быть ссылкой.')
+        raise ValueError(text('User directory must not be a symlink.',
+            'Каталог пользователя не должен быть ссылкой.'))
     managed = user_dir / 'wii-import'
     if managed.exists() or managed.is_symlink():
         if image is not None:
-            raise ValueError('Импорт уже существует: ' + str(managed))
+            raise ValueError(text('Import already exists: ', 'Импорт уже существует: ') + str(managed))
         if managed.is_symlink() or not (managed / 'import.json').is_file():
-            raise ValueError('Незавершённый или неверный импорт: ' + str(managed))
+            raise ValueError(text('Incomplete or invalid import: ',
+                'Незавершённый или неверный импорт: ') + str(managed))
         return Path(audit_copy(managed)['source'])
     if image is not None:
         return import_game(image, user_dir, dolphin_tool)
     if not interactive:
-        raise ValueError('Нет Wii DATA. Укажите --game-data или выполните первый запуск с импортом.')
+        raise ValueError(text('No Wii DATA. Specify --game-data or complete first-launch import.',
+            'Нет Wii DATA. Укажите --game-data или выполните первый запуск с импортом.'))
     return show_import(user_dir)

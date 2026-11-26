@@ -13,6 +13,7 @@ Before upload, verify the untouched candidate from its root:
 ```sh
 python3 -B experiments/wii-static-recomp/verify_public_repository.py .
 python3 -B experiments/wii-static-recomp/verify_launcher_import.py
+python3 -B experiments/wii-static-recomp/verify_launcher_locale.py
 ```
 
 The manifest audit is intended for the fresh snapshot before Git initialization.

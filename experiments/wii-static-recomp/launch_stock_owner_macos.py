@@ -12,6 +12,7 @@ import sys
 from export_stock_wii_us_copy import digest
 from run_stock_pc_play import BoundedCapture, active_game_commands
 from verify_wii_us_copy import audit_copy
+from launcher_locale import runtime_environment, text
 
 
 def source_version():
@@ -62,8 +63,10 @@ def launch(build_dir, game_data, user_dir, check_only=False, *, show_launcher=Tr
     if game_data is None:
         return {'result': 'OWNER_LAUNCH_CANCELLED_NOT_GAME_RUN'}
     if not Path(build_dir).expanduser().is_dir():
-        raise ValueError('Wii DATA готова: ' + str(game_data) + '. Нет сборки: ' + str(build_dir) +
-            '. Выполните prepare_build_stock_owner_macos.py по README.md или укажите --owner-build.')
+        raise ValueError(text('Wii DATA is ready: ', 'Wii DATA готова: ') + str(game_data) +
+            text('. Build not found: ', '. Нет сборки: ') + str(build_dir) +
+            text('. Run prepare_build_stock_owner_macos.py as described in README.md or specify --owner-build.',
+                '. Выполните prepare_build_stock_owner_macos.py по README.md или укажите --owner-build.'))
     executable, game, user_dir = validate(build_dir, game_data, user_dir)
     if check_only:
         return {'result': 'OWNER_WII_LAUNCH_INPUTS_VALIDATED_NOT_GAME_RUN',
@@ -98,6 +101,7 @@ def launch(build_dir, game_data, user_dir, check_only=False, *, show_launcher=Tr
         environment['OPENSHSM_TRACE_DESKTOP_LOOK'] = '1'
     from launcher_settings import controller_icon_environment
     environment.update(controller_icon_environment(user_dir))
+    environment.update(runtime_environment())
     with (user_dir / 'runtime.log').open('wb') as prefix, \
             (user_dir / 'runtime-tail.log').open('wb') as tail:
         capture = BoundedCapture(prefix, tail)

@@ -38,6 +38,11 @@ saves then starts. Python 3.11+ with Tk is required for this dialog.
 `--check-only` and `--build-only` never open the dialog. On Windows the launcher
 integration is implemented but has not been tested on a real Windows machine.
 
+OpenSHSM desktop dialogs and the in-game F1/F2 help use Russian when the system
+language is Russian and English otherwise. Set `OPENSHSM_LANGUAGE=ru` or
+`OPENSHSM_LANGUAGE=en` before launch to override automatic selection. This
+affects only PC-adapter UI; it does not translate the original game.
+
 F2 opens display settings with five window sizes; F11 switches between windowed
 and desktop fullscreen. These choices are saved to the existing user config,
 preserving other TOML values. `[graphics]` also accepts `fullscreen = false`,
