@@ -1,0 +1,25 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-fixed-ios-signature-export-wii-us-r5wea4-rev0.json",
+  "changedFiles": {
+    "output_41.cpp": {
+      "bytes": 3779873,
+      "sha256": "8a1d287c19015193c672659947b9116c7c3bf6b1383d76b1a90fdcfdb2184cff"
+    },
+    "output_52.cpp": {
+      "bytes": 4361624,
+      "sha256": "ed595eb4e81e30e6e892af589a793e684910f0d47207bea692a8802e6fca084b"
+    },
+    "fixed.cpp": {
+      "bytes": 3757467,
+      "sha256": "67558da57cbb89ed68cbe9c844a203985fafeba4aa1b7ee8ee83ac6200635fab"
+    },
+    "bounds.cpp": {
+      "bytes": 114969,
+      "sha256": "107eb202181a626db381e905c3d87499dd2c14356a0aa4f5c1f9d0890db85e38"
+    }
+  },
+  "boundsRecords": 17871,
+  "boundsRanges": 3132
+}

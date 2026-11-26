@@ -1,0 +1,39 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-host-inputs-wii-us-r5wea4-rev0.json",
+  "outputs": {
+    "main.cpp": {
+      "bytes": 33770,
+      "sha256": "075842ac7bb15cc8cea2d44a88ad73afa945a20896563890d46f21051adcda2b"
+    },
+    "dispatch.cpp": {
+      "bytes": 630,
+      "sha256": "112a17aecbc8277efec38ecf94eb1fc9029d3d84017e5aff4c07e3603cf12ddf"
+    },
+    "fixed.cpp": {
+      "bytes": 3757129,
+      "sha256": "52abedf4033423fd842fc636dfb665accbd6d7ff8b3d1a8bfd0dc646c05f59f0"
+    },
+    "bounds.cpp": {
+      "bytes": 114932,
+      "sha256": "009f72619d5fdc8be2a1b389538c517b63eab7e7755a71d13f1b31ca89eee393"
+    },
+    "functions.h": {
+      "bytes": 934081,
+      "sha256": "65db1827a7675b1606e4814f03c081e98cf8476f2d44b2de81d815804e10461d"
+    }
+  },
+  "reportingOutput": {
+    "bytes": 33874,
+    "sha256": "a119027b8f68cfc5e1b28825b24533395cb4e9aa4bcb3985e6d593d24e09427a"
+  },
+  "profileReadbackOutput": {
+    "bytes": 34156,
+    "sha256": "21dfd8f58bd3da6800b30718b59c14a8d252caa65f8ce0dbef7191aac237fd5d"
+  },
+  "desktopQteDispatchOutput": {
+    "bytes": 3757162,
+    "sha256": "c228b48d7572e928d3ab99c269e137c1fd03e709fd5cb82f5960de5cb22bb90c"
+  }
+}

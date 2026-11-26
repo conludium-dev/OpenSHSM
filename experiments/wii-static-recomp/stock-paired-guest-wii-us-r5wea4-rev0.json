@@ -1,0 +1,406 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-guest38-transition-wii-us-r5wea4-rev0.json",
+  "changedUnits": [
+    "output_1.cpp",
+    "output_2.cpp",
+    "output_4.cpp",
+    "output_5.cpp",
+    "output_6.cpp",
+    "output_7.cpp",
+    "output_8.cpp",
+    "output_12.cpp",
+    "output_14.cpp",
+    "output_15.cpp",
+    "output_19.cpp",
+    "output_20.cpp",
+    "output_21.cpp",
+    "output_22.cpp",
+    "output_23.cpp",
+    "output_24.cpp",
+    "output_25.cpp",
+    "output_26.cpp",
+    "output_27.cpp",
+    "output_28.cpp",
+    "output_29.cpp"
+  ],
+  "totalPairedEstimateSites": 242,
+  "units": {
+    "output_0.cpp": {
+      "bytes": 326,
+      "sha256": "3fd9d2a20ba69c89ba7396f0b1f76ac34abc06ef7b317b3e75406f5484fe8c77",
+      "pairedEstimateSites": 0
+    },
+    "output_1.cpp": {
+      "bytes": 4000097,
+      "sha256": "ed3e1b4b66ea45838004dc15fbb2514fe6486345e294ae4f28c7b2c891aa87b2",
+      "pairedEstimateSites": 2
+    },
+    "output_2.cpp": {
+      "bytes": 4018506,
+      "sha256": "b6dee72cff3ad25aae0c628a42f614677d9e274ad450024b0d5be45e5412f76c",
+      "pairedEstimateSites": 2
+    },
+    "output_3.cpp": {
+      "bytes": 3933451,
+      "sha256": "5c749cd98e0ec88858151c301b68f7be275ea533a2a06e283c72db8c453d7f7b",
+      "pairedEstimateSites": 0
+    },
+    "output_4.cpp": {
+      "bytes": 3984950,
+      "sha256": "1edd1afea90c9c226f896f3f5422ce21c2bd5a87811a32c2e2d95125569d7270",
+      "pairedEstimateSites": 4
+    },
+    "output_5.cpp": {
+      "bytes": 4169916,
+      "sha256": "202e412a62267695f15b474f21526842903460d03d36a1ae3908f0da015989c5",
+      "pairedEstimateSites": 26
+    },
+    "output_6.cpp": {
+      "bytes": 4210195,
+      "sha256": "4b9e662dc923d5f7a27fc4f4564c3ec68b82e4980423224fbdc4711756d5297d",
+      "pairedEstimateSites": 6
+    },
+    "output_7.cpp": {
+      "bytes": 4028163,
+      "sha256": "f634f33d3949dada666832fd8212e97ac90d9c59f089bdcd4e7de65f75494024",
+      "pairedEstimateSites": 12
+    },
+    "output_8.cpp": {
+      "bytes": 3905762,
+      "sha256": "14c3d92c000f6635d16b23c52dc3ec4e41bccfe54388b8b00eb2de219adefae4",
+      "pairedEstimateSites": 4
+    },
+    "output_9.cpp": {
+      "bytes": 4016961,
+      "sha256": "6aa387ab508072bb2c097d43df0e1f4eff85b501dfadb3deebf6b0f060e466ef",
+      "pairedEstimateSites": 0
+    },
+    "output_10.cpp": {
+      "bytes": 4047550,
+      "sha256": "f8267667bca7e94fb3f16e425b4eb128cd36a414e391e1d8d85988ad99dbd235",
+      "pairedEstimateSites": 0
+    },
+    "output_11.cpp": {
+      "bytes": 3916361,
+      "sha256": "5478c1462d7b1d81e0f6e99f41292a1546e902202b52b535b135f729332f369d",
+      "pairedEstimateSites": 0
+    },
+    "output_12.cpp": {
+      "bytes": 3983913,
+      "sha256": "007c706504cc9da938afd2d34846efdc42f84c31780919d8d8aab1fac72ff25b",
+      "pairedEstimateSites": 2
+    },
+    "output_13.cpp": {
+      "bytes": 3934794,
+      "sha256": "7c9d7449eb7c0c6207ba89fc0263dd18f34e7446ca28c5e29e5a33361e8b3f2b",
+      "pairedEstimateSites": 0
+    },
+    "output_14.cpp": {
+      "bytes": 3976717,
+      "sha256": "ebf894628050caea6ea925483548e006c668a5dcef86a713c92ba1e7bf4e8c82",
+      "pairedEstimateSites": 6
+    },
+    "output_15.cpp": {
+      "bytes": 3951519,
+      "sha256": "cc132be13492fad9f29a3c37c343e90137bce9e2b419e781bd3cc67bf45d6ad6",
+      "pairedEstimateSites": 8
+    },
+    "output_16.cpp": {
+      "bytes": 4030210,
+      "sha256": "697527dd449557547b0ffca75d36b5682c86c2dcaa103326d46e3eeae5a50bba",
+      "pairedEstimateSites": 0
+    },
+    "output_17.cpp": {
+      "bytes": 3935142,
+      "sha256": "3109efe7544650c46969dc8565b323a44bd6f2635382f84dabc6ae15a25833fe",
+      "pairedEstimateSites": 0
+    },
+    "output_18.cpp": {
+      "bytes": 3889687,
+      "sha256": "492ce476773963cf7b0b11d51205216ed2a3cbd7d9b21bd5e49ed1c173c0bfe2",
+      "pairedEstimateSites": 0
+    },
+    "output_19.cpp": {
+      "bytes": 4056134,
+      "sha256": "91cab1192b5b2e87ca630633b9c0be8b4db5c517c19bdb6503c1432783f05e75",
+      "pairedEstimateSites": 8
+    },
+    "output_20.cpp": {
+      "bytes": 4234333,
+      "sha256": "5b4c6c49d4bbbb981dccfed727be120593f2de9f04ca95e4db91702c88babbf1",
+      "pairedEstimateSites": 22
+    },
+    "output_21.cpp": {
+      "bytes": 4042185,
+      "sha256": "8e5b42116e6b65a617b9ae93d394b694908d78bd8780f25981f930bed3c9a761",
+      "pairedEstimateSites": 16
+    },
+    "output_22.cpp": {
+      "bytes": 4230558,
+      "sha256": "9b53b727478afe4103d7484770dddb3b4a8c7643a6eb9eb0aceb2fe86fc5a59a",
+      "pairedEstimateSites": 26
+    },
+    "output_23.cpp": {
+      "bytes": 3974846,
+      "sha256": "2d0e4e3d25e008fb0d26ea5f64060ee5d277a5680e7656b6939da5f6643272cc",
+      "pairedEstimateSites": 8
+    },
+    "output_24.cpp": {
+      "bytes": 3972268,
+      "sha256": "1a85962cb32eecbded5bc7f2a13e531cb6a3fbf018f6f2d7a80e72e190240c35",
+      "pairedEstimateSites": 2
+    },
+    "output_25.cpp": {
+      "bytes": 4069996,
+      "sha256": "28178fce2b0dacb4998b2f242dc1b1ebf8d927af6f6159ab25d9def8093f0550",
+      "pairedEstimateSites": 12
+    },
+    "output_26.cpp": {
+      "bytes": 4035513,
+      "sha256": "ab3cecc5b879b453f3174a97dc0a080774f64c53bf1bda4f71c2c009aa93fe59",
+      "pairedEstimateSites": 2
+    },
+    "output_27.cpp": {
+      "bytes": 4043447,
+      "sha256": "bb1cc7d06cd26fd782369cc7d8d59f5cfa624b01e6c486035f7c6fde9da8f463",
+      "pairedEstimateSites": 60
+    },
+    "output_28.cpp": {
+      "bytes": 4027980,
+      "sha256": "22b9e26f17b3faeeb14e3223721294279d59e350715ffdc62de85271b1ab8eed",
+      "pairedEstimateSites": 2
+    },
+    "output_29.cpp": {
+      "bytes": 4036199,
+      "sha256": "9b1f01e4d6c42e5bea8c9a881a5fcf4212308df2d1c2b0e76000f085a4c1e581",
+      "pairedEstimateSites": 12
+    },
+    "output_30.cpp": {
+      "bytes": 3873974,
+      "sha256": "2c16d0fe7d7147225af87e0ac1949a1bd9d0278280760b315fe5275d9649c37b",
+      "pairedEstimateSites": 0
+    },
+    "output_31.cpp": {
+      "bytes": 3845316,
+      "sha256": "8be6159cfff401c7718202da390a5afe8d69e416b45b222c5753846333c60b94",
+      "pairedEstimateSites": 0
+    },
+    "output_32.cpp": {
+      "bytes": 3873932,
+      "sha256": "5461b898783f0a1ae916ac981cf8064d1b56cc5c4f6a10ab14ac4f182753cf97",
+      "pairedEstimateSites": 0
+    },
+    "output_33.cpp": {
+      "bytes": 3841904,
+      "sha256": "0f82f206ea5528e0e8ee01c8fef30eb3d9958cffdc9f3b5758ab2610b2e2a308",
+      "pairedEstimateSites": 0
+    },
+    "output_34.cpp": {
+      "bytes": 3960521,
+      "sha256": "104df1c11ae59b2b2cdcdea9970d101522af11c72bd8025338d438764d842cb2",
+      "pairedEstimateSites": 0
+    },
+    "output_35.cpp": {
+      "bytes": 3994587,
+      "sha256": "2456a7a10f0469fe149270136296e6df791c2d330650f45c61d2821d9749f1e8",
+      "pairedEstimateSites": 0
+    },
+    "output_36.cpp": {
+      "bytes": 4025787,
+      "sha256": "ebde21a948a7ce99c90640665925d4f14c3623242041cacc8d74959336708104",
+      "pairedEstimateSites": 0
+    },
+    "output_37.cpp": {
+      "bytes": 3945234,
+      "sha256": "63df8d43dfb006870d14a1e4c725bc54bdeeac58f2ce24ff0ab276c247aa5848",
+      "pairedEstimateSites": 0
+    },
+    "output_38.cpp": {
+      "bytes": 3898896,
+      "sha256": "f9bb159e29de636155fba3a6f5da3c2d40a9d871f5edc109e68e648fc45ce6b5",
+      "pairedEstimateSites": 0
+    },
+    "output_39.cpp": {
+      "bytes": 3881815,
+      "sha256": "c9b6398157f5a56473a87212b3378ebd8e42e154cc54ddf3b0c1de748d222b4f",
+      "pairedEstimateSites": 0
+    },
+    "output_40.cpp": {
+      "bytes": 3871173,
+      "sha256": "bd61a4023d9fc1ffcbd65a653bfbe53caf6fdcee4e03ce2572ae709321439ec6",
+      "pairedEstimateSites": 0
+    },
+    "output_41.cpp": {
+      "bytes": 3768711,
+      "sha256": "4c30c83d6855857ae88fece29e48f260c5dc149f6eaee1fb6e468d30dabaf279",
+      "pairedEstimateSites": 0
+    },
+    "output_42.cpp": {
+      "bytes": 3771553,
+      "sha256": "697720348a95160ecd9790473eb08524bbbb08940868bac07a8d139417b70416",
+      "pairedEstimateSites": 0
+    },
+    "output_43.cpp": {
+      "bytes": 3792128,
+      "sha256": "24506dd73be4510e053804f92bc8fdf0f1d8b3b2af68a268e76fab624b38db7b",
+      "pairedEstimateSites": 0
+    },
+    "output_44.cpp": {
+      "bytes": 3871876,
+      "sha256": "e5c3b0ec42469990bb8725e58d4c458d7de1833a3b1bead3a8efa5b88c0dae53",
+      "pairedEstimateSites": 0
+    },
+    "output_45.cpp": {
+      "bytes": 3872251,
+      "sha256": "ef2ea2eb5043ec0cc2dcd3e65c215d90b9a5c5ca2754a155e313be0208ef9b3e",
+      "pairedEstimateSites": 0
+    },
+    "output_46.cpp": {
+      "bytes": 4027861,
+      "sha256": "64b7a619ec26ddb6d631d01f99491b4acae7d24bd4d9f1eaaa715f061421a03d",
+      "pairedEstimateSites": 0
+    },
+    "output_47.cpp": {
+      "bytes": 3976206,
+      "sha256": "c033d297583e19cfb4e1d92655cb7c56e51cc28fadcddf7313363cca0ebf3e79",
+      "pairedEstimateSites": 0
+    },
+    "output_48.cpp": {
+      "bytes": 4053941,
+      "sha256": "f3012d5b9e826a19354c7990d8f0c0bb6f6fd8a0084a184c562a06ea6f8dd839",
+      "pairedEstimateSites": 0
+    },
+    "output_49.cpp": {
+      "bytes": 3849847,
+      "sha256": "67a860160885c506631dc54cd7905535e9b03d45205094fa22c6b477253f9034",
+      "pairedEstimateSites": 0
+    },
+    "output_50.cpp": {
+      "bytes": 3919408,
+      "sha256": "23fd9b47a1b755661d99fa9ae86c65b734e97ce6fc5aa29c2e1d3881ae097070",
+      "pairedEstimateSites": 0
+    },
+    "output_51.cpp": {
+      "bytes": 4278867,
+      "sha256": "db8288877f493b73c92de85bd5382b9c4d20e7f87ee99d09988bbbd0e646ddfd",
+      "pairedEstimateSites": 0
+    },
+    "output_52.cpp": {
+      "bytes": 4346817,
+      "sha256": "0ff984a313d26b5e8a70616f7d26313ffec3ac97fedf1498a8433154b97bb916",
+      "pairedEstimateSites": 0
+    },
+    "output_53.cpp": {
+      "bytes": 4364587,
+      "sha256": "89b2eefd5bd8535a0f13c69aafaadccc6de98345fbcb47e8138fb3c533980c99",
+      "pairedEstimateSites": 0
+    },
+    "output_54.cpp": {
+      "bytes": 4161710,
+      "sha256": "c6346357299f05fc74eddce819fbf7b05e5ffb071d386dcf26681bcd28b392ac",
+      "pairedEstimateSites": 0
+    },
+    "output_55.cpp": {
+      "bytes": 3978216,
+      "sha256": "d4fdf3934c940d4cfdbd41d8e5b1daffab4196aff1c70641e6c0db4a5eae563f",
+      "pairedEstimateSites": 0
+    },
+    "output_56.cpp": {
+      "bytes": 3816037,
+      "sha256": "f7b3a5872954528a5c511fe3ea7ae9583949716f26058f21c61fe4b66f7e4a59",
+      "pairedEstimateSites": 0
+    },
+    "output_57.cpp": {
+      "bytes": 3724470,
+      "sha256": "93ecb34a93d9e1356f9c6d7b00833dde2a7660f67180fd30cdf57efbe75617fb",
+      "pairedEstimateSites": 0
+    },
+    "output_58.cpp": {
+      "bytes": 3744914,
+      "sha256": "4169a1a9658553ee977f78349d61aebd2285e53834ee344f36f6ed41129fbb22",
+      "pairedEstimateSites": 0
+    },
+    "output_59.cpp": {
+      "bytes": 4084927,
+      "sha256": "3d6e17d0dd404059bcb100efb2398ed4004d12a451c4404269fa20e37b29d6d3",
+      "pairedEstimateSites": 0
+    },
+    "output_60.cpp": {
+      "bytes": 4097845,
+      "sha256": "6cc6d085232b2b5d5caf5f93d7d74a9f11f1c5c3de319c3d0fd2fbbd44ebdab8",
+      "pairedEstimateSites": 0
+    },
+    "output_61.cpp": {
+      "bytes": 4088555,
+      "sha256": "6b59c286ac81d829101f110c7b72180797a3c46c8540733a723d862eaaac6373",
+      "pairedEstimateSites": 0
+    },
+    "output_62.cpp": {
+      "bytes": 3821433,
+      "sha256": "42755c0bc57637d3c680c129f3cb94434ec703116d30493e28acb1386610bb34",
+      "pairedEstimateSites": 0
+    },
+    "output_63.cpp": {
+      "bytes": 3848619,
+      "sha256": "6f2566b03987359671f4a9fb82d486fe000d1cc70197601215e511879eb79fab",
+      "pairedEstimateSites": 0
+    },
+    "output_64.cpp": {
+      "bytes": 4069213,
+      "sha256": "fa9cc8d6d484a93bdff286c64685bcc03260b52ef6785d076ab8617f26c614ba",
+      "pairedEstimateSites": 0
+    },
+    "output_65.cpp": {
+      "bytes": 4038084,
+      "sha256": "11cf11171b8bb1ddc5b3be81279146724519642ce647ba07a9e74ce13d007b0e",
+      "pairedEstimateSites": 0
+    },
+    "output_66.cpp": {
+      "bytes": 3800295,
+      "sha256": "2dacc70c0c06124b1b216047e71aa9965a7604d468f05dc153fb8abfa3c109d3",
+      "pairedEstimateSites": 0
+    },
+    "output_67.cpp": {
+      "bytes": 4012724,
+      "sha256": "e53e34eeabff7745d7c5dfddf28d75a06e8fdc6c4e08c47c7302cf8239d8fb6d",
+      "pairedEstimateSites": 0
+    },
+    "output_68.cpp": {
+      "bytes": 3690826,
+      "sha256": "be323a3e038f9f08400340c99ac62869fae0e1712e62cddc265f22ff3ff79cc1",
+      "pairedEstimateSites": 0
+    },
+    "output_69.cpp": {
+      "bytes": 3914583,
+      "sha256": "e729a72cf9bb7b5ccfdb92544c0242186dbec95265c9e786eb6e5ac22a55e44d",
+      "pairedEstimateSites": 0
+    },
+    "output_70.cpp": {
+      "bytes": 3965023,
+      "sha256": "c68171d4d8355c1b7c8ecc9448317b9d59d1e0e22c57d99ba51b4f74771a0709",
+      "pairedEstimateSites": 0
+    },
+    "output_71.cpp": {
+      "bytes": 3923134,
+      "sha256": "a76e8aeb693360ec16560a5cbab188ccb5953f35d703dfdd8bc62f8819016b1d",
+      "pairedEstimateSites": 0
+    },
+    "output_72.cpp": {
+      "bytes": 3912718,
+      "sha256": "eca3572c66bd832ca04749d0a901ca1fbe577419ba42dd8fd24386348be77a2b",
+      "pairedEstimateSites": 0
+    },
+    "output_73.cpp": {
+      "bytes": 4041459,
+      "sha256": "88eec2a9064841a6bd0b4e2042d9026ecf0106238f0384af0f9d67eff234427a",
+      "pairedEstimateSites": 0
+    },
+    "output_74.cpp": {
+      "bytes": 1580879,
+      "sha256": "17dd4960abc24d96cdcc063c5b78784fab3e558003c437e806dd7f19ff39c283",
+      "pairedEstimateSites": 0
+    }
+  }
+}

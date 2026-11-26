@@ -1,0 +1,256 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "mainEdits": [
+    {
+      "startLine": 0,
+      "old": "",
+      "new": "#include \"stock_first_image.h\"\n#include \"BuildVersion.h\"\n#include \"stock_host_phases.h\"\n#include \"stock_audio_callback.h\"\n#include \"stock_debug_overlay.h\"\n#include \"stock_test_profile_source.h\"\n#include \"processor_adapter.h\"\n"
+    },
+    {
+      "startLine": 105,
+      "old": "",
+      "new": "  openshsm::experiment::install_test_profile_source(nwii::runtime::input::InputManager::get());\n"
+    },
+    {
+      "startLine": 107,
+      "old": "",
+      "new": "  const char *hidden_gl_env = std::getenv(\"OPENSHSM_HIDDEN_GL\");\n  bool hidden_gl = hidden_gl_env && hidden_gl_env[0] == '1';\n"
+    },
+    {
+      "startLine": 111,
+      "old": "",
+      "new": "  openshsm::experiment::AudioCallback audio_callback(nwii::runtime::hw::dsp_audio_pull);\n  struct AudioDeviceGuard {\n    SDL_AudioDeviceID& device;\n    ~AudioDeviceGuard() { if (device) { SDL_CloseAudioDevice(device); } }\n  } audio_device_guard{audio_dev};\n"
+    },
+    {
+      "startLine": 148,
+      "old": "    uint32_t window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;\n",
+      "new": "    uint32_t window_flags = SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;\n"
+    },
+    {
+      "startLine": 156,
+      "old": "    window = SDL_CreateWindow(\"NWiiRecomp\", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,\n",
+      "new": "    window = SDL_CreateWindow(OPENSHSM_RECOMP_WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,\n"
+    },
+    {
+      "startLine": 180,
+      "old": "      SDL_GL_SetSwapInterval(1);\n",
+      "new": "      SDL_GL_SetSwapInterval(0);\n"
+    },
+    {
+      "startLine": 187,
+      "old": "    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 640, 480, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);\n",
+      "new": "    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 640, 528, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);\n"
+    },
+    {
+      "startLine": 197,
+      "old": "      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 640, 480);\n",
+      "new": "      glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 640, 528);\n"
+    },
+    {
+      "startLine": 220,
+      "old": "",
+      "new": "    want.callback = openshsm::experiment::AudioCallback::render;\n    want.userdata = &audio_callback;\n    if (!hidden_gl) {\n"
+    },
+    {
+      "startLine": 221,
+      "old": "    if (audio_dev > 0) SDL_PauseAudioDevice(audio_dev, 0);\n  }\n\n  auto ctx = std::make_unique<nwii::runtime::CPUContext>();\n",
+      "new": "    }\n\n  }\n\n  auto ctx = std::make_unique<nwii::runtime::ProcessorContext>();\n"
+    },
+    {
+      "startLine": 437,
+      "old": "",
+      "new": "  const auto startup_origin = std::chrono::steady_clock::now();\n  auto startup_trace = [&](const char* phase) {\n      auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(\n          std::chrono::steady_clock::now() - startup_origin).count();\n      std::cerr << \"[WindowStartup] us=\" << elapsed << \" phase=\" << phase << std::endl;\n  };\n"
+    },
+    {
+      "startLine": 441,
+      "old": "",
+      "new": "  startup_trace(\"cpu launch\");\n"
+    },
+    {
+      "startLine": 442,
+      "old": "",
+      "new": "  if (audio_dev) { SDL_PauseAudioDevice(audio_dev, 0); }\n"
+    },
+    {
+      "startLine": 545,
+      "old": "\n",
+      "new": "    openshsm::experiment::DebugOverlay debug_overlay;\n    openshsm::experiment::HostPhases host_phases;\n    extern uint64_t g_stat_frames;\n\n    openshsm::experiment::FirstImageGate first_image;\n"
+    },
+    {
+      "startLine": 547,
+      "old": "",
+      "new": "      host_phases.begin(g_stat_frames);\n      static int startup_ticks = 0;\n      bool trace_startup = ++startup_ticks <= 3;\n      if (trace_startup) { startup_trace(\"loop begin\"); }\n\n"
+    },
+    {
+      "startLine": 549,
+      "old": "",
+      "new": "        if (trace_startup) { startup_trace(\"poll begin\"); }\n"
+    },
+    {
+      "startLine": 554,
+      "old": "",
+      "new": "      if (trace_startup) { startup_trace(\"poll end/input begin\"); }\n"
+    },
+    {
+      "startLine": 555,
+      "old": "",
+      "new": "      if (trace_startup) { startup_trace(\"input end\"); }\n      host_phases.mark(0);\n"
+    },
+    {
+      "startLine": 558,
+      "old": "        glViewport(0, 0, 640, 480);\n",
+      "new": "        glViewport(0, 48, 640, 480);\n"
+    },
+    {
+      "startLine": 600,
+      "old": "      ProcessGXFifo();\n",
+      "new": "      host_phases.mark(1);\n      if (trace_startup) { startup_trace(\"fifo begin\"); }\n      if (headless || !nwii::runtime::gx::g_state.frame_ready) {\n          ProcessGXFifo();\n      }\n      if (trace_startup) { startup_trace(\"fifo end\"); }\n      host_phases.mark(2);\n"
+    },
+    {
+      "startLine": 616,
+      "old": "          glReadPixels(0, 0, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, p.data());\n",
+      "new": "          glReadPixels(0, 48, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, p.data());\n"
+    },
+    {
+      "startLine": 668,
+      "old": "      if (!headless) {\n",
+      "new": "      host_phases.mark(3);\n      if (!headless && nwii::runtime::gx::g_state.frame_ready) {\n        if (trace_startup) { startup_trace(\"present begin\"); }\n"
+    },
+    {
+      "startLine": 678,
+      "old": "        glBlitFramebuffer(0, 0, 640, 480, 0, 0, draw_w, draw_h,\n",
+      "new": "        if (trace_startup) { startup_trace(\"blit begin\"); }\n        glBlitFramebuffer(0, 48, 640, 528, 0, 0, draw_w, draw_h,\n"
+    },
+    {
+      "startLine": 681,
+      "old": "",
+      "new": "        if (trace_startup) { startup_trace(\"blit end\"); }\n        if (!first_image.visible()) {\n            std::vector<uint8_t> initial_pixels(640 * 480 * 4);\n            glReadPixels(0, 48, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, initial_pixels.data());\n            first_image.observe(initial_pixels.data(), initial_pixels.size());\n        }\n"
+    },
+    {
+      "startLine": 683,
+      "old": "          if ((++shot_frame % 300) == 0) {\n",
+      "new": "          if ((++shot_frame % (hidden_gl ? 120 : 300)) == 0) {\n"
+    },
+    {
+      "startLine": 686,
+      "old": "            glReadPixels(0, 0, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, px.data());\n",
+      "new": "            glReadPixels(0, 48, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, px.data());\n"
+    },
+    {
+      "startLine": 704,
+      "old": "",
+      "new": "        if (trace_startup) { startup_trace(\"swap begin\"); }\n        extern uint64_t g_stat_frames;\n        debug_overlay.draw(draw_w, draw_h, g_stat_frames);\n        host_phases.mark(4);\n"
+    },
+    {
+      "startLine": 705,
+      "old": "      }\n\n",
+      "new": "        if (!hidden_gl && first_image.visible() && !(SDL_GetWindowFlags(window) & SDL_WINDOW_SHOWN)) {\n            SDL_ShowWindow(window);\n        }\n        nwii::runtime::gx::g_state.frame_ready = false;\n        host_phases.mark(5);\n        if (trace_startup) { startup_trace(\"swap end\"); }\n        glBindFramebuffer(GL_FRAMEBUFFER, efb_fbo);\n        glViewport(0, 48, 640, 480);\n        ProcessGXFifo();\n        glBindFramebuffer(GL_FRAMEBUFFER, 0);\n        host_phases.mark(2);\n      } else if (!headless) {\n        host_phases.mark(4);\n        host_phases.mark(5);\n      }\n\n      if (trace_startup) { startup_trace(\"audio begin\"); }\n"
+    },
+    {
+      "startLine": 708,
+      "old": "        if (SDL_GetQueuedAudioSize(audio_dev) < 1024 * 4 * 2) {\n          static int16_t abuf[1024 * 2];\n          nwii::runtime::hw::dsp_audio_pull(abuf, 1024);\n          SDL_QueueAudio(audio_dev, abuf, 1024 * 4);\n        }\n",
+      "new": "        const auto stats = audio_callback.snapshot();\n        debug_overlay.callback_audio(stats.calls, stats.supplied, stats.short_calls, stats.errors);\n        audio_callback.report();\n        if (stats.errors) { ctx->is_running = false; quit = true; }\n"
+    },
+    {
+      "startLine": 715,
+      "old": "      ctx->vblank_pending = true;\n      if (headless) std::this_thread::sleep_for(std::chrono::milliseconds(16));\n    }\n",
+      "new": "      if (trace_startup) { startup_trace(\"audio end\"); }\n      host_phases.mark(6);\n\n      host_phases.mark(7);\n      std::this_thread::sleep_for(std::chrono::milliseconds(16));\n      host_phases.mark(8);\n      host_phases.end(g_stat_frames);\n    }\n    host_phases.end(g_stat_frames, true);\n"
+    },
+    {
+      "startLine": 720,
+      "old": "      if (audio_dev > 0) SDL_CloseAudioDevice(audio_dev);\n",
+      "new": "      debug_overlay.release();\n      if (audio_dev) {\n          SDL_CloseAudioDevice(audio_dev);\n          audio_dev = 0;\n          audio_callback.report(true);\n      }\n"
+    }
+  ],
+  "dispatchBase": {
+    "bytes": 637,
+    "sha256": "c5b21f60fe5104631f2e7af7ec9a214018239c7c550858c5c3f485b869eae417"
+  },
+  "dispatchRename": [
+    "stock_dispatch_select_index",
+    "stock_dispatch_index"
+  ],
+  "dispatchRoutes": 89243,
+  "adaptedFixed": {
+    "bytes": 3754159,
+    "sha256": "4d354991ccf9880e4fe2213a09d713b6b1c866e83ea5eda6948a8398a66ab6ec"
+  },
+  "fixedEdits": [
+    {
+      "startLine": 8084,
+      "old": "",
+      "new": "    {0x8019D434, 0x8019D564, func_8019D434},\n"
+    },
+    {
+      "startLine": 17896,
+      "old": "    OSReport(ctx);\n    ctx.pc = ctx.lr;\n",
+      "new": "    func_8019D434(ctx);\n"
+    },
+    {
+      "startLine": 60800,
+      "old": "",
+      "new": "    {0x8019D438, func_8019D434},\n    {0x8019D43C, func_8019D434},\n    {0x8019D440, func_8019D434},\n    {0x8019D444, func_8019D434},\n    {0x8019D448, func_8019D434},\n    {0x8019D44C, func_8019D434},\n    {0x8019D450, func_8019D434},\n    {0x8019D454, func_8019D434},\n    {0x8019D458, func_8019D434},\n    {0x8019D45C, func_8019D434},\n    {0x8019D460, func_8019D434},\n    {0x8019D464, func_8019D434},\n    {0x8019D468, func_8019D434},\n    {0x8019D46C, func_8019D434},\n    {0x8019D470, func_8019D434},\n    {0x8019D474, func_8019D434},\n    {0x8019D478, func_8019D434},\n    {0x8019D47C, func_8019D434},\n    {0x8019D480, func_8019D434},\n    {0x8019D484, func_8019D434},\n    {0x8019D488, func_8019D434},\n    {0x8019D48C, func_8019D434},\n    {0x8019D490, func_8019D434},\n    {0x8019D494, func_8019D434},\n    {0x8019D498, func_8019D434},\n    {0x8019D49C, func_8019D434},\n    {0x8019D4A0, func_8019D434},\n    {0x8019D4A4, func_8019D434},\n    {0x8019D4A8, func_8019D434},\n    {0x8019D4AC, func_8019D434},\n    {0x8019D4B0, func_8019D434},\n    {0x8019D4B4, func_8019D434},\n    {0x8019D4B8, func_8019D434},\n    {0x8019D4BC, func_8019D434},\n    {0x8019D4C0, func_8019D434},\n    {0x8019D4C4, func_8019D434},\n    {0x8019D4C8, func_8019D434},\n    {0x8019D4CC, func_8019D434},\n    {0x8019D4D0, func_8019D434},\n    {0x8019D4D4, func_8019D434},\n    {0x8019D4D8, func_8019D434},\n    {0x8019D4DC, func_8019D434},\n    {0x8019D4E0, func_8019D434},\n    {0x8019D4E4, func_8019D434},\n    {0x8019D4E8, func_8019D434},\n    {0x8019D4EC, func_8019D434},\n    {0x8019D4F0, func_8019D434},\n    {0x8019D4F4, func_8019D434},\n    {0x8019D4F8, func_8019D434},\n    {0x8019D4FC, func_8019D434},\n    {0x8019D500, func_8019D434},\n    {0x8019D504, func_8019D434},\n    {0x8019D508, func_8019D434},\n    {0x8019D50C, func_8019D434},\n    {0x8019D510, func_8019D434},\n    {0x8019D514, func_8019D434},\n    {0x8019D518, func_8019D434},\n    {0x8019D51C, func_8019D434},\n    {0x8019D520, func_8019D434},\n    {0x8019D524, func_8019D434},\n    {0x8019D528, func_8019D434},\n    {0x8019D52C, func_8019D434},\n    {0x8019D530, func_8019D434},\n    {0x8019D534, func_8019D434},\n    {0x8019D538, func_8019D434},\n    {0x8019D53C, func_8019D434},\n    {0x8019D540, func_8019D434},\n    {0x8019D544, func_8019D434},\n    {0x8019D548, func_8019D434},\n    {0x8019D54C, func_8019D434},\n    {0x8019D550, func_8019D434},\n    {0x8019D554, func_8019D434},\n    {0x8019D558, func_8019D434},\n    {0x8019D55C, func_8019D434},\n    {0x8019D560, func_8019D434},\n"
+    },
+    {
+      "startLine": 71751,
+      "old": "",
+      "new": "    {0x8021750C, func_80217500},\n"
+    },
+    {
+      "startLine": 107181,
+      "old": "",
+      "new": "extern \"C\" uint32_t stock_lookup_bounds(uint32_t target);\n\n"
+    },
+    {
+      "startLine": 107233,
+      "old": "                for (const auto& fb : g_func_bounds) {\n                    if (fb.start == 0) break;\n                    if (target >= fb.start && target < fb.end) {\n                        ctx.pc = target;\n                        fb.func(ctx);\n                        found = true;\n                        break;\n                    }\n",
+      "new": "                uint32_t bound_index = stock_lookup_bounds(target);\n                if (bound_index != UINT32_MAX) {\n                    const auto& fb = g_func_bounds[bound_index];\n                    ctx.pc = target;\n                    fb.func(ctx);\n                    found = true;\n"
+    },
+    {
+      "startLine": 107258,
+      "old": "",
+      "new": "\nextern \"C\" int sdk_enable_route(uint32_t target) {\n    if (auto function = lookup_dispatch(target)) {\n        return function == func_80217500 ? 2 : -1;\n    }\n    for (const auto& bound : g_func_bounds) {\n        if (target >= bound.start && target < bound.end) {\n            return bound.func == func_80217500 ? 1 : 0;\n        }\n    }\n    return -2;\n}\nextern \"C\" void sdk_enable_dispatch(CPUContext& ctx) {\n    if (auto function = lookup_dispatch(ctx.pc)) {\n        function(ctx);\n        return;\n    }\n    for (const auto& bound : g_func_bounds) {\n        if (ctx.pc >= bound.start && ctx.pc < bound.end) {\n            bound.func(ctx);\n            return;\n        }\n    }\n    nwii::runtime::interpret_step(ctx);\n}\n"
+    }
+  ],
+  "preBoundsFixed": {
+    "bytes": 3757423,
+    "sha256": "96f34d83d4798baecf6e8fa5f35e5fe86c389c19c4c7ad112b21eb9d38cb3890"
+  },
+  "boundsRecords": 17869,
+  "boundsRanges": 3131,
+  "dispatchInclude": "#include \"stock_dispatch_lookup.h\"\n",
+  "dispatchPatches": [
+    [
+      "struct DispatchRoute { uint32_t address; void(*function)(CPUContext&); };",
+      "using DispatchRoute = StockDispatchRoute;"
+    ],
+    [
+      "static void(*lookup_dispatch(uint32_t target))(CPUContext&) {\n    size_t first = 0;\n    size_t last = sizeof(g_dispatch_routes) / sizeof(g_dispatch_routes[0]);\n    while (first < last) {\n        size_t middle = first + (last - first) / 2;\n        if (g_dispatch_routes[middle].address < target) {\n            first = middle + 1;\n        } else {\n            last = middle;\n        }\n    }\n    if (first < sizeof(g_dispatch_routes) / sizeof(g_dispatch_routes[0]) &&\n        g_dispatch_routes[first].address == target) {\n        return g_dispatch_routes[first].function;\n    }\n    return nullptr;\n}\n",
+      "static void(*lookup_dispatch(uint32_t target))(CPUContext&) {\n    const size_t count = sizeof(g_dispatch_routes) / sizeof(g_dispatch_routes[0]);\n    const size_t index = stock_dispatch_index(g_dispatch_routes, count, target);\n    return index < count ? g_dispatch_routes[index].function : nullptr;\n}\n"
+    ]
+  ],
+  "outputs": {
+    "main.cpp": {
+      "bytes": 29984,
+      "sha256": "a7f838b908dfe28f1c9bcc80dcb4fe3b710091d73a72e7204b50598153b55de4"
+    },
+    "dispatch.cpp": {
+      "bytes": 630,
+      "sha256": "112a17aecbc8277efec38ecf94eb1fc9029d3d84017e5aff4c07e3603cf12ddf"
+    },
+    "fixed.cpp": {
+      "bytes": 3757129,
+      "sha256": "52abedf4033423fd842fc636dfb665accbd6d7ff8b3d1a8bfd0dc646c05f59f0"
+    },
+    "bounds.cpp": {
+      "bytes": 114932,
+      "sha256": "009f72619d5fdc8be2a1b389538c517b63eab7e7755a71d13f1b31ca89eee393"
+    },
+    "functions.h": {
+      "bytes": 934081,
+      "sha256": "65db1827a7675b1606e4814f03c081e98cf8476f2d44b2de81d815804e10461d"
+    }
+  }
+}

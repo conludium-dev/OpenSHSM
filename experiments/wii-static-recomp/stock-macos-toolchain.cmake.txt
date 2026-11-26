@@ -1,0 +1,45 @@
+cmake_minimum_required(VERSION 3.20)
+project(OpenSHSMStockToolchain LANGUAGES C CXX OBJC OBJCXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+include(FetchContent)
+foreach(dependency IN ITEMS tomlplusplus sdl2 glad)
+    string(TOUPPER "${dependency}" upper)
+    FetchContent_Declare(${dependency}
+        URL "${${upper}_ARCHIVE}"
+        URL_HASH "SHA256=${${upper}_SHA256}")
+endforeach()
+set(SDL2_DISABLE_INSTALL ON CACHE BOOL "" FORCE)
+set(GLAD_PROFILE "core" CACHE STRING "" FORCE)
+set(GLAD_API "gl=3.3" CACHE STRING "" FORCE)
+set(GLAD_GENERATOR "c" CACHE STRING "" FORCE)
+set(GLAD_REPRODUCIBLE ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(tomlplusplus sdl2 glad)
+if(APPLE)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    execute_process(COMMAND "${Python3_EXECUTABLE}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/stock_sdl_mfi_hint_patch.py"
+        "${sdl2_SOURCE_DIR}/src/joystick/iphoneos/SDL_mfijoystick.m"
+        RESULT_VARIABLE sdl_mfi_patch_result)
+    if(NOT sdl_mfi_patch_result EQUAL 0)
+        message(FATAL_ERROR "Pinned SDL MFI hint adapter did not match")
+    endif()
+    set(sdl_gl_source "${sdl2_SOURCE_DIR}/src/video/cocoa/SDL_cocoaopengl.m")
+    file(READ "${sdl_gl_source}" sdl_gl_text)
+    string(REPLACE "attr[i++] = NSOpenGLPFAAllowOfflineRenderers;"
+        "/* OpenSHSM: dual-GPU pixel format adapter */"
+        sdl_gl_patched "${sdl_gl_text}")
+    if(sdl_gl_text STREQUAL sdl_gl_patched)
+        string(FIND "${sdl_gl_text}"
+            "/* OpenSHSM: dual-GPU pixel format adapter */" adapter_position)
+        if(adapter_position EQUAL -1)
+            message(FATAL_ERROR "Pinned SDL Cocoa GL adapter did not match")
+        endif()
+    else()
+        file(WRITE "${sdl_gl_source}" "${sdl_gl_patched}")
+    endif()
+endif()
+add_subdirectory("${NWII_SOURCE}/nWiiAnalyzer" nWiiAnalyzer)
+add_subdirectory("${NWII_SOURCE}/nWiiRuntime" nWiiRuntime)
+add_subdirectory("${NWII_SOURCE}/nWiiRecomp" nWiiRecomp)

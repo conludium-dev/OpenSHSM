@@ -1,0 +1,16 @@
+[system]
+platform = "Wii"
+
+[game]
+id = "R5WEA4"
+
+[input]
+mode = 6
+mouse_look_sensitivity = 1.0
+gamepad_look_sensitivity = 1.0
+
+[graphics]
+backend = "OpenGL"
+window_width = 960
+window_height = 540
+fullscreen = false

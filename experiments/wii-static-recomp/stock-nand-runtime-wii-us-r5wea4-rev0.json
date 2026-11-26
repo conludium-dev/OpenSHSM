@@ -1,0 +1,27 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "outputs": {
+    "stock_fs_rename_commands.inc": {
+      "bytes": 5648,
+      "sha256": "925533bfca5aa304e159d28ad574a87d2af3721e5544183b4e0b0763cdc1f62d"
+    },
+    "stock_fs_rename.inc": {
+      "bytes": 3307,
+      "sha256": "eb556f9c56f2882e14b0f1912398610de3ebf9edec004196edbd9877ddde94e6"
+    },
+    "src/hle/devices/es_device.cpp": {
+      "bytes": 8847,
+      "sha256": "263ec33ff4eb63816952253b4544d5d6e0ee999b959e9925352c6e74c309ae7b"
+    },
+    "src/hle/devices/fs_device.cpp": {
+      "bytes": 6135,
+      "sha256": "b71889f4cb5f3c822cd1c941bc21d726e46a235d287545d3d838bb38d4764957"
+    }
+  },
+  "strippedObjectSha256MacosArm64": {
+    "es_device.cpp.o": "ac1d3369ee27832fd4410f7c1e41cdafe8da87a7f77346935d11d3d59c4a0384",
+    "fs_device.cpp.o": "7c56885e012cd69cb65f41e7bfbe1b1cd067331777c730a77571d918d9ef194c"
+  }
+}

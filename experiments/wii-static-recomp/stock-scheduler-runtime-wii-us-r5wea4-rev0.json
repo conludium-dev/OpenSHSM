@@ -1,0 +1,15 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "outputs": {
+    "src/core/event_scheduler.cpp": {
+      "bytes": 3000,
+      "sha256": "f144ae1e3f62401d827a05169af1bd476d2a1fdd32f0840f6957dbf87f068961"
+    },
+    "include/runtime/event_scheduler.h": {
+      "bytes": 1102,
+      "sha256": "602b086d9c861425dfc6cd49d26bbc1f7c0164ed0be9cac665541b93d950aed2"
+    }
+  }
+}

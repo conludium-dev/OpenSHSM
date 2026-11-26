@@ -1,0 +1,33 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "outputs": {
+    "src/hw/hw_cp.cpp": {
+      "bytes": 7085,
+      "sha256": "5a378d1780ab8bd732ec56d19f3f0a531e1068c63c224ffd23a6a50c3e43d381"
+    },
+    "src/hw/hw_pi.cpp": {
+      "bytes": 1886,
+      "sha256": "d1275a37a6fdacf54a38ac268cfd66f9a9dc97495c8b5cc3a44ffc25123821c7"
+    },
+    "processor_adapter.h": {
+      "bytes": 715,
+      "sha256": "f40b4857272727b16d32993bfe6ae6c052956c594fd609adc44e07c91b7801dd"
+    },
+    "processor_adapter.cpp": {
+      "bytes": 2042,
+      "sha256": "a77ec39fb9392bb5ab892ae1ff9131603770e4676948c52554b2a989b12be3e7"
+    },
+    "stock_locked_cache_adapter.cpp": {
+      "bytes": 2343,
+      "sha256": "1ca3c8dca58800491fdc938b79ee271ad145ee2a2618b11befdde13c6134d8e8"
+    }
+  },
+  "strippedObjectSha256MacosArm64": {
+    "hw_pi.cpp.o": "ddb19aab8b82ba6fa7489b93eb4fe52af7cc94bf3693c7748b57edac2608a3c7",
+    "hw_cp.cpp.o": "c4e1b90e78817b121332e1aee344cb09800fb99a8b27c65f70a0306fd1fcd2ab",
+    "processor_adapter.cpp.o": "e45f20530e06f0f04f45911361e3ee8eb9984048a9e13ad2e70509585dd4ebd6",
+    "stock_locked_cache_adapter.cpp.o": "1b666eb76195c6611b2fc316f16d3ac0d2db2f20ef0a47484d78e0c3221f332a"
+  }
+}

@@ -1,0 +1,572 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-dma-quantization-wii-us-r5wea4-rev0.json",
+  "classificationSource": "Dolphin PPCTables.cpp opcode metadata; host adapter evidence, not original Wii runtime behavior",
+  "classificationReferenceSha256": "60692c95e6009ffb3abd4764937813d7dc3705c80ea0805f4a0023fddfe166e2",
+  "classificationTables": {
+    "primary_table": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      60,
+      61
+    ],
+    "table4": [
+      0,
+      32,
+      40,
+      64,
+      72,
+      96,
+      136,
+      264,
+      528,
+      560,
+      592,
+      624
+    ],
+    "table4_2": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      18,
+      20,
+      21,
+      23,
+      24,
+      25,
+      26,
+      28,
+      29,
+      30,
+      31
+    ],
+    "table4_3": [
+      6,
+      7,
+      38,
+      39
+    ],
+    "table31": [
+      535,
+      567,
+      599,
+      631,
+      663,
+      695,
+      727,
+      759,
+      983
+    ],
+    "table59": [
+      18,
+      20,
+      21,
+      24,
+      25,
+      28,
+      29,
+      30,
+      31
+    ],
+    "table63": [
+      0,
+      12,
+      14,
+      15,
+      32,
+      38,
+      40,
+      64,
+      70,
+      72,
+      134,
+      136,
+      264,
+      583,
+      711
+    ],
+    "table63_2": [
+      18,
+      20,
+      21,
+      23,
+      25,
+      26,
+      28,
+      29,
+      30,
+      31
+    ]
+  },
+  "transformations": [
+    "stock_idct_observation.adapt_idct (output_37.cpp only)",
+    "stock_dcbz_lowering.lower_dcbz (output_37.cpp only)",
+    "stock_fp_guard_lowering.lower"
+  ],
+  "output37IdctSites": 35,
+  "output37DcbzSites": 12,
+  "units": {
+    "output_0.cpp": {
+      "bytes": 326,
+      "sha256": "3fd9d2a20ba69c89ba7396f0b1f76ac34abc06ef7b317b3e75406f5484fe8c77",
+      "fpGuardSites": 0,
+      "fpscrLowerings": 0
+    },
+    "output_1.cpp": {
+      "bytes": 4000262,
+      "sha256": "0cac9288e652c2cd8b0d7fb7e799fee260214c7899db92a034ba41681c9e51d2",
+      "fpGuardSites": 2548,
+      "fpscrLowerings": 0
+    },
+    "output_2.cpp": {
+      "bytes": 4018764,
+      "sha256": "e5571722bc28a1be0b6ed1c87b7c6691a96d3d53aa7528f0e7463143953b54f1",
+      "fpGuardSites": 2248,
+      "fpscrLowerings": 0
+    },
+    "output_3.cpp": {
+      "bytes": 3933451,
+      "sha256": "5c749cd98e0ec88858151c301b68f7be275ea533a2a06e283c72db8c453d7f7b",
+      "fpGuardSites": 1325,
+      "fpscrLowerings": 0
+    },
+    "output_4.cpp": {
+      "bytes": 3985502,
+      "sha256": "2e6d3af6ecf967e95b4608bfbeee7be0b5d67ca1098daf53be2a341d9a73307c",
+      "fpGuardSites": 1546,
+      "fpscrLowerings": 0
+    },
+    "output_5.cpp": {
+      "bytes": 4173704,
+      "sha256": "6341634531b2b1ef821154aee212c4ab8e789531332051aba66687b84a9bad85",
+      "fpGuardSites": 5109,
+      "fpscrLowerings": 0
+    },
+    "output_6.cpp": {
+      "bytes": 4211041,
+      "sha256": "cd2bb92ba34d0e56425d7f13cdacfc7bb575a2d34e2a64738611a1f1d8110aa1",
+      "fpGuardSites": 3784,
+      "fpscrLowerings": 0
+    },
+    "output_7.cpp": {
+      "bytes": 4029899,
+      "sha256": "9fb14bfba98a71be7411062fe789c21ec2d43f36d069889cabe8403a77483a2e",
+      "fpGuardSites": 3503,
+      "fpscrLowerings": 0
+    },
+    "output_8.cpp": {
+      "bytes": 3906316,
+      "sha256": "b78bd78c9a9d788ddbd5582209343a0ec9ae68cbc290b42f0044d4cc8fe4699f",
+      "fpGuardSites": 1127,
+      "fpscrLowerings": 0
+    },
+    "output_9.cpp": {
+      "bytes": 4016961,
+      "sha256": "6aa387ab508072bb2c097d43df0e1f4eff85b501dfadb3deebf6b0f060e466ef",
+      "fpGuardSites": 3256,
+      "fpscrLowerings": 0
+    },
+    "output_10.cpp": {
+      "bytes": 4047550,
+      "sha256": "f8267667bca7e94fb3f16e425b4eb128cd36a414e391e1d8d85988ad99dbd235",
+      "fpGuardSites": 3398,
+      "fpscrLowerings": 0
+    },
+    "output_11.cpp": {
+      "bytes": 3916361,
+      "sha256": "5478c1462d7b1d81e0f6e99f41292a1546e902202b52b535b135f729332f369d",
+      "fpGuardSites": 2534,
+      "fpscrLowerings": 0
+    },
+    "output_12.cpp": {
+      "bytes": 3984171,
+      "sha256": "39f98e7953232aa0b4307efd0420771ff9fdaae7100c47171fed726193809d76",
+      "fpGuardSites": 1675,
+      "fpscrLowerings": 0
+    },
+    "output_13.cpp": {
+      "bytes": 3934794,
+      "sha256": "7c9d7449eb7c0c6207ba89fc0263dd18f34e7446ca28c5e29e5a33361e8b3f2b",
+      "fpGuardSites": 1389,
+      "fpscrLowerings": 0
+    },
+    "output_14.cpp": {
+      "bytes": 3977567,
+      "sha256": "98efcced3dd8e916ad0999a58c7f8463dae6d1741e17d4e0ff6992597f54b2b5",
+      "fpGuardSites": 2986,
+      "fpscrLowerings": 0
+    },
+    "output_15.cpp": {
+      "bytes": 3952665,
+      "sha256": "11b64b17cd310e19d0173ed99277bc2372e8c5f4fe2493551f38916e9aa43a4e",
+      "fpGuardSites": 1703,
+      "fpscrLowerings": 0
+    },
+    "output_16.cpp": {
+      "bytes": 4029843,
+      "sha256": "6125510a7acfe04441a3990a42d3279a630d9f4252e7e3cd9199c5f888a0867e",
+      "fpGuardSites": 3084,
+      "fpscrLowerings": 0
+    },
+    "output_17.cpp": {
+      "bytes": 3935142,
+      "sha256": "3109efe7544650c46969dc8565b323a44bd6f2635382f84dabc6ae15a25833fe",
+      "fpGuardSites": 1115,
+      "fpscrLowerings": 0
+    },
+    "output_18.cpp": {
+      "bytes": 3889175,
+      "sha256": "3d78b793018e640ca8293a6dcea9b67b1ae3c92b77237489095a5138de729245",
+      "fpGuardSites": 1401,
+      "fpscrLowerings": 0
+    },
+    "output_19.cpp": {
+      "bytes": 4057132,
+      "sha256": "441442c6194c11754b1654403bb675149325f745bc1a53a7be4340e707d2079e",
+      "fpGuardSites": 3825,
+      "fpscrLowerings": 0
+    },
+    "output_20.cpp": {
+      "bytes": 4237535,
+      "sha256": "377f56dd03b9454931412058668230af78c857b2467ffddbbe7bc3096f1dbaed",
+      "fpGuardSites": 3066,
+      "fpscrLowerings": 0
+    },
+    "output_21.cpp": {
+      "bytes": 4044501,
+      "sha256": "97af8c4ac9be751a6ec05e3cd82cb8a515c44362b7b9fde586b2dc0c7437ab7b",
+      "fpGuardSites": 3409,
+      "fpscrLowerings": 0
+    },
+    "output_22.cpp": {
+      "bytes": 4234350,
+      "sha256": "42d6ca1dabd6d4a550f87719849d5644aedcee59fab0d2fc30d112a772defd03",
+      "fpGuardSites": 4795,
+      "fpscrLowerings": 0
+    },
+    "output_23.cpp": {
+      "bytes": 3975988,
+      "sha256": "1624a3f343457cef817b76206cc4052d19e960554270f268bea12c4c85a3699a",
+      "fpGuardSites": 2350,
+      "fpscrLowerings": 0
+    },
+    "output_24.cpp": {
+      "bytes": 3972526,
+      "sha256": "b94b73b6cd18bfda0123dabc84e19daba79ad58023ebaf8e4ecff42756ba6646",
+      "fpGuardSites": 2584,
+      "fpscrLowerings": 0
+    },
+    "output_25.cpp": {
+      "bytes": 4071734,
+      "sha256": "4442b1ed66fabca6a3ad7e72e53897df0f38818022a011f187f4e15c095b153b",
+      "fpGuardSites": 3901,
+      "fpscrLowerings": 0
+    },
+    "output_26.cpp": {
+      "bytes": 4035773,
+      "sha256": "3bfacd99f61368cf714caabcc4006396afbc63d4f0aa84ee28f2608cff051e37",
+      "fpGuardSites": 2415,
+      "fpscrLowerings": 0
+    },
+    "output_27.cpp": {
+      "bytes": 4052235,
+      "sha256": "a153652a59fe334e36eb091d81e693fa046560da1af973baf556286247a193ec",
+      "fpGuardSites": 3768,
+      "fpscrLowerings": 0
+    },
+    "output_28.cpp": {
+      "bytes": 4028238,
+      "sha256": "055768f78142c10976fb8de0c44333ec82404120b409024f53340254b800c5c9",
+      "fpGuardSites": 3127,
+      "fpscrLowerings": 0
+    },
+    "output_29.cpp": {
+      "bytes": 4037931,
+      "sha256": "3c03ab4dc873001d702dab8c0b9d9dd836e9bc640f498abf318d87047d2cfc58",
+      "fpGuardSites": 2428,
+      "fpscrLowerings": 0
+    },
+    "output_30.cpp": {
+      "bytes": 3873813,
+      "sha256": "fd7057306a96fd9b7edd3ff755f1b4af0b40396c268a3e9d61261be8b6ab19ef",
+      "fpGuardSites": 629,
+      "fpscrLowerings": 2
+    },
+    "output_31.cpp": {
+      "bytes": 3845316,
+      "sha256": "8be6159cfff401c7718202da390a5afe8d69e416b45b222c5753846333c60b94",
+      "fpGuardSites": 1921,
+      "fpscrLowerings": 0
+    },
+    "output_32.cpp": {
+      "bytes": 3873718,
+      "sha256": "db82a9bbefff19d1354c9bb6ac51662f6bbac432b3f0672b261d5ecfd55d97b4",
+      "fpGuardSites": 163,
+      "fpscrLowerings": 0
+    },
+    "output_33.cpp": {
+      "bytes": 3841904,
+      "sha256": "0f82f206ea5528e0e8ee01c8fef30eb3d9958cffdc9f3b5758ab2610b2e2a308",
+      "fpGuardSites": 275,
+      "fpscrLowerings": 0
+    },
+    "output_34.cpp": {
+      "bytes": 3960521,
+      "sha256": "104df1c11ae59b2b2cdcdea9970d101522af11c72bd8025338d438764d842cb2",
+      "fpGuardSites": 2206,
+      "fpscrLowerings": 0
+    },
+    "output_35.cpp": {
+      "bytes": 3994587,
+      "sha256": "2456a7a10f0469fe149270136296e6df791c2d330650f45c61d2821d9749f1e8",
+      "fpGuardSites": 3067,
+      "fpscrLowerings": 0
+    },
+    "output_36.cpp": {
+      "bytes": 4025787,
+      "sha256": "ebde21a948a7ce99c90640665925d4f14c3623242041cacc8d74959336708104",
+      "fpGuardSites": 2775,
+      "fpscrLowerings": 0
+    },
+    "output_37.cpp": {
+      "bytes": 3945234,
+      "sha256": "63df8d43dfb006870d14a1e4c725bc54bdeeac58f2ce24ff0ab276c247aa5848",
+      "fpGuardSites": 933,
+      "fpscrLowerings": 0
+    },
+    "output_38.cpp": {
+      "bytes": 3898273,
+      "sha256": "a79fc87ccd27cec86760acecc14ea10f0c995a212f941adf9828930caac4e370",
+      "fpGuardSites": 742,
+      "fpscrLowerings": 6
+    },
+    "output_39.cpp": {
+      "bytes": 3881815,
+      "sha256": "c9b6398157f5a56473a87212b3378ebd8e42e154cc54ddf3b0c1de748d222b4f",
+      "fpGuardSites": 328,
+      "fpscrLowerings": 0
+    },
+    "output_40.cpp": {
+      "bytes": 3871080,
+      "sha256": "2b9bcc61729092b6342e699d55dc10d3fab1c72a2c0d343369cf9e6f87812758",
+      "fpGuardSites": 735,
+      "fpscrLowerings": 0
+    },
+    "output_41.cpp": {
+      "bytes": 3768711,
+      "sha256": "4c30c83d6855857ae88fece29e48f260c5dc149f6eaee1fb6e468d30dabaf279",
+      "fpGuardSites": 71,
+      "fpscrLowerings": 0
+    },
+    "output_42.cpp": {
+      "bytes": 3771553,
+      "sha256": "697720348a95160ecd9790473eb08524bbbb08940868bac07a8d139417b70416",
+      "fpGuardSites": 0,
+      "fpscrLowerings": 0
+    },
+    "output_43.cpp": {
+      "bytes": 3792128,
+      "sha256": "24506dd73be4510e053804f92bc8fdf0f1d8b3b2af68a268e76fab624b38db7b",
+      "fpGuardSites": 16,
+      "fpscrLowerings": 0
+    },
+    "output_44.cpp": {
+      "bytes": 3871643,
+      "sha256": "c5199f3a1b45cc2cfd527ac02b3cd01887577b2272232fe818057386198e5b62",
+      "fpGuardSites": 1500,
+      "fpscrLowerings": 0
+    },
+    "output_45.cpp": {
+      "bytes": 3872251,
+      "sha256": "ef2ea2eb5043ec0cc2dcd3e65c215d90b9a5c5ca2754a155e313be0208ef9b3e",
+      "fpGuardSites": 1593,
+      "fpscrLowerings": 0
+    },
+    "output_46.cpp": {
+      "bytes": 4027861,
+      "sha256": "64b7a619ec26ddb6d631d01f99491b4acae7d24bd4d9f1eaaa715f061421a03d",
+      "fpGuardSites": 2705,
+      "fpscrLowerings": 0
+    },
+    "output_47.cpp": {
+      "bytes": 3976206,
+      "sha256": "c033d297583e19cfb4e1d92655cb7c56e51cc28fadcddf7313363cca0ebf3e79",
+      "fpGuardSites": 2799,
+      "fpscrLowerings": 0
+    },
+    "output_48.cpp": {
+      "bytes": 4053941,
+      "sha256": "f3012d5b9e826a19354c7990d8f0c0bb6f6fd8a0084a184c562a06ea6f8dd839",
+      "fpGuardSites": 2951,
+      "fpscrLowerings": 0
+    },
+    "output_49.cpp": {
+      "bytes": 3849847,
+      "sha256": "67a860160885c506631dc54cd7905535e9b03d45205094fa22c6b477253f9034",
+      "fpGuardSites": 720,
+      "fpscrLowerings": 0
+    },
+    "output_50.cpp": {
+      "bytes": 3919408,
+      "sha256": "23fd9b47a1b755661d99fa9ae86c65b734e97ce6fc5aa29c2e1d3881ae097070",
+      "fpGuardSites": 2358,
+      "fpscrLowerings": 0
+    },
+    "output_51.cpp": {
+      "bytes": 4278867,
+      "sha256": "db8288877f493b73c92de85bd5382b9c4d20e7f87ee99d09988bbbd0e646ddfd",
+      "fpGuardSites": 6489,
+      "fpscrLowerings": 0
+    },
+    "output_52.cpp": {
+      "bytes": 4346817,
+      "sha256": "0ff984a313d26b5e8a70616f7d26313ffec3ac97fedf1498a8433154b97bb916",
+      "fpGuardSites": 9269,
+      "fpscrLowerings": 0
+    },
+    "output_53.cpp": {
+      "bytes": 4364587,
+      "sha256": "89b2eefd5bd8535a0f13c69aafaadccc6de98345fbcb47e8138fb3c533980c99",
+      "fpGuardSites": 8930,
+      "fpscrLowerings": 0
+    },
+    "output_54.cpp": {
+      "bytes": 4161710,
+      "sha256": "c6346357299f05fc74eddce819fbf7b05e5ffb071d386dcf26681bcd28b392ac",
+      "fpGuardSites": 4847,
+      "fpscrLowerings": 0
+    },
+    "output_55.cpp": {
+      "bytes": 3978216,
+      "sha256": "d4fdf3934c940d4cfdbd41d8e5b1daffab4196aff1c70641e6c0db4a5eae563f",
+      "fpGuardSites": 2699,
+      "fpscrLowerings": 0
+    },
+    "output_56.cpp": {
+      "bytes": 3816037,
+      "sha256": "f7b3a5872954528a5c511fe3ea7ae9583949716f26058f21c61fe4b66f7e4a59",
+      "fpGuardSites": 819,
+      "fpscrLowerings": 0
+    },
+    "output_57.cpp": {
+      "bytes": 3724470,
+      "sha256": "93ecb34a93d9e1356f9c6d7b00833dde2a7660f67180fd30cdf57efbe75617fb",
+      "fpGuardSites": 44,
+      "fpscrLowerings": 0
+    },
+    "output_58.cpp": {
+      "bytes": 3744914,
+      "sha256": "4169a1a9658553ee977f78349d61aebd2285e53834ee344f36f6ed41129fbb22",
+      "fpGuardSites": 27,
+      "fpscrLowerings": 0
+    },
+    "output_59.cpp": {
+      "bytes": 4084927,
+      "sha256": "3d6e17d0dd404059bcb100efb2398ed4004d12a451c4404269fa20e37b29d6d3",
+      "fpGuardSites": 439,
+      "fpscrLowerings": 0
+    },
+    "output_60.cpp": {
+      "bytes": 4097845,
+      "sha256": "6cc6d085232b2b5d5caf5f93d7d74a9f11f1c5c3de319c3d0fd2fbbd44ebdab8",
+      "fpGuardSites": 680,
+      "fpscrLowerings": 0
+    },
+    "output_61.cpp": {
+      "bytes": 4088555,
+      "sha256": "6b59c286ac81d829101f110c7b72180797a3c46c8540733a723d862eaaac6373",
+      "fpGuardSites": 680,
+      "fpscrLowerings": 0
+    },
+    "output_62.cpp": {
+      "bytes": 3821433,
+      "sha256": "42755c0bc57637d3c680c129f3cb94434ec703116d30493e28acb1386610bb34",
+      "fpGuardSites": 756,
+      "fpscrLowerings": 0
+    },
+    "output_63.cpp": {
+      "bytes": 3848619,
+      "sha256": "6f2566b03987359671f4a9fb82d486fe000d1cc70197601215e511879eb79fab",
+      "fpGuardSites": 544,
+      "fpscrLowerings": 0
+    },
+    "output_64.cpp": {
+      "bytes": 4069050,
+      "sha256": "9cba8d5ef07e15f585dd79516bbb592fcf3d3e0b4f4d7221ffc6c202d134615e",
+      "fpGuardSites": 2041,
+      "fpscrLowerings": 0
+    },
+    "output_65.cpp": {
+      "bytes": 4038084,
+      "sha256": "11cf11171b8bb1ddc5b3be81279146724519642ce647ba07a9e74ce13d007b0e",
+      "fpGuardSites": 2765,
+      "fpscrLowerings": 0
+    },
+    "output_66.cpp": {
+      "bytes": 3800295,
+      "sha256": "2dacc70c0c06124b1b216047e71aa9965a7604d468f05dc153fb8abfa3c109d3",
+      "fpGuardSites": 246,
+      "fpscrLowerings": 0
+    },
+    "output_67.cpp": {
+      "bytes": 4012724,
+      "sha256": "e53e34eeabff7745d7c5dfddf28d75a06e8fdc6c4e08c47c7302cf8239d8fb6d",
+      "fpGuardSites": 87,
+      "fpscrLowerings": 0
+    },
+    "output_68.cpp": {
+      "bytes": 3690826,
+      "sha256": "be323a3e038f9f08400340c99ac62869fae0e1712e62cddc265f22ff3ff79cc1",
+      "fpGuardSites": 56,
+      "fpscrLowerings": 0
+    },
+    "output_69.cpp": {
+      "bytes": 3914583,
+      "sha256": "e729a72cf9bb7b5ccfdb92544c0242186dbec95265c9e786eb6e5ac22a55e44d",
+      "fpGuardSites": 465,
+      "fpscrLowerings": 0
+    },
+    "output_70.cpp": {
+      "bytes": 3965023,
+      "sha256": "c68171d4d8355c1b7c8ecc9448317b9d59d1e0e22c57d99ba51b4f74771a0709",
+      "fpGuardSites": 2225,
+      "fpscrLowerings": 0
+    },
+    "output_71.cpp": {
+      "bytes": 3923134,
+      "sha256": "a76e8aeb693360ec16560a5cbab188ccb5953f35d703dfdd8bc62f8819016b1d",
+      "fpGuardSites": 1586,
+      "fpscrLowerings": 0
+    },
+    "output_72.cpp": {
+      "bytes": 3912718,
+      "sha256": "eca3572c66bd832ca04749d0a901ca1fbe577419ba42dd8fd24386348be77a2b",
+      "fpGuardSites": 768,
+      "fpscrLowerings": 0
+    },
+    "output_73.cpp": {
+      "bytes": 4041459,
+      "sha256": "88eec2a9064841a6bd0b4e2042d9026ecf0106238f0384af0f9d67eff234427a",
+      "fpGuardSites": 2397,
+      "fpscrLowerings": 0
+    },
+    "output_74.cpp": {
+      "bytes": 1580879,
+      "sha256": "17dd4960abc24d96cdcc063c5b78784fab3e558003c437e806dd7f19ff39c283",
+      "fpGuardSites": 912,
+      "fpscrLowerings": 0
+    }
+  }
+}

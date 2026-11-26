@@ -1,0 +1,124 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "patches": {
+    "supply": [
+      [
+        "    if (n < frames)\n",
+        "    openshsm::experiment::dsp_supply_observer.pulled(frames, n, have);\n    if (n < frames)\n"
+      ],
+      [
+        "        if (adma_ring.size() < 32000 * 2) {",
+        "        const auto supply_before = adma_ring.size() / 2;\n        const bool supply_admitted = adma_ring.size() < 32000 * 2;\n        if (supply_admitted) {"
+      ],
+      [
+        "        }\n    }\n    \n    dsp_control |= 0x0008;",
+        "        }\n        openshsm::experiment::dsp_supply_observer.produced(bytes / 4, supply_before,\n            adma_ring.size() / 2, late, ctx.tb_freq / 200, supply_admitted);\n    }\n    \n    dsp_control |= 0x0008;"
+      ]
+    ],
+    "chunks": [
+      [
+        "static uint64_t s_adma_event_id = 0;",
+        "static uint64_t s_adma_event_id = 0;\nstatic uint64_t s_adma_irq_id = 0;\nstatic uint64_t s_adma_period = 0;\nstatic openshsm::experiment::AdmaCursor adma_cursor;\nstatic openshsm::experiment::AdmaTickPhase adma_phase;\nstatic openshsm::experiment::AdmaOutput adma_output;\nuint32_t ai_dma_sample_rate();"
+      ],
+      [
+        "static void adma_event_cb(CPUContext& ctx, uint64_t late) {\n    if (!(adma_control & 0x8000))\n        return;\n    uint32_t blocks = adma_control & 0x7FFF;\n    uint32_t bytes = blocks * 32;\n    if (g_mmu && bytes > 0) {\n        std::lock_guard<std::mutex> lock(adma_mutex);\n        \n        const auto supply_before = adma_ring.size() / 2;\n        const bool supply_admitted = adma_ring.size() < 32000 * 2;\n        if (supply_admitted) {\n            uint32_t va = adma_addr | 0x80000000;\n            for (uint32_t i = 0; i + 3 < bytes; i += 4) {\n                adma_ring.push_back((int16_t)g_mmu->read16(va + i));\n                adma_ring.push_back((int16_t)g_mmu->read16(va + i + 2));\n            }\n        }\n        openshsm::experiment::dsp_supply_observer.produced(bytes / 4, supply_before,\n            adma_ring.size() / 2, late, ctx.tb_freq / 200, supply_admitted);\n    }\n    \n    dsp_control |= 0x0008;\n    dsp_update_pi();\n}\n\n",
+        "static void adma_event_cb(CPUContext& ctx, uint64_t late);\n\nstatic void adma_schedule(CPUContext& ctx, uint64_t late) {\n    s_adma_period = adma_phase.next(ctx.tb_freq, ai_dma_sample_rate());\n    s_adma_event_id = EventScheduler::get().schedule_after(\n        s_adma_period > late ? s_adma_period - late : 0, adma_event_cb);\n}\n\nstatic void adma_cancel() {\n    EventScheduler::get().cancel(s_adma_event_id);\n    EventScheduler::get().cancel(s_adma_irq_id);\n    s_adma_event_id = s_adma_irq_id = 0;\n}\n\nstatic void adma_event_cb(CPUContext& ctx, uint64_t late) {\n    if (!(adma_control & 0x8000)) {\n        return;\n    }\n    if (!g_mmu) {\n        throw std::runtime_error(\"ADMA memory is not initialized\");\n    }\n    const auto chunk = adma_cursor.transfer(adma_addr, adma_control);\n    const uint32_t va = chunk.address | 0x80000000;\n    int16_t samples[16];\n    for (unsigned i = 0; i < 16; ++i) {\n        samples[i] = int16_t(g_mmu->read16(va + i * 2));\n    }\n    {\n        std::lock_guard<std::mutex> lock(adma_mutex);\n        const auto before = adma_ring.size() / 2;\n        adma_output.append(samples, 8, ai_dma_sample_rate(), adma_ring);\n        const auto after = adma_ring.size() / 2;\n        openshsm::experiment::dsp_supply_observer.produced(after - before, before,\n            after, late, s_adma_period, true);\n    }\n    if (chunk.interrupt) {\n        dsp_control |= 0x0008;\n        dsp_update_pi();\n    }\n    adma_schedule(ctx, late);\n}\n\n"
+      ],
+      [
+        "                if (!(adma_control & 0x8000)) return 0;\n                return 0;",
+        "                return adma_cursor.blocks_left_register();"
+      ],
+      [
+        "adma_addr = (adma_addr & 0x0000FFFF) | ((val & 0xFFFF) << 16);",
+        "adma_addr = (adma_addr & 0x0000FFFF) | ((val & 0x1FFF) << 16);"
+      ],
+      [
+        "adma_addr = (adma_addr & 0xFFFF0000) | (val & 0xFFFF);",
+        "adma_addr = (adma_addr & 0xFFFF0000) | (val & 0xFFE0);"
+      ],
+      [
+        "                    s_adma_event_id = EventScheduler::get().schedule_recurring(g_ctx_ptr->tb_freq / 200, adma_event_cb);",
+        "                    if (!g_ctx_ptr) {\n                        throw std::runtime_error(\"ADMA CPU is not initialized\");\n                    }\n                    adma_cursor.latch(adma_addr, adma_control);\n                    adma_phase = {};\n                    adma_schedule(*g_ctx_ptr, 0);\n                    s_adma_irq_id = EventScheduler::get().schedule_after(17, [](CPUContext&, uint64_t) {\n                        if (adma_control & 0x8000) {\n                            dsp_control |= 0x0008;\n                            dsp_update_pi();\n                        }\n                    });"
+      ],
+      [
+        "                        EventScheduler::get().cancel(s_adma_event_id);\n                        s_adma_event_id = 0;",
+        "                        adma_cancel();\n                        std::lock_guard<std::mutex> lock(adma_mutex);\n                        adma_output.finish(adma_ring);"
+      ],
+      [
+        "                if ((val16 & 0x0001) || (was_halted && !is_halted)) {",
+        "                if (val16 & 0x0001) {\n                    adma_control = 0;\n                    adma_cancel();\n                    std::lock_guard<std::mutex> lock(adma_mutex);\n                    adma_output.finish(adma_ring);\n                }\n                if ((val16 & 0x0001) || (was_halted && !is_halted)) {"
+      ]
+    ],
+    "deadline": [
+      [
+        "static uint64_t s_adma_period = 0;",
+        "static uint64_t s_adma_period = 0;\nstatic uint64_t s_adma_next_due = 0;"
+      ],
+      [
+        "static void adma_schedule(CPUContext& ctx, uint64_t late) {\n    s_adma_period = adma_phase.next(ctx.tb_freq, ai_dma_sample_rate());\n    s_adma_event_id = EventScheduler::get().schedule_after(\n        s_adma_period > late ? s_adma_period - late : 0, adma_event_cb);\n}",
+        "static void adma_schedule(CPUContext& ctx) {\n    s_adma_period = adma_phase.next(ctx.tb_freq, ai_dma_sample_rate());\n    if (s_adma_next_due > UINT64_MAX - s_adma_period) {\n        throw std::runtime_error(\"ADMA deadline overflow\");\n    }\n    s_adma_next_due += s_adma_period;\n    s_adma_event_id = EventScheduler::get().schedule_at(s_adma_next_due, adma_event_cb);\n}"
+      ],
+      [
+        "    s_adma_event_id = s_adma_irq_id = 0;",
+        "    s_adma_event_id = s_adma_irq_id = s_adma_next_due = 0;"
+      ],
+      [
+        "    adma_schedule(ctx, late);",
+        "    adma_schedule(ctx);"
+      ],
+      [
+        "                    adma_schedule(*g_ctx_ptr, 0);",
+        "                    s_adma_next_due = EventScheduler::get().now();\n                    adma_schedule(*g_ctx_ptr);"
+      ]
+    ]
+  },
+  "stages": {
+    "supply": {
+      "bytes": 12475,
+      "sha256": "43f8947a35197d0f5cf517c749bf2cac39e04d53caae6589bf9b2f5535f6c086"
+    },
+    "chunks": {
+      "bytes": 14060,
+      "sha256": "44608cf4b83c2413f7afdd880898a1cd3219d4d220cc2aa5474f5a05f47103bf"
+    },
+    "accounting": {
+      "bytes": 14607,
+      "sha256": "5e2cd40b0456a9171c12131d4ce9a73e07017c1e1df136e2ae79f44688d8ee3e"
+    },
+    "deadline": {
+      "bytes": 14821,
+      "sha256": "0c1bfd09b800ba85a01f9cae68302f43afa40492563b194f4bc2535fdb987c18"
+    }
+  },
+  "outputs": {
+    "src/hw/hw_dsp.cpp": {
+      "bytes": 17737,
+      "sha256": "c3189483481d5b10ab2577e16defe44193c173770dddb48011f92de8f5730845"
+    },
+    "stock_adma_output.h": {
+      "bytes": 2881,
+      "sha256": "65178b6a7cc38763c195404deb1aa605cdd71f17408486f37d9ccc02ab2e6d46"
+    }
+  },
+  "strippedObjectSha256MacosArm64": {
+    "hw_dsp.cpp.o": "11416da086fdd658eece048506179d54545659e757f50b2fa26cf3b035fadb39"
+  },
+  "stereoOutput": {
+    "bytes": 17727,
+    "sha256": "34f682e02fdf06e015e444d9be39b341202bb333947c621e7e1f57e633c6ced3"
+  },
+  "reportingOutput": {
+    "bytes": 18155,
+    "sha256": "4d77954cad3d101825d370d853cf155affba94a6c19a3e1608264f36c47297f8"
+  },
+  "jobAccountingOutput": {
+    "bytes": 19082,
+    "sha256": "2517ac8fa9fb04ed5863931aa84e07af98d9a3c2f6f136cbc9e9d52664ac1387"
+  },
+  "fmodAccountingOutput": {
+    "bytes": 19348,
+    "sha256": "091f6256e3401a3f05fef6a4c16b43883db00eddf59c942eccbfae4c5c267ed9"
+  }
+}

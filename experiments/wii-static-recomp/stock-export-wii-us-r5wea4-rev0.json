@@ -1,0 +1,609 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "upstreamRevision": "595f176f1d24cc54ff2e8389feed12d7fb553cc2",
+  "guest": {
+    "CMakeLists.txt": {
+      "bytes": 2421,
+      "sha256": "0eb90b7f83d86cea6655a9b6de95ad8fae33afda912e194d9f840ab42c7cc0b8"
+    },
+    "functions.h": {
+      "bytes": 934081,
+      "sha256": "65db1827a7675b1606e4814f03c081e98cf8476f2d44b2de81d815804e10461d"
+    },
+    "main_output.cpp": {
+      "bytes": 5805530,
+      "sha256": "760530d52e51e1881cf03142f8c59389bcb9fe951a3b72d7264403a9e8cb95c1"
+    },
+    "output_0.cpp": {
+      "bytes": 326,
+      "sha256": "3fd9d2a20ba69c89ba7396f0b1f76ac34abc06ef7b317b3e75406f5484fe8c77"
+    },
+    "output_1.cpp": {
+      "bytes": 3861641,
+      "sha256": "cb41bbec09892250f0daf3d7f6a6ce2d2b9b50a65181ac7156a87fe97c731b4c"
+    },
+    "output_10.cpp": {
+      "bytes": 3857454,
+      "sha256": "8bdc648742f66e402bd992395172ff36ed3fea7446255f006cba9016bcade899"
+    },
+    "output_11.cpp": {
+      "bytes": 3769645,
+      "sha256": "e52c9cb374f8533f5347cbb007d1818b5dc06835e40084cda3b9fc3d8b55b729"
+    },
+    "output_12.cpp": {
+      "bytes": 3892740,
+      "sha256": "36c0569abc3f7337df7ea85a742db58bc7f0d0d64a10bc378887852f369509ac"
+    },
+    "output_13.cpp": {
+      "bytes": 3859012,
+      "sha256": "46daad6d88c5539547268f7399a4f3a839a581150d8b1bcdbc8fdd9bbc019f0f"
+    },
+    "output_14.cpp": {
+      "bytes": 3808056,
+      "sha256": "d4d7db2bca5945c6318f5243334b2381987952beedda95befdebcef464cd6bc1"
+    },
+    "output_15.cpp": {
+      "bytes": 3858677,
+      "sha256": "f4adb837d19f81d83e9c572c1c3aea8838733d97050d53cd219e5cf2228c761a"
+    },
+    "output_16.cpp": {
+      "bytes": 3865717,
+      "sha256": "79b452dba7e42eabd8e2d35f024af2f38df245877005d642c7722ee03e2cce61"
+    },
+    "output_17.cpp": {
+      "bytes": 3904032,
+      "sha256": "a8a142e0f962a7f917201d4e7a546095eab10edfc8da62dcaa28260766da9f24"
+    },
+    "output_18.cpp": {
+      "bytes": 3826015,
+      "sha256": "359cb770edc93ec7f691e1035976d5f94653154c99174c5a7b3be6dee1fadd9b"
+    },
+    "output_19.cpp": {
+      "bytes": 3838875,
+      "sha256": "00d263ca466b139c2854724ac7ebda14d7cbfc2f9966974a0cfe1e2f4da7e62c"
+    },
+    "output_2.cpp": {
+      "bytes": 3900302,
+      "sha256": "df408dfea878291c246c523569308c0fd03079d34dbc39abe6403571af66a668"
+    },
+    "output_20.cpp": {
+      "bytes": 4063163,
+      "sha256": "f4cf52477b6330ec923ea390a120803599758ec20c1c9cebad5f6d38cacdbc85"
+    },
+    "output_21.cpp": {
+      "bytes": 3894748,
+      "sha256": "279bf444cf60de5b12e364e303f39a09e387f6d9d7c907be710f49f48f241685"
+    },
+    "output_22.cpp": {
+      "bytes": 3990640,
+      "sha256": "797650207f108b9cc3856084a182353d75700bb6d5c41324bf8c5db61a66b091"
+    },
+    "output_23.cpp": {
+      "bytes": 3853848,
+      "sha256": "347efb50ea1f3881eca58cb01cfc790b261568d01308197a747c60c953c2923c"
+    },
+    "output_24.cpp": {
+      "bytes": 3826887,
+      "sha256": "9568f7ee0e9d5f6160f41a761f3ed3e011120f71f1fffb295967d3f69aecc4a6"
+    },
+    "output_25.cpp": {
+      "bytes": 3846022,
+      "sha256": "b8377a3efdcbd19d47522645e3f7d6948be8bedecf81ce10f8f2ecea81e62507"
+    },
+    "output_26.cpp": {
+      "bytes": 3898058,
+      "sha256": "aa58b069c7bc3260d07287816e777fbf34d3f6c9576e9fb73cf3b291026856a8"
+    },
+    "output_27.cpp": {
+      "bytes": 3834886,
+      "sha256": "73517da062d70681d8b9e40c430a645f0be5a4c666a4e75ae55f6a38c8ebc1a3"
+    },
+    "output_28.cpp": {
+      "bytes": 3848719,
+      "sha256": "7c7879b372b33863f1aefa33b0aa9c9112f56d265a900756609d6687e8407a7b"
+    },
+    "output_29.cpp": {
+      "bytes": 3904898,
+      "sha256": "a59f8b4f5872128a206526c82de01239374a3f548f91b4a07dd8be8c40602adf"
+    },
+    "output_3.cpp": {
+      "bytes": 3870444,
+      "sha256": "8669ba4af730838001ef831ae07e3bba83a0dcc5643c182628249c8494b7b39f"
+    },
+    "output_30.cpp": {
+      "bytes": 3849079,
+      "sha256": "983a752b4317b9b5105916af27e4a8df4f5f2981f2a801c105faa0873ea78bd2"
+    },
+    "output_31.cpp": {
+      "bytes": 3741550,
+      "sha256": "45f259a1ce6731b9be89792cac14e89020e8540ba5d1142008904811e2c76561"
+    },
+    "output_32.cpp": {
+      "bytes": 3870462,
+      "sha256": "bc3e15fa591ae212e329bd1da9b8e6752461922e0b4a482e7cd2954b9ec56f17"
+    },
+    "output_33.cpp": {
+      "bytes": 3838627,
+      "sha256": "ec94a4bdc339ab5d7ed094c6625c7ffeee2081cbe68f22e2eeaa0bd702c6fb6a"
+    },
+    "output_34.cpp": {
+      "bytes": 3844396,
+      "sha256": "e0fa0029c108136ff66ba61df4dbab86dcc77e55d7c532076467409cf238f2c6"
+    },
+    "output_35.cpp": {
+      "bytes": 3817549,
+      "sha256": "f8dd3f31e1f907d45508bbb43e4e45f093d8f6694604e30d73ea76b842e3bea6"
+    },
+    "output_36.cpp": {
+      "bytes": 3871859,
+      "sha256": "2b6672fb39d0508a5e7101f1e45019676c3afc2f2ff0a14855ffc0c70cdb55e4"
+    },
+    "output_37.cpp": {
+      "bytes": 3885501,
+      "sha256": "ef903add4ff0f3caeeeafe6ae016f31e7eed049b37e3e04411338e2c1f378869"
+    },
+    "output_38.cpp": {
+      "bytes": 3858035,
+      "sha256": "6e3cb5ef43e2ab8c70baeaa565504cd0ccfe7ab739fc436a1e8d5e0ec8a2752d"
+    },
+    "output_39.cpp": {
+      "bytes": 3864184,
+      "sha256": "51b61131612be1fa454f8c8e84d792fe68d804939276f6442f11c2ff9dbbe7da"
+    },
+    "output_4.cpp": {
+      "bytes": 3910622,
+      "sha256": "1fbf6a719c68990fb1d13c9634f5972949a986a1008a6345b23de191387a7f0d"
+    },
+    "output_40.cpp": {
+      "bytes": 3829559,
+      "sha256": "180a225b233d77cb04783c577c74ea8f2097f2188e1453656fda8b9ba82fc4c5"
+    },
+    "output_41.cpp": {
+      "bytes": 3769655,
+      "sha256": "00f0cf8fccb108d8525d7c13244a9a5d4a8efb75c855fb1de953824dc5eb49b1"
+    },
+    "output_42.cpp": {
+      "bytes": 3772583,
+      "sha256": "b5258e74046bc7a50295488990d08ef8d3a6a16f8968c293c48414216c898ce0"
+    },
+    "output_43.cpp": {
+      "bytes": 3791199,
+      "sha256": "d077b6a8906d837406e79535bf82f13540d2642372b6ccf7cf7cfdf1d7c72b07"
+    },
+    "output_44.cpp": {
+      "bytes": 3787713,
+      "sha256": "765f8d582d5dbd210662a567708caaf32d94956d80ee1b82ca12b16c38312236"
+    },
+    "output_45.cpp": {
+      "bytes": 3782501,
+      "sha256": "511e66973a9979986cb88840c38c9e67b18c905637c00961b2f7cdad8be41785"
+    },
+    "output_46.cpp": {
+      "bytes": 3887963,
+      "sha256": "65df0d286085a7abff9dcc4bfdadf7d0382ed1b78c4b34f26445cfabfd4f5ad4"
+    },
+    "output_47.cpp": {
+      "bytes": 3818937,
+      "sha256": "2b828f1cd2affd9244a3396a18d1432f38f046433f036013a29f6cb85cc594bf"
+    },
+    "output_48.cpp": {
+      "bytes": 3886821,
+      "sha256": "0b100e6e778a262252d792f8438a3dcf22afc54a0b9d7e9d4a107f1b489052c3"
+    },
+    "output_49.cpp": {
+      "bytes": 3813175,
+      "sha256": "b05008a1faabfd63a27868bcb939c615136e3b2190a2b22f4fb99af37889daf6"
+    },
+    "output_5.cpp": {
+      "bytes": 3878239,
+      "sha256": "7096b489e75086ef13b95e8ad298d34674c152abe4cc4624b12d526f1332713b"
+    },
+    "output_50.cpp": {
+      "bytes": 3789200,
+      "sha256": "bd15ca47c01ea6d845617d8266aace0a3dd8fb0416214527ad0e7c5d7269379e"
+    },
+    "output_51.cpp": {
+      "bytes": 3905004,
+      "sha256": "72880d91520d7f83dfd7015e142d5243137a0729701829f6051bdc97f3b51d50"
+    },
+    "output_52.cpp": {
+      "bytes": 3809651,
+      "sha256": "c7a17dd208c3e207e22562f5d6a46b86da7f3aca01fabf00814a7b0ce1054031"
+    },
+    "output_53.cpp": {
+      "bytes": 3847238,
+      "sha256": "2f55dceade7417282ea08d3a212b999367e32349b0718ac9d5cb0a6311b42504"
+    },
+    "output_54.cpp": {
+      "bytes": 3881657,
+      "sha256": "5238b5ef31bf0fe9247c7343e00ac7315538c0cc71ede7c32ad6a00951c0d0ab"
+    },
+    "output_55.cpp": {
+      "bytes": 3823653,
+      "sha256": "b748b84f11a5e42878f840cbd784ac85d1cd1064310ccb6932e548a622ccec39"
+    },
+    "output_56.cpp": {
+      "bytes": 3771392,
+      "sha256": "fb0ad6134e098c271ce82cd716e41a12baf9bc88addf769daa348e3b9da1d3b7"
+    },
+    "output_57.cpp": {
+      "bytes": 3721857,
+      "sha256": "cb1ae4fd77ce6f55ea67337de654b80b143f9b54532c2a210123114edb306d7f"
+    },
+    "output_58.cpp": {
+      "bytes": 3743287,
+      "sha256": "d61a32f51bc59c6f7ffc661b7cca5539e7fdbd12f60124cb1ea76f50bd36e411"
+    },
+    "output_59.cpp": {
+      "bytes": 4059479,
+      "sha256": "e2f0294954fc4659a1dd6b6fd5dd67f5552720a1301f220d45a53fc885112b3c"
+    },
+    "output_6.cpp": {
+      "bytes": 4002090,
+      "sha256": "f478ec04a38c77e574258685284aaadb1bfe4b6ba7f68fd8695659a5839c9ee4"
+    },
+    "output_60.cpp": {
+      "bytes": 4059693,
+      "sha256": "c9dd58a7738eda9487186c2718efc51ee5e51a54cdd0ec070a64961303788206"
+    },
+    "output_61.cpp": {
+      "bytes": 4050403,
+      "sha256": "edd37cc95f86971aed7a20539214a7b04c77824bf29af76776c2ea704749b99b"
+    },
+    "output_62.cpp": {
+      "bytes": 3780115,
+      "sha256": "3404d640f78feb28f8bbd8b6e0c8f25d0ca19994151e7ca9e16afdc68a8afa0a"
+    },
+    "output_63.cpp": {
+      "bytes": 3822689,
+      "sha256": "9944e5ec8f110fd2bcf71c4fdff94b4f5bd8aaed81df4ba59893a93cb218179d"
+    },
+    "output_64.cpp": {
+      "bytes": 3955556,
+      "sha256": "d08543ff38bd385cd7db13dfa6b396a38ab4dd6953883508fc9eb5af31523722"
+    },
+    "output_65.cpp": {
+      "bytes": 3879498,
+      "sha256": "03b3da346da13a59045549cd69923fe9a6c7c91ddbf46020ad15a3865d9873e8"
+    },
+    "output_66.cpp": {
+      "bytes": 3787214,
+      "sha256": "8ecb8e961da593935c4ea9878a037da397b305e354da132839f67d7a150c55a8"
+    },
+    "output_67.cpp": {
+      "bytes": 4008248,
+      "sha256": "9b2493c4c6b4f370e4c8b86c48e18ec04fcc689c6511cf0c2fde105932a71f88"
+    },
+    "output_68.cpp": {
+      "bytes": 3687582,
+      "sha256": "793fcd8e1563a624fd4890bbd12cc1be52ff6d5ee1ea052b5e20d565861fb085"
+    },
+    "output_69.cpp": {
+      "bytes": 3890142,
+      "sha256": "86a63c441cc042693c65e088d3a33bbf130e2b711253dadca896cefff14afc9d"
+    },
+    "output_7.cpp": {
+      "bytes": 3827980,
+      "sha256": "dfcdbec99f7ca5528aba85d125d084eaaeda6b5f812b5cd2b99c83daf9003b4b"
+    },
+    "output_70.cpp": {
+      "bytes": 3836777,
+      "sha256": "31c537d1ace9690ce2ff7cc1a4dc32b937288d210daed26dd4b93e28e483d505"
+    },
+    "output_71.cpp": {
+      "bytes": 3833531,
+      "sha256": "635a52264088b1faded7c902b7a22ae2db069268797bf77042511fcef9f204bd"
+    },
+    "output_72.cpp": {
+      "bytes": 3870239,
+      "sha256": "508bd5fafa363f646474a1f280f64171eebaac8f3b36b594f98df834bc66d53e"
+    },
+    "output_73.cpp": {
+      "bytes": 3904489,
+      "sha256": "c0ed66fffa377e60afa3fb7dcbfc3aef56ae584166ba735afd63d6d8cd16240e"
+    },
+    "output_74.cpp": {
+      "bytes": 1527934,
+      "sha256": "d88ee97d61d6ca39a3fe9ba4f6f5c3656a5f02df97dc8ebbf2fecd3b47f33909"
+    },
+    "output_8.cpp": {
+      "bytes": 3844516,
+      "sha256": "a8805add51c0bfbac6b956067f9591868fb5aab41f9bff81ec9f2ea5d2d66520"
+    },
+    "output_9.cpp": {
+      "bytes": 3832585,
+      "sha256": "f247e626a9ef3c3b43f9f0dc61fc7cc1c5f390953e190050f10d09491d164702"
+    }
+  },
+  "runtime": {
+    "CMakeLists.txt": {
+      "bytes": 3094,
+      "sha256": "3604fd50b2b158f916c900e1eb9b4b158a4f87500b778d02a65030b893c6b9d3"
+    },
+    "include/common/endian.h": {
+      "bytes": 1079,
+      "sha256": "0dea4fd49e525b0630a898cb39e7f1ed0540a36ee1c2b96d784458b9eb0c4f6c"
+    },
+    "include/input/input_manager.h": {
+      "bytes": 844,
+      "sha256": "8611279d9d3540d1ebc9c88d232d97e844d6a6f68cf35987a292488e7b731ac4"
+    },
+    "include/input/input_source.h": {
+      "bytes": 596,
+      "sha256": "c173e066504a0da3a2f3789e1c5ef29209ff7795effaa54f5ea4b959ccb42432"
+    },
+    "include/loader/loader.h": {
+      "bytes": 950,
+      "sha256": "3cdad924631e5b94072949006917c7f1c54cbaa4c26609300c47948cb54f90c4"
+    },
+    "include/runtime/config.h": {
+      "bytes": 1090,
+      "sha256": "d99ff47e36a7f48e8495d5648ea6d391554134af685ee4faeaa37a5830fcedd0"
+    },
+    "include/runtime/cpu_context.h": {
+      "bytes": 17010,
+      "sha256": "6a41c8a139f93549e236986a2e869dc8e1f4982626f4ff571851a051564af9c5"
+    },
+    "include/runtime/devices.h": {
+      "bytes": 353,
+      "sha256": "3df79488512ff2967c8b311cb55d529be7137ddf23eb857d8181995ae6dd8ec0"
+    },
+    "include/runtime/event_scheduler.h": {
+      "bytes": 984,
+      "sha256": "7db298b93b477c8a936040afde773523e5ce40d0da54d96726418ac4ee5851d6"
+    },
+    "include/runtime/gx/fifo_parser.h": {
+      "bytes": 1924,
+      "sha256": "f062dda2900fce209a6725a38572227e638bbf28e5dae3e2abc02e4c0490f384"
+    },
+    "include/runtime/gx/gx_registers.h": {
+      "bytes": 7197,
+      "sha256": "030b422bbfec96788d2a3af1aebe9ef624fea723643d5b4e0247785525145044"
+    },
+    "include/runtime/gx/renderer.h": {
+      "bytes": 383,
+      "sha256": "91850d0a0a38bae8dc96ef47629f43077acde6705c8d7385754f6551c695d942"
+    },
+    "include/runtime/gx/tev_shader_gen.h": {
+      "bytes": 266,
+      "sha256": "9204718ac48ac10ca4959e1179c678082dc6bc62f6ce5a1351fe46dcb4061d52"
+    },
+    "include/runtime/gx_command.h": {
+      "bytes": 1135,
+      "sha256": "b8d56878c0f3a4c2d75fddb82bdce2b803d1c7be46d2d297b499d8af7e20b046"
+    },
+    "include/runtime/gx_state.h": {
+      "bytes": 3882,
+      "sha256": "21397af9d35a79b8ddd133c7b6ab7f42bbea2444d9c746d8eb9f409fe65fa9d1"
+    },
+    "include/runtime/hw/hw.h": {
+      "bytes": 1422,
+      "sha256": "3bbdd63b61ec37a89ecf7812c867048b6054b333cb86d8804d5d39c40c9c188f"
+    },
+    "include/runtime/hw/mmio_dispatcher.h": {
+      "bytes": 1375,
+      "sha256": "1b0490cef01c1bf0dcd707df37f37326a734ba658709fe09a734d1d02da70815"
+    },
+    "include/runtime/ios_device.h": {
+      "bytes": 1556,
+      "sha256": "b237cd21f2a2f73d78aecb6f78331c9bb898d9a20920f26a6072ef96cb1c249e"
+    },
+    "include/runtime/ios_kernel.h": {
+      "bytes": 1174,
+      "sha256": "563de582010daf266a4cb237a0f00742d753352c057971819e7f31e7f4dd16bc"
+    },
+    "include/runtime/os_thread.h": {
+      "bytes": 2487,
+      "sha256": "e4bfd535bd0fb89af17f89e868c7e825bd0b4329a1aa551fb991ede0976db886"
+    },
+    "include/runtime/platform/gc_platform.h": {
+      "bytes": 756,
+      "sha256": "df922ac1387c7e1ed24289fc4c2f56ced07bb63b6acfca0748827356d217416c"
+    },
+    "include/runtime/platform/platform.h": {
+      "bytes": 902,
+      "sha256": "0da4450380f9441f74c2a4566297e0f4e0486392143d714641d719708e9d243a"
+    },
+    "include/runtime/platform/wii_platform.h": {
+      "bytes": 757,
+      "sha256": "ff2ea255e7b3d3ac13c9f7547bd7e841511454b7a91b984a207bac66e109f36a"
+    },
+    "include/runtime/texture_cache_gl.h": {
+      "bytes": 3468,
+      "sha256": "7573db3f8226f7bcbce89eaadf12860af17f9f9aae544c643423b2d2fa2d05b2"
+    },
+    "include/runtime/virtual_disc.h": {
+      "bytes": 1185,
+      "sha256": "c252e35b7e8ce2e29d969be41ccf2aebbe028ed67145a3f5e77715d140731495"
+    },
+    "src/core/config.cpp": {
+      "bytes": 5925,
+      "sha256": "62f3ca9073fd74e2381117430228bb0b33dedd38c5ef4ef22c1b7d6fe34426e6"
+    },
+    "src/core/event_scheduler.cpp": {
+      "bytes": 2832,
+      "sha256": "9dfcd5b0dae3b26c96dc60aedea3ea8b6ba0c0f9c6588860aafd114d5cea77fd"
+    },
+    "src/core/loader.cpp": {
+      "bytes": 8203,
+      "sha256": "5966945e8b60859cb6112e1c06d76ee7856828908b952044cee90dc786bad883"
+    },
+    "src/core/main.cpp": {
+      "bytes": 26227,
+      "sha256": "c90fdd0c35e2f4408df2fce7faa712786c482cb0d17c5d46f5d0054534df5234"
+    },
+    "src/core/os_hle_stubs.cpp": {
+      "bytes": 6657,
+      "sha256": "af5420bb143fb6f0b60a2e3b2bc6d50175ae5f0ce5a7d3afa293814f2676175d"
+    },
+    "src/hle/ax.cpp": {
+      "bytes": 1300,
+      "sha256": "e1ecafba1d0fdfcc8ac18dcf87f5df2dab26218b7e1480af1acb07978a903e6b"
+    },
+    "src/hle/devices/di_device.cpp": {
+      "bytes": 6713,
+      "sha256": "04494f29bb5dd65392e4b002b3df6b8573bb4d0a57bd8602f2017e4aee82bfcb"
+    },
+    "src/hle/devices/es_device.cpp": {
+      "bytes": 8769,
+      "sha256": "174095cf932447f8a7115e653468f0af0b9bc41f67a30c6d7969c6e2431fc3a6"
+    },
+    "src/hle/devices/fs_device.cpp": {
+      "bytes": 5493,
+      "sha256": "bb78526471932231cacfeb535031aa473549aff76b695a0ae09ac80f47bf164e"
+    },
+    "src/hle/devices/stm_device.cpp": {
+      "bytes": 873,
+      "sha256": "ae8b7050021e99d5981575211865831275e545865606a7794a4bb69c501c9f6b"
+    },
+    "src/hle/devices/usb_device.cpp": {
+      "bytes": 6344,
+      "sha256": "53897cd94225cfb37988e860ae1084c5e6779ebbcda808875af31d2b34b3db3f"
+    },
+    "src/hle/dvd.cpp": {
+      "bytes": 2292,
+      "sha256": "42d458816966433915d0fe6f167f94aa9566695567d8242d8c37c62eeb57cfb8"
+    },
+    "src/hle/gx/fifo_parser.cpp": {
+      "bytes": 54885,
+      "sha256": "e50d2d2402fe5ceddedb3efb20a5438d488b23e7bb151b5ee398eb2d10140430"
+    },
+    "src/hle/gx/gx_matrix_seam.cpp": {
+      "bytes": 2908,
+      "sha256": "33fb9491a518aac4e331ab90154616266a75740766874eff774f87ecd68bae09"
+    },
+    "src/hle/gx/gx_state_seam.cpp": {
+      "bytes": 3858,
+      "sha256": "583dc0cbd36867f3c1c75e5dfa553840f6688e22b20c9592dacbaf6cd615ba4c"
+    },
+    "src/hle/gx/renderer_factory.cpp": {
+      "bytes": 412,
+      "sha256": "2b6e53442bd8a0d8a312f2022143d5fe1217d85f4979d9d29d6e9ebf01bb543f"
+    },
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 26725,
+      "sha256": "06c317113ecf2f3ee24d540bcd840cf66df5d8f7304ffe99011e807a737a0ae4"
+    },
+    "src/hle/gx/renderer_metal.mm": {
+      "bytes": 1002,
+      "sha256": "d2ac236fdc6209d7bc3cadacd5946b07832a7336bc962db435a166b3311540f1"
+    },
+    "src/hle/gx/tev_shader_gen.cpp": {
+      "bytes": 14483,
+      "sha256": "801ffd5d73b92fe97a21d1787b7395499386bcac6025916404106bbb3f121863"
+    },
+    "src/hle/gx.cpp": {
+      "bytes": 15002,
+      "sha256": "dfa2462ee49d9981f777f68acbda4d3400c739eedba44da69f4fcedd6fd941bd"
+    },
+    "src/hle/interpreter.cpp": {
+      "bytes": 32018,
+      "sha256": "4cbbdab128b912b4c13eb453d1fd1692e84cd4f2b9e2097356b0ea5572239fa3"
+    },
+    "src/hle/ios.cpp": {
+      "bytes": 47667,
+      "sha256": "5054323297bddaa80f8381d0aa6004ee477f23207b3c5e4007471b5bc1a8a0a6"
+    },
+    "src/hle/ios_kernel.cpp": {
+      "bytes": 2776,
+      "sha256": "06b33d5c13cf5538cad59f117463687232886871124099882dc31e79023f0de2"
+    },
+    "src/hle/memory.cpp": {
+      "bytes": 5609,
+      "sha256": "f27f976fe75e5216b4fc9f039c3fadd7c3515697c29295f6da42315dde62fe50"
+    },
+    "src/hle/pad.cpp": {
+      "bytes": 3061,
+      "sha256": "4dc9e7d139bc77fb28a76c96fb46535d046e64300a4aff225119bb8e08e6b66c"
+    },
+    "src/hle/texture_cache_gl.cpp": {
+      "bytes": 14442,
+      "sha256": "140b31b6c966e6e04f4b5fe4d42040b1d10d8b18615af905a80077b54cb72845"
+    },
+    "src/hle/virtual_disc.cpp": {
+      "bytes": 6488,
+      "sha256": "8fc4b3646f2070083547be61309735bc7bb79cb33221283d0a562309f36a4c34"
+    },
+    "src/hw/hw_ai.cpp": {
+      "bytes": 2362,
+      "sha256": "8a28ee1163b3de0bbf1f338628ae348bd0bd2eebcda6f0b2d6ddcfe597d9db25"
+    },
+    "src/hw/hw_all.cpp": {
+      "bytes": 2428,
+      "sha256": "99e5a4a012df8ed930b1eb8f287adc2d5eb96c507ceffc0e277b7a514b5f762f"
+    },
+    "src/hw/hw_cp.cpp": {
+      "bytes": 4440,
+      "sha256": "4ac756e2f4cb56c991fb08a729cf5c6864656b228882a3f61e267426c27253f4"
+    },
+    "src/hw/hw_di.cpp": {
+      "bytes": 6978,
+      "sha256": "47f2af2a926c98beb4c7816ade6c02aa37715a8d1cd294f3329270775341620e"
+    },
+    "src/hw/hw_dsp.cpp": {
+      "bytes": 12101,
+      "sha256": "114336947f7122899dfc8dc86880e7438d9db21bd94c59e2ac69d48a6c28d9ac"
+    },
+    "src/hw/hw_ipc.cpp": {
+      "bytes": 4156,
+      "sha256": "ef4ef4f79e3ff40bc63e1c6a2e5e91666ba365da565398b6e0585c9880c10e70"
+    },
+    "src/hw/hw_pe.cpp": {
+      "bytes": 2437,
+      "sha256": "3a8fc001c0e749ae48b02533afed2e03f03509ff34383ec64525a11ecd9238e7"
+    },
+    "src/hw/hw_pi.cpp": {
+      "bytes": 1847,
+      "sha256": "8dd3289a342b79189bce450a5b13ec93f517984f3438895f21f862f11c17d50d"
+    },
+    "src/hw/hw_vi.cpp": {
+      "bytes": 2928,
+      "sha256": "3ef5026e007ab1277e64645bc9584c73850e2c079110115bed4bc6a748015c60"
+    },
+    "src/hw/mmio_dispatcher.cpp": {
+      "bytes": 2508,
+      "sha256": "38bb97cafbc661382fffd05e9bc35b81e235c1ca6aa493598cbbe4b983c20ba2"
+    },
+    "src/input/input_manager.cpp": {
+      "bytes": 1710,
+      "sha256": "5f0478cfa105c1099c388215f1075400c81add9d827a4da4472832c6de6c75d2"
+    },
+    "src/input/sources/gamepad_source.cpp": {
+      "bytes": 5643,
+      "sha256": "984a3afdd523160f698e241ff79cd42bbd6b33f2e1df8144cf33ba21705f2e8b"
+    },
+    "src/input/sources/gamepad_source.h": {
+      "bytes": 287,
+      "sha256": "e96eb5b4c05a2cde3b65682424864c229315e5b359af0826f2aba7a79e4d7bae"
+    },
+    "src/input/sources/mouse_keyboard_source.cpp": {
+      "bytes": 1742,
+      "sha256": "b7f6acbf50b12b342ca391632303f836c8617dc3fe27498057b53199540a4ee1"
+    },
+    "src/input/sources/mouse_keyboard_source.h": {
+      "bytes": 305,
+      "sha256": "8260f7bfb85964a9b1c8b5ec1884c07e395ec956abfe40107b72210b2e179941"
+    },
+    "src/input/sources/phone_source.cpp": {
+      "bytes": 3117,
+      "sha256": "8462fe830b8c7fd04966179695ee6ab7377100e5f080da2d8146c33f9364804c"
+    },
+    "src/input/sources/phone_source.h": {
+      "bytes": 432,
+      "sha256": "e5fb1d75eb8a34c8cb9da086284c30b60089b84cfa03de19a4bc2cb6379ea216"
+    },
+    "src/platform/gc_platform.cpp": {
+      "bytes": 1209,
+      "sha256": "ff6cb43d7d93a38d716ac0c7025a5bfedf374fef75a2ed4cb58f16f615d0f508"
+    },
+    "src/platform/platform.cpp": {
+      "bytes": 648,
+      "sha256": "17db194bb2d2eba381e89c5a274b48ae03c2c7a0ad6aa2be297c8041e43002bb"
+    },
+    "src/platform/wii_platform.cpp": {
+      "bytes": 7921,
+      "sha256": "a0027f19f9a68283d82615a42915bf251613358dbc920399e2bec0b4c2104461"
+    }
+  }
+}

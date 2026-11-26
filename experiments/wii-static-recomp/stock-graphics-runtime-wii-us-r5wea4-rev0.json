@@ -1,0 +1,736 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "edits": {
+    "src/hle/gx.cpp": [
+      {
+        "startLine": 0,
+        "old": "",
+        "new": "#include \"stock_gx_display_list_memory.h\"\n#include \"stock_pe_cadence_observation.h\"\n#include <cstdio>\n#include \"stock_gx_completed_frame.h\"\n"
+      },
+      {
+        "startLine": 15,
+        "old": "",
+        "new": "#include <atomic>\n#include <stdexcept>\n#include <cstdio>\n"
+      },
+      {
+        "startLine": 40,
+        "old": "",
+        "new": "static std::atomic<size_t> g_cp_decode_bytes{0};\n\nnamespace nwii::runtime {\nuint16_t GX_CPIdleBits() {\n    std::lock_guard<std::mutex> lock(g_fifo_mutex);\n    const bool unread_empty = g_hw_fifo.empty();\n    const bool decoder_empty = g_cp_decode_bytes.load() == 0;\n    return (unread_empty ? 0x04 : 0) | (unread_empty && decoder_empty ? 0x08 : 0);\n}\n}\n"
+      },
+      {
+        "startLine": 51,
+        "old": "    if (!nwii::runtime::g_mmu || size == 0 || size > (8u << 20)) return;\n",
+        "new": "    if (!nwii::runtime::g_mmu || size > (8u << 20) ||\n        !openshsm::experiment::gx_display_list_range(addr, size)) {\n        return;\n    }\n"
+      },
+      {
+        "startLine": 53,
+        "old": "    if (const uint8_t* p = nwii::runtime::g_mmu->get_ptr(0x80000000u | (addr & 0x03FFFFFF)))\n",
+        "new": "    if (const uint8_t* p = nwii::runtime::g_mmu->get_ptr(0x80000000u | openshsm::experiment::gx_display_list_physical(addr)))\n"
+      },
+      {
+        "startLine": 59,
+        "old": "    g_dl_snap[((uint64_t)(addr & 0x03FFFFFF) << 24) ^ size] = std::move(buf);\n",
+        "new": "    g_dl_snap[((uint64_t)openshsm::experiment::gx_display_list_physical(addr) << 24) ^ size] = std::move(buf);\n"
+      },
+      {
+        "startLine": 64,
+        "old": "    auto it = g_dl_snap.find(((uint64_t)(addr & 0x03FFFFFF) << 24) ^ size);\n",
+        "new": "    auto it = g_dl_snap.find(((uint64_t)openshsm::experiment::gx_display_list_physical(addr) << 24) ^ size);\n"
+      },
+      {
+        "startLine": 95,
+        "old": "",
+        "new": "namespace nwii::runtime::hw {\nvoid cp_gather_bursted(uint32_t, uint32_t);\nbool cp_fifo_fetch(uint8_t[32], uint32_t&);\nvoid cp_fifo_decoded(uint32_t);\n}\n\n"
+      },
+      {
+        "startLine": 105,
+        "old": "",
+        "new": "            g_cp_decode_bytes.store(s_parse_buf.size());\n"
+      },
+      {
+        "startLine": 108,
+        "old": "    if (s_parse_buf.empty()) return;\n",
+        "new": "    if (s_parse_buf.empty() && !nwii::runtime::g_ctx_ptr) return;\n"
+      },
+      {
+        "startLine": 113,
+        "old": "",
+        "new": "    g_cp_decode_bytes.store(s_parse_buf.size());\n    uint8_t packet[32];\n    uint32_t address = 0;\n    unsigned bursts = 0;\n    while (bursts++ < 4096 && nwii::runtime::hw::cp_fifo_fetch(packet, address)) {\n        s_parse_buf.insert(s_parse_buf.end(), packet, packet + 32);\n        g_cp_decode_bytes.store(s_parse_buf.size());\n        nwii::runtime::gx::FifoParser::Parse(s_parse_buf, commands);\n        g_cp_decode_bytes.store(s_parse_buf.size());\n        nwii::runtime::hw::cp_fifo_decoded(address);\n    }\n"
+      },
+      {
+        "startLine": 137,
+        "old": "    if (s_parse_buf.size() > (4u << 20))\n",
+        "new": "    if (s_parse_buf.size() > (4u << 20)) {\n"
+      },
+      {
+        "startLine": 139,
+        "old": "",
+        "new": "        g_cp_decode_bytes.store(0);\n    }\n"
+      },
+      {
+        "startLine": 149,
+        "old": "    int last_frame_end = -1;\n    int prev_frame_end = -1; \n    for (size_t i = 0; i < s_carry.size(); ++i) {\n        const auto &c = s_carry[i];\n        if (c.type == nwii::runtime::gx::GXCommandType::BPRegister &&\n            c.reg == 0x52 && (c.val & 0x4000)) {\n            prev_frame_end = last_frame_end;\n            last_frame_end = (int)i;\n",
+        "new": "    const auto execution = stock_gx_completed_frame_bounds(s_carry);\n    const int last_frame_end = execution.end;\n    const int prev_frame_end = execution.previous_copy;\n    static StockPECadenceObservation cadence(std::getenv(\"NWII_PE_CADENCE_AFTER_MS\"));\n    bool cadence_sample = false;\n    if (cadence.enabled && cadence.samples < 128) {\n        const auto now = std::chrono::steady_clock::now();\n        const uint64_t host_us = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();\n        cadence_sample = cadence.inspect(s_carry, execution, host_us,\n            [](uint64_t batch, uint64_t id, uint16_t reg, uint32_t val, bool selected, uint64_t host) {\n                std::printf(\"[PECadenceMarker] batch=%llu command=%llu reg=%u value=%u selected=%u hostUs=%llu\\n\",\n                    (unsigned long long)batch, (unsigned long long)id, unsigned(reg), val,\n                    unsigned(selected), (unsigned long long)host);\n            });\n        if (cadence_sample) {\n            std::printf(\"[PECadenceBatch] batch=%llu hostUs=%llu end=%d copy=%d carry=%llu\\n\",\n                (unsigned long long)cadence.batch, (unsigned long long)host_us, execution.end,\n                execution.last_copy, (unsigned long long)s_carry.size());\n"
+      },
+      {
+        "startLine": 220,
+        "old": "    ++g_stat_frames;\n",
+        "new": "    if (execution.last_copy >= 0) {\n        ++g_stat_frames;\n    }\n"
+      },
+      {
+        "startLine": 281,
+        "old": "",
+        "new": "            if (cadence_sample) {\n                const uint64_t host_us = std::chrono::duration_cast<std::chrono::microseconds>(r1.time_since_epoch()).count();\n                std::printf(\"[PECadenceRendered] batch=%llu hostUs=%llu\\n\",\n                    (unsigned long long)cadence.batch, (unsigned long long)host_us);\n            }\n\n"
+      },
+      {
+        "startLine": 359,
+        "old": "",
+        "new": "static uint8_t s_gather[32] = {};\nstatic unsigned s_gather_count = 0;\n\n"
+      },
+      {
+        "startLine": 362,
+        "old": "    if (base == 0) return false; \n    uint32_t cp_base = nwii::runtime::hw::cp_fifo_base_reg();\n    if ((base & 0x03FFFFFF) == (cp_base & 0x03FFFFFF))\n        return false; \n    if (!nwii::runtime::g_mmu) return false;\n    nwii::runtime::g_mmu->write8(0x80000000u | (wptr & 0x01FFFFFFu), b);\n    wptr += 1;\n    if ((wptr & 0x03FFFFFF) > (end & 0x03FFFFFF))\n        wptr = base;\n    nwii::runtime::hw::pi_fifo_set_wptr(wptr);\n",
+        "new": "    if (base == 0) {\n        return false;\n    }\n    if (!nwii::runtime::g_mmu || s_gather_count >= 32) {\n        throw std::runtime_error(\"Unavailable write-gather RAM or uncommitted burst\");\n    }\n    s_gather[s_gather_count++] = b;\n    if (s_gather_count < 32) {\n        return true;\n    }\n    const uint32_t physical = wptr & 0x1FFFFFFF;\n    if ((physical & 31) || physical < (base & 0x1FFFFFFF) || physical > (end & 0x1FFFFFFF)\n        || !nwii::runtime::g_mmu->get_ptr(physical) || !nwii::runtime::g_mmu->get_ptr(physical + 31)) {\n        fprintf(stderr, \"[CPTRANSPORT] invalid PI base=%08x end=%08x wp=%08x count=%u\\n\", base, end, wptr, s_gather_count);\n        fflush(stderr);\n        throw std::runtime_error(\"Invalid PI gather-burst destination\");\n    }\n    for (unsigned i = 0; i < 32; ++i) {\n        nwii::runtime::g_mmu->write8(physical + i, s_gather[i]);\n    }\n    nwii::runtime::hw::pi_fifo_set_wptr(physical == (end & 0x1FFFFFFF) ? base : wptr + 32);\n    s_gather_count = 0;\n    nwii::runtime::hw::cp_gather_bursted(base, end);\n"
+      }
+    ],
+    "src/hle/gx/fifo_parser.cpp": [
+      {
+        "startLine": 0,
+        "old": "",
+        "new": "#include \"stock_gx_display_list_memory.h\"\n#include <algorithm>\n#include \"stock_gx_attribute_bounds.h\"\n"
+      },
+      {
+        "startLine": 31,
+        "old": "",
+        "new": "static uint32_t g_parse_bp[256] = {0};\n"
+      },
+      {
+        "startLine": 63,
+        "old": "",
+        "new": "        g_parse_bp[reg] = val;\n    }\n"
+      },
+      {
+        "startLine": 64,
+        "old": "        \n        \n        if (reg == 0x45 && (val & 0xF) == 2) {\n",
+        "new": "    void ApplyBPRegisterImpl(uint8_t reg, uint32_t val) {\n        if (reg == 0x45 && (val & 0xFF) == 2) {\n"
+      },
+      {
+        "startLine": 73,
+        "old": "\n        \n        // from the wrong state is cached for the rest of the run. Dolphin's\n\n        // time. NWII_NOSEED=1 takes the Dolphin behaviour.\n        static const bool no_seed = std::getenv(\"NWII_NOSEED\") != nullptr;\n        if (!no_seed)\n            g_state.bp[reg] = val;\n    }\n\n    void ApplyBPRegisterImpl(uint8_t reg, uint32_t val) {\n",
+        "new": ""
+      },
+      {
+        "startLine": 85,
+        "old": "",
+        "new": "        if (reg >= 0xE0 && reg <= 0xE7) {\n            g_state.tevColorWords[(val >> 23) & 1][reg - 0xE0] = val;\n        }\n"
+      },
+      {
+        "startLine": 220,
+        "old": "            nwii::runtime::hw::pe_signal_finish();\n",
+        "new": ""
+      },
+      {
+        "startLine": 353,
+        "old": "            case VtxAttrType::U8:  return (float)p[0] / (float)(1 << shift);\n            case VtxAttrType::S8:  return (float)(int8_t)p[0] / (float)(1 << shift);\n            case VtxAttrType::U16: return (float)(uint16_t)((p[0] << 8) | p[1]) / (float)(1 << shift);\n            case VtxAttrType::S16: return (float)(int16_t)((p[0] << 8) | p[1]) / (float)(1 << shift);\n",
+        "new": "            case VtxAttrType::U8:  return (float)p[0] / float(uint32_t(1) << shift);\n            case VtxAttrType::S8:  return (float)(int8_t)p[0] / float(uint32_t(1) << shift);\n            case VtxAttrType::U16: return (float)(uint16_t)((p[0] << 8) | p[1]) / float(uint32_t(1) << shift);\n            case VtxAttrType::S16: return (float)(int16_t)((p[0] << 8) | p[1]) / float(uint32_t(1) << shift);\n"
+      },
+      {
+        "startLine": 391,
+        "old": "        if (!nwii::runtime::g_mmu) return true;\n        uint32_t base = array_base + index * array_stride;\n\n        \n\n        const uint8_t* p = nwii::runtime::g_mmu->get_ptr(base);\n        if (!p) return true;\n        float inv = 1.0f / (float)(1 << shift);\n",
+        "new": "        if (!nwii::runtime::g_mmu) { return false; }\n        const uint64_t base = uint64_t(array_base) + uint64_t(index) * array_stride;\n        if (base > UINT32_MAX) { return false; }\n        const uint8_t* p = openshsm::experiment::gx_attribute_pointer(*nwii::runtime::g_mmu,\n            uint32_t(base), size_t(sz) * ncomp);\n        if (!p) { return false; }\n        float inv = 1.0f / float(uint32_t(1) << shift);\n"
+      },
+      {
+        "startLine": 493,
+        "old": "        if (!nwii::runtime::g_mmu) return true;\n        uint32_t base = array_base + index * array_stride;\n        const uint8_t* p = nwii::runtime::g_mmu->get_ptr(base);\n        if (!p) return true;\n",
+        "new": "        if (!nwii::runtime::g_mmu) { return false; }\n        const uint64_t base = uint64_t(array_base) + uint64_t(index) * array_stride;\n        if (base > UINT32_MAX) { return false; }\n        const uint8_t* p = openshsm::experiment::gx_attribute_pointer(*nwii::runtime::g_mmu,\n            uint32_t(base), size_t(nbytes));\n        if (!p) { return false; }\n"
+      },
+      {
+        "startLine": 547,
+        "old": "",
+        "new": "    for (uint32_t value : g_parse_bp) {\n        h ^= value;\n        h *= 1099511628211ull;\n    }\n"
+      },
+      {
+        "startLine": 554,
+        "old": "    uint32_t phys = addr & 0x1FFFFFFF;\n    if (!nwii::runtime::g_mmu || size == 0 || size > 0x400000 ||\n        phys + size > 0x01800000 || depth >= 4)\n",
+        "new": "    uint32_t phys = openshsm::experiment::gx_display_list_physical(addr);\n    if (!nwii::runtime::g_mmu || size > 0x400000 || depth >= 4 ||\n        !openshsm::experiment::gx_display_list_range(addr, size)) {\n"
+      },
+      {
+        "startLine": 558,
+        "old": "",
+        "new": "    }\n"
+      },
+      {
+        "startLine": 709,
+        "old": "    const DrawRaw& r = *c.raw;\n",
+        "new": "    if (c.raw.use_count() > 1) {\n        c.raw = std::make_shared<DrawRaw>(*c.raw);\n    }\n    DrawRaw& r = *c.raw;\n    r.sources.clear();\n    r.sources.reserve(r.count);\n"
+      },
+      {
+        "startLine": 715,
+        "old": "        VertexData vtx;\n",
+        "new": "        VertexData vtx{};\n        openshsm::experiment::GxVertexSources source;\n"
+      },
+      {
+        "startLine": 739,
+        "old": "        // CLR1 and tex1-7 are parsed for stream position only (the renderer\n        // uses clr0/tex0). Normals are decoded only for lit draws.\n",
+        "new": ""
+      },
+      {
+        "startLine": 752,
+        "old": "        if (r.vat.nrmMask != VtxAttrMask::None && r.need_normal) {\n",
+        "new": "        if (r.vat.nrmMask != VtxAttrMask::None) {\n"
+      },
+      {
+        "startLine": 755,
+        "old": "            if (!ReadVectorAttr(buf, off, buf_size, r.vat.nrmMask, r.vat.nrmType,\n                                0, r.arrayBase[1], r.arrayStride[1],\n                                r.vat.nrmElements ? 9 : 3, nbt))\n",
+        "new": "            const unsigned shifts[] = {7, 6, 15, 14, 0, 0, 0, 0};\n            const unsigned type = unsigned(r.vat.nrmType);\n            if (type >= 8) { return; }\n            if (nrm_idx3) {\n                for (unsigned normal = 0; normal < 3; ++normal) {\n                    const uint64_t base = uint64_t(r.arrayBase[1]) + normal * 3 * TypeSize(r.vat.nrmType);\n                    if (base > UINT32_MAX || !ReadVectorAttr(buf, off, buf_size, r.vat.nrmMask,\n                            r.vat.nrmType, shifts[type], uint32_t(base), r.arrayStride[1], 3, nbt + normal * 3)) {\n                        return;\n                    }\n                }\n            } else if (!ReadVectorAttr(buf, off, buf_size, r.vat.nrmMask, r.vat.nrmType,\n                    shifts[type], r.arrayBase[1], r.arrayStride[1], r.vat.nrmElements ? 9 : 3, nbt)) {\n"
+      },
+      {
+        "startLine": 759,
+        "old": "            if (nrm_idx3) off += 2 * nrm_idx_bytes;\n",
+        "new": "            }\n"
+      },
+      {
+        "startLine": 761,
+        "old": "",
+        "new": "            source.has_normal = true;\n            source.has_nbt = r.vat.nrmElements;\n            for (unsigned normal = 0; normal < (source.has_nbt ? 3u : 1u); ++normal) {\n                std::copy_n(nbt + normal * 3, 3, source.normals[normal].begin());\n            }\n"
+      },
+      {
+        "startLine": 776,
+        "old": "        off += AttrBytes(r.vat.clrMask[1], r.vat.clrType[1], 1, true);\n        if (r.vat.texMask[0] != VtxAttrMask::None) {\n            vtx.has_tex[0] = true;\n            if (!ReadVectorAttr(buf, off, buf_size, r.vat.texMask[0],\n                                r.vat.texType[0], r.vat.texShift[0],\n                                r.arrayBase[4], r.arrayStride[4],\n                                r.vat.texElements[0] ? 2 : 1, vtx.tex[0]))\n",
+        "new": "        source.has_color[0] = vtx.has_color;\n        std::copy_n(vtx.color, 4, source.colors[0].begin());\n        if (r.vat.clrMask[1] != VtxAttrMask::None) {\n            if (!ReadColorAttr(buf, off, buf_size, r.vat.clrMask[1], r.vat.clrType[1],\n                    r.arrayBase[3], r.arrayStride[3], source.colors[1].data())) {\n"
+      },
+      {
+        "startLine": 784,
+        "old": "",
+        "new": "            }\n            source.has_color[1] = true;\n"
+      },
+      {
+        "startLine": 785,
+        "old": "        for (int t = 1; t < 8; t++)\n            off += AttrBytes(r.vat.texMask[t], r.vat.texType[t],\n                             r.vat.texElements[t] ? 2 : 1, false);\n        if (off > buf_size)\n",
+        "new": "        for (int t = 0; t < 8; ++t) {\n            if (r.vat.texMask[t] != VtxAttrMask::None) {\n                if (!ReadVectorAttr(buf, off, buf_size, r.vat.texMask[t],\n                        r.vat.texType[t], r.vat.texShift[t],\n                        r.arrayBase[4 + t], r.arrayStride[4 + t],\n                        r.vat.texElements[t] ? 2 : 1, vtx.tex[t])) {\n                    return;\n                }\n                vtx.has_tex[t] = true;\n            }\n        }\n        if (off > buf_size) {\n"
+      },
+      {
+        "startLine": 790,
+        "old": "",
+        "new": "        }\n        std::copy_n(vtx.pos, 3, source.position.begin());\n        source.has_position = vtx.has_pos;\n        for (unsigned slot = 0; slot < 8; ++slot) {\n            std::copy_n(vtx.tex[slot], 2, source.uv[slot].begin());\n            source.has_uv[slot] = vtx.has_tex[slot];\n            source.matrix_indices[slot] = vtx.texMtxIdx[slot];\n        }\n"
+      },
+      {
+        "startLine": 828,
+        "old": "",
+        "new": "        r.sources.push_back(source);\n"
+      },
+      {
+        "startLine": 830,
+        "old": "    c.raw.reset(); // decoded: drop the raw copy\n",
+        "new": "    std::vector<uint8_t>().swap(r.bytes);\n"
+      },
+      {
+        "startLine": 834,
+        "old": "",
+        "new": "    static const bool bp_initialized = [] {\n        std::memcpy(g_parse_bp, g_state.bp, sizeof(g_parse_bp));\n        return true;\n    }();\n    (void)bp_initialized;\n"
+      },
+      {
+        "startLine": 895,
+        "old": "                uint32_t merged = (g_state.bp[reg] & ~mask) | (val & mask);\n",
+        "new": "                uint32_t merged = (g_parse_bp[reg] & ~mask) | (val & mask);\n"
+      }
+    ],
+    "src/hle/gx/renderer_gl.cpp": [
+      {
+        "startLine": 0,
+        "old": "",
+        "new": "#include \"stock_gx_texgen_bridge.h\"\n#include \"stock_gx_shader_key.h\"\n#include <array>\n#include \"stock_gx_completion.h\"\n#include <chrono>\n#include <iostream>\n#include <stdexcept>\n"
+      },
+      {
+        "startLine": 35,
+        "old": "  GLint uMatColor, uAmbColor, uChanCtrl;\n",
+        "new": "  GLint uMatColor, uAmbColor, uChanCtrl, uTexGenColor, uTexSampling;\n"
+      },
+      {
+        "startLine": 48,
+        "old": "",
+        "new": "  float texcoords[8][3];\n  float r1, g1, b1, a1;\n"
+      },
+      {
+        "startLine": 51,
+        "old": "",
+        "new": "static std::array<float, 256> s_post_matrices{};\nstatic std::array<bool, 256> s_post_written{};\n"
+      },
+      {
+        "startLine": 56,
+        "old": "  GLuint v = glCreateShader(GL_VERTEX_SHADER);\n  glShaderSource(v, 1, &vs, nullptr);\n  glCompileShader(v);\n",
+        "new": "    const auto started = std::chrono::steady_clock::now();\n    const auto compile = [](GLenum kind, const char* source) {\n        GLuint shader = glCreateShader(kind);\n        glShaderSource(shader, 1, &source, nullptr);\n        glCompileShader(shader);\n        GLint status = 0;\n        glGetShaderiv(shader, GL_COMPILE_STATUS, &status);\n        if (!status) {\n            GLint size = 0;\n            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &size);\n            std::vector<char> log(size > 0 ? size : 1, 0);\n            glGetShaderInfoLog(shader, log.size(), nullptr, log.data());\n            glDeleteShader(shader);\n            throw std::runtime_error(std::string(\"GX shader compilation failed: \") + log.data());\n        }\n        return shader;\n    };\n    GLuint vertex = compile(GL_VERTEX_SHADER, vs);\n    GLuint fragment = 0;\n    try {\n        fragment = compile(GL_FRAGMENT_SHADER, fs);\n    } catch (...) {\n        glDeleteShader(vertex);\n        throw;\n    }\n    GLuint program = glCreateProgram();\n    glAttachShader(program, vertex);\n    glAttachShader(program, fragment);\n    glLinkProgram(program);\n    glDeleteShader(vertex);\n    glDeleteShader(fragment);\n    GLint status = 0;\n    glGetProgramiv(program, GL_LINK_STATUS, &status);\n    if (!status) {\n        GLint size = 0;\n        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &size);\n        std::vector<char> log(size > 0 ? size : 1, 0);\n        glGetProgramInfoLog(program, log.size(), nullptr, log.data());\n        glDeleteProgram(program);\n        throw std::runtime_error(std::string(\"GX shader link failed: \") + log.data());\n    }\n    static unsigned samples = 0;\n    if (std::getenv(\"NWII_SHADERPROFILE\") && samples++ < 64) {\n        const auto us = std::chrono::duration_cast<std::chrono::microseconds>(\n            std::chrono::steady_clock::now() - started).count();\n        std::cout << \"[Shader compile] stages=\" << unsigned(g_state.numTevStages)\n            << \" us=\" << us << \" linked=1\\n\";\n    }\n    return program;\n}\n"
+      },
+      {
+        "startLine": 60,
+        "old": "  GLuint f = glCreateShader(GL_FRAGMENT_SHADER);\n  glShaderSource(f, 1, &fs, nullptr);\n  glCompileShader(f);\n",
+        "new": "static void DiagnoseGL(const char* phase) {\n    if (!gx_trace()) {\n        return;\n    }\n    GLenum error = glGetError();\n    if (error != GL_NO_ERROR) {\n        printf(\"[GLPHASE] %s error=0x%x\\n\", phase, error);\n    }\n}\n"
+      },
+      {
+        "startLine": 64,
+        "old": "  GLuint p = glCreateProgram();\n  glAttachShader(p, v);\n  glAttachShader(p, f);\n  glLinkProgram(p);\n\n  glDeleteShader(v);\n  glDeleteShader(f);\n  return p;\n}\n",
+        "new": "struct GuestRasterScope {\n    GLint viewport[4];\n    GLint scissor[4];\n    GLboolean enabled;\n    GuestRasterScope() {\n        glGetIntegerv(GL_VIEWPORT, viewport);\n        glGetIntegerv(GL_SCISSOR_BOX, scissor);\n        enabled = glIsEnabled(GL_SCISSOR_TEST);\n        float xf[6];\n        std::memcpy(xf, &g_state.xf[0x1a], sizeof(xf));\n        if (!(xf[0] > 0 && xf[1] < 0)) {\n            return;\n        }\n        const int ox = int(g_state.bp[0x59] & 511) * 2;\n        const int oy = int((g_state.bp[0x59] >> 10) & 511) * 2;\n        const int x = int(std::lround(xf[3] - xf[0] - ox));\n        const int y = int(std::lround(xf[4] + xf[1] - oy));\n        const int width = int(std::lround(2 * xf[0]));\n        const int height = int(std::lround(-2 * xf[1]));\n        glViewport(x, 528 - y - height, width, height);\n        const uint32_t tl = g_state.bp[0x20], br = g_state.bp[0x21];\n        const int left = std::clamp(int((tl >> 12) & 2047) - ox, 0, 640);\n        const int top = std::clamp(int(tl & 2047) - oy, 0, 528);\n        const int right = std::clamp(int((br >> 12) & 2047) - ox + 1, 0, 640);\n        const int bottom = std::clamp(int(br & 2047) - oy + 1, 0, 528);\n        glEnable(GL_SCISSOR_TEST);\n        glScissor(left, 528 - bottom, std::max(0, right - left), std::max(0, bottom - top));\n    }\n    ~GuestRasterScope() {\n        glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);\n        glScissor(scissor[0], scissor[1], scissor[2], scissor[3]);\n        if (enabled) {\n            glEnable(GL_SCISSOR_TEST);\n        } else {\n            glDisable(GL_SCISSOR_TEST);\n        }\n    }\n};\n"
+      },
+      {
+        "startLine": 78,
+        "old": "",
+        "new": "  DiagnoseGL(\"before batch setup\");\n"
+      },
+      {
+        "startLine": 95,
+        "old": "",
+        "new": "    for (unsigned index = 0; index < 8; ++index) {\n      glEnableVertexAttribArray(4 + index);\n      glVertexAttribPointer(4 + index, 3, GL_FLOAT, GL_FALSE, sizeof(BatchVertex),\n          (void *)(offsetof(BatchVertex, texcoords) + index * 3 * sizeof(float)));\n    }\n    glEnableVertexAttribArray(12);\n    glVertexAttribPointer(12, 4, GL_FLOAT, GL_FALSE, sizeof(BatchVertex),\n        (void *)offsetof(BatchVertex, r1));\n"
+      },
+      {
+        "startLine": 108,
+        "old": "  glDrawArrays(GL_TRIANGLES, 0, s_batch.size());\n",
+        "new": "  DiagnoseGL(\"before draw\");\n  {\n    GuestRasterScope scope;\n    glDrawArrays(GL_TRIANGLES, 0, s_batch.size());\n  }\n"
+      },
+      {
+        "startLine": 132,
+        "old": "  if (uProj < 0)\n    return;\n",
+        "new": "    if (uProj < 0 || s_active_shader.id == 0) {\n        return;\n    }\n"
+      },
+      {
+        "startLine": 167,
+        "old": "    p[13] = sp[3];\n",
+        "new": "    p[13] = sp[3] - 0.5f * sp[2];\n"
+      },
+      {
+        "startLine": 170,
+        "old": "    p[10] = sp[4];\n    p[14] = sp[5];\n",
+        "new": "    p[10] = 2.0f * sp[4];\n    p[14] = 2.0f * sp[5] + 1.0f;\n"
+      },
+      {
+        "startLine": 197,
+        "old": "\n  if (CurrentIsPerspective()) {\n    glEnable(GL_DEPTH_TEST);\n    glDepthFunc(GL_LEQUAL);\n  } else {\n    glDisable(GL_DEPTH_TEST);\n  }\n",
+        "new": "    const uint32_t mode = g_state.bp[0x40];\n    static constexpr GLenum functions[8] = {\n        GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL,\n        GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, GL_ALWAYS};\n    if (mode & 1) {\n        glEnable(GL_DEPTH_TEST);\n    } else {\n        glDisable(GL_DEPTH_TEST);\n    }\n    glDepthFunc(functions[(mode >> 1) & 7]);\n    glDepthMask((mode & 16) ? GL_TRUE : GL_FALSE);\n"
+      },
+      {
+        "startLine": 217,
+        "old": "",
+        "new": "  const GLboolean color_write = (cm & 8) ? GL_TRUE : GL_FALSE;\n  const GLboolean alpha_write = (cm & 16) ? GL_TRUE : GL_FALSE;\n  glColorMask(color_write, color_write, color_write, alpha_write);\n"
+      },
+      {
+        "startLine": 258,
+        "old": "static void EmitVertex(const VertexData &vtx) {\n",
+        "new": "static BatchVertex TransformVertex(const GXCommand &cmd, size_t index) {\n  const VertexData &vtx = cmd.vertices[index];\n"
+      },
+      {
+        "startLine": 267,
+        "old": "",
+        "new": "  }\n  bv.r1 = bv.g1 = bv.b1 = bv.a1 = 1.f;\n  if (cmd.raw && index < cmd.raw->sources.size() &&\n      cmd.raw->sources[index].has_color[1]) {\n    const auto &color1 = cmd.raw->sources[index].colors[1];\n    bv.r1 = color1[0]; bv.g1 = color1[1];\n    bv.b1 = color1[2]; bv.a1 = color1[3];\n"
+      },
+      {
+        "startLine": 304,
+        "old": "",
+        "new": "  for (unsigned channel = 0; channel < 8; ++channel) {\n    bv.texcoords[channel][0] = bv.u;\n    bv.texcoords[channel][1] = bv.v;\n    bv.texcoords[channel][2] = 1.0f;\n  }\n  if (cmd.raw && index < cmd.raw->sources.size()) {\n    for (unsigned channel = 0; channel < g_state.numTexGens && channel < 8; ++channel) {\n      if (((g_state.xf[0x40 + channel] >> 4) & 7) != 0) {\n        continue;\n      }\n      try {\n        const unsigned row = (g_state.xf[0x40 + channel] >> 7) & 31;\n        const size_t base = size_t(cmd.raw->sources[index].matrix_indices[channel]) * 4;\n        const unsigned columns = (g_state.xf[0x40 + channel] & 2) ? 12 : 8;\n        bool loaded = false;\n        for (unsigned column = 0; column < columns && base + column < 256; ++column) {\n          loaded |= g_state.posMatrices[base + column] != 0.0f;\n        }\n        bool post_loaded = true;\n        if (g_state.xf[0x12] & 1) {\n          post_loaded = false;\n          const size_t post_base = size_t(g_state.xf[0x50 + channel] & 63) * 4;\n          for (unsigned column = 0; column < 12 && post_base + column < 256; ++column) {\n            post_loaded |= s_post_written[post_base + column];\n          }\n        }\n        if (!loaded || !post_loaded) {\n          if (row >= 5 && row <= 12 && cmd.raw->sources[index].has_uv[row - 5]) {\n            bv.texcoords[channel][0] = cmd.raw->sources[index].uv[row - 5][0];\n            bv.texcoords[channel][1] = cmd.raw->sources[index].uv[row - 5][1];\n            bv.texcoords[channel][2] = 1.0f;\n          }\n          continue;\n        }\n        auto source = cmd.raw->sources[index];\n        if (row >= 5 && row <= 12 && !source.has_uv[row - 5]) {\n            source.uv[row - 5] = {0.0f, 0.0f};\n            source.has_uv[row - 5] = true;\n        }\n        const auto coordinate = openshsm::experiment::generate_draw_regular_texcoord(\n            source, g_state, s_post_matrices, channel);\n        const float scale_s = float((g_state.bp[0x30 + 2 * channel] & 0xffff) + 1);\n        const float scale_t = float((g_state.bp[0x31 + 2 * channel] & 0xffff) + 1);\n        bv.texcoords[channel][0] = coordinate[0] / scale_s;\n        bv.texcoords[channel][1] = coordinate[1] / scale_t;\n        bv.texcoords[channel][2] = coordinate[2];\n      } catch (const std::runtime_error &error) {\n        if (gx_trace()) {\n          static unsigned refusals = 0;\n          if (refusals++ < 8) {\n            std::fprintf(stderr, \"[GX texgen fallback] %s\\n\", error.what());\n          }\n        }\n      }\n    }\n  }\n\n"
+      },
+      {
+        "startLine": 325,
+        "old": "  if (!CurrentIsPerspective())\n",
+        "new": "  if (std::getenv(\"NWII_FLATZ\")) {\n"
+      },
+      {
+        "startLine": 327,
+        "old": "",
+        "new": "  }\n"
+      },
+      {
+        "startLine": 337,
+        "old": "  s_batch.push_back(bv);\n",
+        "new": "  return bv;\n"
+      },
+      {
+        "startLine": 368,
+        "old": "             (unsigned long long)g_state.GetShaderHash(cmd.prim_type),\n",
+        "new": "             (unsigned long long)openshsm::experiment::semantic_tev_shader_key(g_state),\n"
+      },
+      {
+        "startLine": 417,
+        "old": "  uint64_t hash = g_state.GetShaderHash(cmd.prim_type);\n",
+        "new": "  uint64_t hash = openshsm::experiment::semantic_tev_shader_key(g_state);\n"
+      },
+      {
+        "startLine": 502,
+        "old": "",
+        "new": "    sh.uTexGenColor = glGetUniformLocation(sh.id, \"uTexGenColor[0]\");\n    sh.uTexSampling = glGetUniformLocation(sh.id, \"uTexSampling[0]\");\n"
+      },
+      {
+        "startLine": 515,
+        "old": "",
+        "new": "  DiagnoseGL(\"before program bind\");\n"
+      },
+      {
+        "startLine": 516,
+        "old": "",
+        "new": "    static GLuint texture_samplers[8] = {};\n    if (!texture_samplers[0]) {\n        glGenSamplers(8, texture_samplers);\n    }\n    static constexpr GLenum wrap_modes[4] = {\n        GL_CLAMP_TO_EDGE, GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE};\n    for (unsigned unit = 0; unit < 8; ++unit) {\n        const unsigned reg = 0x80 + (unit / 4) * 0x20 + unit % 4;\n        const uint32_t mode = g_state.bp[reg];\n        const GLuint sampler = texture_samplers[unit];\n        glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, wrap_modes[mode & 3]);\n        glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, wrap_modes[(mode >> 2) & 3]);\n        glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, (mode & 16) ? GL_LINEAR : GL_NEAREST);\n        glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, (mode & 128) ? GL_LINEAR : GL_NEAREST);\n        glBindSampler(unit, sampler);\n    }\n\n    if (s_active_shader.uTexSampling >= 0) {\n        GLfloat sampling[32];\n        for (unsigned index = 0; index < 8; ++index) {\n            sampling[2 * index] = float((g_state.bp[0x30 + 2 * index] & 65535) + 1);\n            sampling[2 * index + 1] = float((g_state.bp[0x31 + 2 * index] & 65535) + 1);\n            sampling[16 + 2 * index] = float(std::max(1u, unsigned(g_state.texStages[index].width)));\n            sampling[17 + 2 * index] = float(std::max(1u, unsigned(g_state.texStages[index].height)));\n        }\n        glUniform2fv(s_active_shader.uTexSampling, 16, sampling);\n    }\n\n  if (s_active_shader.uTexGenColor >= 0) {\n    GLint color_sources[8] = {};\n    for (unsigned channel = 0; channel < g_state.numTexGens && channel < 8; ++channel) {\n      const uint32_t info = g_state.xf[0x40 + channel];\n      const unsigned type = (info >> 4) & 7;\n      if ((type == 2 || type == 3) && !(info & 4)) {\n        color_sources[channel] = GLint(type - 1);\n      }\n    }\n    glUniform1iv(s_active_shader.uTexGenColor, 8, color_sources);\n  }\n"
+      },
+      {
+        "startLine": 517,
+        "old": "",
+        "new": "  DiagnoseGL(\"projection upload\");\n"
+      },
+      {
+        "startLine": 595,
+        "old": "  for (int i = 0; i < 4; i++) {\n    uint32_t ra = g_state.bp[0xE0 + i * 2];\n    uint32_t bg = g_state.bp[0xE1 + i * 2];\n    if (((ra >> 23) & 1) == 0) {\n      color[i * 4 + 0] = decode11(ra, 0);\n      color[i * 4 + 3] = decode11(ra, 12);\n    } else {\n      kcolor[i * 4 + 0] = decode11(ra, 0);\n      kcolor[i * 4 + 3] = decode11(ra, 12);\n",
+        "new": "    for (int bank = 0; bank < 2; ++bank) {\n        float* target = bank == 0 ? color : kcolor;\n        for (int i = 0; i < 4; ++i) {\n            const uint32_t ra = g_state.tevColorWords[bank][i * 2];\n            const uint32_t bg = g_state.tevColorWords[bank][i * 2 + 1];\n            target[i * 4] = decode11(ra, 0);\n            target[i * 4 + 3] = decode11(ra, 12);\n            target[i * 4 + 2] = decode11(bg, 0);\n            target[i * 4 + 1] = decode11(bg, 12);\n        }\n"
+      },
+      {
+        "startLine": 605,
+        "old": "    if (((bg >> 23) & 1) == 0) {\n      color[i * 4 + 2] = decode11(bg, 0);\n      color[i * 4 + 1] = decode11(bg, 12);\n    } else {\n      kcolor[i * 4 + 2] = decode11(bg, 0);\n      kcolor[i * 4 + 1] = decode11(bg, 12);\n    }\n  }\n",
+        "new": ""
+      },
+      {
+        "startLine": 633,
+        "old": "",
+        "new": "    if (cmd.prim_type != 0x80 && cmd.prim_type != 0x90 && cmd.prim_type != 0x98 && cmd.prim_type != 0xA0) {\n        return;\n    }\n    static std::vector<BatchVertex> transformed;\n    transformed.resize(n);\n    for (size_t index = 0; index < n; ++index) {\n        transformed[index] = TransformVertex(cmd, index);\n    }\n    const auto EmitVertex = [&](const GXCommand&, size_t index) {\n        s_batch.push_back(transformed[index]);\n    };\n"
+      },
+      {
+        "startLine": 637,
+        "old": "      EmitVertex(v[i]);\n      EmitVertex(v[i + 1]);\n      EmitVertex(v[i + 2]);\n      EmitVertex(v[i + 2]);\n      EmitVertex(v[i + 3]);\n      EmitVertex(v[i]);\n",
+        "new": "      EmitVertex(cmd, i);\n      EmitVertex(cmd, i + 1);\n      EmitVertex(cmd, i + 2);\n      EmitVertex(cmd, i + 2);\n      EmitVertex(cmd, i + 3);\n      EmitVertex(cmd, i);\n"
+      },
+      {
+        "startLine": 646,
+        "old": "    for (const auto &vtx : v)\n      EmitVertex(vtx);\n",
+        "new": "    for (size_t i = 0; i < n; ++i)\n      EmitVertex(cmd, i);\n"
+      },
+      {
+        "startLine": 652,
+        "old": "        EmitVertex(v[i - 1]);\n        EmitVertex(v[i - 2]);\n        EmitVertex(v[i]);\n",
+        "new": "        EmitVertex(cmd, i - 1);\n        EmitVertex(cmd, i - 2);\n        EmitVertex(cmd, i);\n"
+      },
+      {
+        "startLine": 656,
+        "old": "        EmitVertex(v[i - 2]);\n        EmitVertex(v[i - 1]);\n        EmitVertex(v[i]);\n",
+        "new": "        EmitVertex(cmd, i - 2);\n        EmitVertex(cmd, i - 1);\n        EmitVertex(cmd, i);\n"
+      },
+      {
+        "startLine": 664,
+        "old": "      EmitVertex(v[0]);\n      EmitVertex(v[i - 1]);\n      EmitVertex(v[i]);\n",
+        "new": "      EmitVertex(cmd, 0);\n      EmitVertex(cmd, i - 1);\n      EmitVertex(cmd, i);\n"
+      },
+      {
+        "startLine": 681,
+        "old": "",
+        "new": "    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);\n"
+      },
+      {
+        "startLine": 710,
+        "old": "",
+        "new": "          } else if (current_addr >= 0x0500 && current_addr <= 0x05FF) {\n            s_post_matrices[current_addr - 0x0500] = cmd.payload[i];\n            s_post_written[current_addr - 0x0500] = true;\n"
+      },
+      {
+        "startLine": 726,
+        "old": "",
+        "new": "        if (stock_gx_pe_completion(cmd)) {\n            glFinish();\n        }\n"
+      },
+      {
+        "startLine": 740,
+        "old": "",
+        "new": "            const bool had_copy = tex != 0;\n"
+      },
+      {
+        "startLine": 743,
+        "old": "            glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_state.efbSrcX,\n                             g_state.efbSrcY, w, h, 0);\n",
+        "new": "            GLint existing_w = 0, existing_h = 0;\n            if (had_copy) {\n                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &existing_w);\n                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &existing_h);\n            }\n            const bool half_scale = (cmd.val & 0x200) && w >= 2 && h >= 2;\n            const uint32_t copy_w = half_scale ? w / 2 : w;\n            const uint32_t copy_h = half_scale ? h / 2 : h;\n            const uint32_t stride = g_state.efbCopyStride;\n            const bool partial_rgba8 = had_copy && ((cmd.val >> 3) & 15) == 12 &&\n                stride != 0 && stride % 16 == 0 &&\n                existing_w == GLint(stride / 16) &&\n                copy_w <= uint32_t(existing_w) && copy_h <= uint32_t(existing_h) &&\n                (copy_w < uint32_t(existing_w) || copy_h < uint32_t(existing_h));\n            static GLuint copy_fbo = 0;\n            if (!copy_fbo) {\n                glGenFramebuffers(1, &copy_fbo);\n            }\n            GLint previous_draw_fbo = 0;\n            glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous_draw_fbo);\n            if (!partial_rgba8) {\n                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, copy_w, copy_h, 0,\n                             GL_RGBA, GL_UNSIGNED_BYTE, nullptr);\n            }\n            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, copy_fbo);\n            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,\n                                   GL_TEXTURE_2D, tex, 0);\n            glDrawBuffer(GL_COLOR_ATTACHMENT0);\n            glBlitFramebuffer(g_state.efbSrcX, 528 - int(g_state.efbSrcY),\n                              g_state.efbSrcX + w, 528 - int(g_state.efbSrcY + h),\n                              0, 0, copy_w, copy_h, GL_COLOR_BUFFER_BIT,\n                              half_scale ? GL_LINEAR : GL_NEAREST);\n            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, GLuint(previous_draw_fbo));\n            const unsigned raw_format = (cmd.val >> 3) & 15;\n            const unsigned copy_format = (raw_format >> 1) | ((raw_format & 1) << 3);\n            GLint copy_swizzle[4] = {GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA};\n            if (copy_format == 11 && !(cmd.val & 0x8000)) {\n                copy_swizzle[0] = copy_swizzle[1] = copy_swizzle[2] = GL_RED;\n                copy_swizzle[3] = GL_GREEN;\n            }\n            glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, copy_swizzle);\n"
+      },
+      {
+        "startLine": 754,
+        "old": "",
+        "new": "              glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);\n"
+      },
+      {
+        "startLine": 765,
+        "old": "",
+        "new": "              glActiveTexture(GL_TEXTURE0 + i);\n"
+      },
+      {
+        "startLine": 767,
+        "old": "              glActiveTexture(GL_TEXTURE0 + i);\n",
+        "new": ""
+      }
+    ],
+    "src/hle/gx/tev_shader_gen.cpp": [
+      {
+        "startLine": 23,
+        "old": "    vs << \"layout(location = 2) in vec2 vertexTexCoord;\\n\";\n",
+        "new": "    vs << \"layout(location = 12) in vec4 vertexColor1;\\n\";\n    for (int i = 0; i < 8; ++i) {\n        vs << \"layout(location = \" << i + 4 << \") in vec3 vertexTexCoord\" << i << \";\\n\";\n    }\n"
+      },
+      {
+        "startLine": 29,
+        "old": "        vs << \"out vec2 vTex\" << i << \";\\n\";\n",
+        "new": "        vs << \"out vec3 vTex\" << i << \";\\n\";\n"
+      },
+      {
+        "startLine": 31,
+        "old": "    vs << \"uniform mat4 uTexMtx[8];\\n\";\n",
+        "new": ""
+      },
+      {
+        "startLine": 42,
+        "old": "",
+        "new": "    vs << \"uniform int uTexGenColor[8];\\n\";\n"
+      },
+      {
+        "startLine": 54,
+        "old": "    int  diffusefunc = (ctrl >> 7) & 3;\n    int  attnfunc    = (ctrl >> 9) & 3;\n    int  lightmask   = ((ctrl >> 2) & 0xF) | (((ctrl >> 11) & 0xF) << 4);\n",
+        "new": ""
+      },
+      {
+        "startLine": 66,
+        "old": "    if (lit) {\n",
+        "new": "    if (lit || alit) {\n"
+      },
+      {
+        "startLine": 68,
+        "old": "        for (int i = 0; i < 8; ++i) {\n            if ((lightmask & (1 << i)) == 0) continue;\n            vec3 ldir; float attn;\n            if (attnfunc == 3) { // spot\n                ldir = uLightPos[i].xyz - pos;\n                float dist2 = dot(ldir, ldir);\n                float dist = sqrt(dist2);\n                ldir = ldir / dist;\n                attn = max(0.0, dot(ldir, uLightDir[i].xyz));\n                attn = max(0.0, uLightCosAtt[i].x + uLightCosAtt[i].y * attn +\n                                uLightCosAtt[i].z * attn * attn) /\n                       dot(uLightDistAtt[i].xyz, vec3(1.0, dist, dist2));\n            } else if (attnfunc == 1) { // specular\n                ldir = normalize(uLightPos[i].xyz - pos);\n                attn = (dot(_normal, ldir) >= 0.0)\n                           ? max(0.0, dot(_normal, uLightDir[i].xyz)) : 0.0;\n                vec3 cosAttn = uLightCosAtt[i].xyz;\n                vec3 distAttn = (diffusefunc == 0) ? uLightDistAtt[i].xyz\n                                                   : normalize(uLightDistAtt[i].xyz);\n                attn = max(0.0, dot(cosAttn, vec3(1.0, attn, attn * attn))) /\n                       dot(distAttn, vec3(1.0, attn, attn * attn));\n            } else { // none / directional\n                ldir = uLightPos[i].xyz - pos;\n                ldir = (length(ldir) == 0.0) ? _normal : normalize(ldir);\n                attn = 1.0;\n",
+        "new": "        for (int channel = 0; channel < 2; ++channel) {\n            int lighting_ctrl = channel == 0 ? ctrl : actrl;\n            if ((lighting_ctrl & 2) == 0) {\n                continue;\n"
+      },
+      {
+        "startLine": 94,
+        "old": "            float ndl = (diffusefunc == 0) ? 1.0\n                      : ((diffusefunc == 1) ? dot(ldir, _normal)\n                                            : max(0.0, dot(ldir, _normal)));\n            lacc.rgb += attn * ndl * uLightCol[i].rgb;\n            lacc.a   += attn * ndl * uLightCol[i].a;\n",
+        "new": "            int lighting_diffuse = (lighting_ctrl >> 7) & 3;\n            int lighting_attn = (lighting_ctrl >> 9) & 3;\n            int lighting_mask = ((lighting_ctrl >> 2) & 0xF) |\n                                (((lighting_ctrl >> 11) & 0xF) << 4);\n            for (int i = 0; i < 8; ++i) {\n                if ((lighting_mask & (1 << i)) == 0) {\n                    continue;\n                }\n                vec3 ldir; float attn;\n                if (lighting_attn == 3) {\n                    ldir = uLightPos[i].xyz - pos;\n                    float dist2 = dot(ldir, ldir);\n                    float dist = sqrt(dist2);\n                    ldir = ldir / dist;\n                    attn = max(0.0, dot(ldir, uLightDir[i].xyz));\n                    attn = max(0.0, uLightCosAtt[i].x + uLightCosAtt[i].y * attn +\n                                    uLightCosAtt[i].z * attn * attn) /\n                           dot(uLightDistAtt[i].xyz, vec3(1.0, dist, dist2));\n                } else if (lighting_attn == 1) {\n                    ldir = normalize(uLightPos[i].xyz - pos);\n                    attn = (dot(_normal, ldir) >= 0.0)\n                               ? max(0.0, dot(_normal, uLightDir[i].xyz)) : 0.0;\n                    vec3 cosAttn = uLightCosAtt[i].xyz;\n                    vec3 distAttn = (lighting_diffuse == 0) ? uLightDistAtt[i].xyz\n                                                           : normalize(uLightDistAtt[i].xyz);\n                    attn = max(0.0, dot(cosAttn, vec3(1.0, attn, attn * attn))) /\n                           dot(distAttn, vec3(1.0, attn, attn * attn));\n                } else {\n                    ldir = uLightPos[i].xyz - pos;\n                    ldir = (length(ldir) == 0.0) ? _normal : normalize(ldir);\n                    attn = 1.0;\n                }\n                float ndl = (lighting_diffuse == 0) ? 1.0\n                          : ((lighting_diffuse == 1) ? dot(ldir, _normal)\n                                                      : max(0.0, dot(ldir, _normal)));\n                if (channel == 0) {\n                    lacc.rgb += attn * ndl * uLightCol[i].rgb;\n                } else {\n                    lacc.a += attn * ndl * uLightCol[i].a;\n                }\n            }\n"
+      },
+      {
+        "startLine": 108,
+        "old": "    vs << \"    vColor1 = dolphin_chan(1, vertexPosition, vertexNormal, vertexColor);\\n\";\n",
+        "new": "    vs << \"    vColor1 = dolphin_chan(1, vertexPosition, vertexNormal, vertexColor1);\\n\";\n"
+      },
+      {
+        "startLine": 110,
+        "old": "        vs << \"    vTex\" << i << \" = (uTexMtx[\" << i\n           << \"] * vec4(vertexTexCoord, 0.0, 1.0)).xy;\\n\";\n",
+        "new": "        vs << \"    vTex\" << i << \" = uTexGenColor[\" << i\n           << \"] == 1 ? vec3(vColor0.rg, 1.0) : (uTexGenColor[\" << i\n           << \"] == 2 ? vec3(vColor1.rg, 1.0) : vertexTexCoord\" << i << \");\\n\";\n"
+      },
+      {
+        "startLine": 119,
+        "old": "    fs << \"in vec2 vTex0;\\n\";\n    fs << \"in vec2 vTex1;\\n\";\n    fs << \"in vec2 vTex2;\\n\";\n    fs << \"in vec2 vTex3;\\n\";\n    fs << \"in vec2 vTex4;\\n\";\n    fs << \"in vec2 vTex5;\\n\";\n    fs << \"in vec2 vTex6;\\n\";\n    fs << \"in vec2 vTex7;\\n\";\n",
+        "new": "    fs << \"in vec3 vTex0;\\n\";\n    fs << \"in vec3 vTex1;\\n\";\n    fs << \"in vec3 vTex2;\\n\";\n    fs << \"in vec3 vTex3;\\n\";\n    fs << \"in vec3 vTex4;\\n\";\n    fs << \"in vec3 vTex5;\\n\";\n    fs << \"in vec3 vTex6;\\n\";\n    fs << \"in vec3 vTex7;\\n\";\n"
+      },
+      {
+        "startLine": 133,
+        "old": "",
+        "new": "    fs << \"uniform vec2 uTexSampling[16];\\n\";\n"
+      },
+      {
+        "startLine": 151,
+        "old": "",
+        "new": "        fs << \"    {\\n\";\n"
+      },
+      {
+        "startLine": 157,
+        "old": "            fs << \"    texColor = texture(uTex\" << (int)stage.texMap << \", vTex\" << (int)stage.texCoord << \");\\n\";\n",
+        "new": "            fs << \"    vec3 sampleCoord = vec3(vTex\" << unsigned(stage.texCoord)\n               << \".xy * uTexSampling[\" << unsigned(stage.texCoord)\n               << \"] / uTexSampling[\" << unsigned(stage.texMap) + 8\n               << \"], vTex\" << unsigned(stage.texCoord) << \".z);\\n\";\n            fs << \"    texColor = sampleCoord.z == 0.0 ? texture(uTex\" << unsigned(stage.texMap)\n               << \", sampleCoord.xy) : textureProj(uTex\" << unsigned(stage.texMap)\n               << \", sampleCoord);\\n\";\n"
+      },
+      {
+        "startLine": 162,
+        "old": "",
+        "new": "        const auto swizzle = [&](unsigned table) {\n            const char channels[] = \"rgba\";\n            const uint32_t rg = state.bp[0xF6 + 2 * table];\n            const uint32_t ba = state.bp[0xF7 + 2 * table];\n            std::string result;\n            result += channels[rg & 3];\n            result += channels[(rg >> 2) & 3];\n            result += channels[ba & 3];\n            result += channels[(ba >> 2) & 3];\n            return result;\n        };\n        const uint32_t alpha = state.bp[0xC1 + 2 * i];\n        fs << \"    rasColor = rasColor.\" << swizzle(alpha & 3) << \";\\n\";\n        fs << \"    texColor = texColor.\" << swizzle((alpha >> 2) & 3) << \";\\n\";\n"
+      },
+      {
+        "startLine": 232,
+        "old": "",
+        "new": "\n        fs << \"    ivec3 cmpA = ivec3(round(cIn[0] * 255.0)) & ivec3(255);\\n\";\n        fs << \"    ivec3 cmpB = ivec3(round(cIn[1] * 255.0)) & ivec3(255);\\n\";\n        const auto compare = [&](unsigned mode, unsigned op, bool alpha) {\n            const char* relation = op ? \" == \" : \" > \";\n            if (mode == 3) {\n                if (alpha) {\n                    return std::string(\"((int(round(aIn[0] * 255.0)) & 255)\") + relation +\n                        \"(int(round(aIn[1] * 255.0)) & 255))\";\n                }\n                return std::string(op ? \"equal\" : \"greaterThan\") + \"(cmpA, cmpB)\";\n            }\n            const auto packed = [&](const char* value) {\n                std::string result = std::string(\"(\") + value + \".r\";\n                if (mode >= 1) {\n                    result += std::string(\" + (\") + value + \".g << 8)\";\n                }\n                if (mode >= 2) {\n                    result += std::string(\" + (\") + value + \".b << 16)\";\n                }\n                return result + \")\";\n            };\n            return \"(\" + packed(\"cmpA\") + relation + packed(\"cmpB\") + \")\";\n        };\n"
+      },
+      {
+        "startLine": 239,
+        "old": "        if (stage.colorOp == 0) { \n",
+        "new": "        if (stage.colorBias == 3) {\n            fs << \"    vec3 cmpC = vec3(ivec3(round(cIn[2] * 255.0)) & ivec3(255)) / 255.0;\\n\";\n            if (stage.colorScale == 3) {\n                fs << \"    cOut = cIn[3] + mix(vec3(0.0), cmpC, \"\n                   << compare(3, stage.colorOp, false) << \");\\n\";\n            } else {\n                fs << \"    cOut = cIn[3] + (\" << compare(stage.colorScale, stage.colorOp, false)\n                   << \" ? cmpC : vec3(0.0));\\n\";\n            }\n        } else if (stage.colorOp == 0) { \n"
+      },
+      {
+        "startLine": 247,
+        "old": "        if (stage.colorScale == 1) fs << \"    cOut *= 2.0;\\n\";\n        else if (stage.colorScale == 2) fs << \"    cOut *= 4.0;\\n\";\n        else if (stage.colorScale == 3) fs << \"    cOut *= 0.5;\\n\";\n",
+        "new": "        if (stage.colorBias != 3 && stage.colorScale == 1) fs << \"    cOut *= 2.0;\\n\";\n        else if (stage.colorBias != 3 && stage.colorScale == 2) fs << \"    cOut *= 4.0;\\n\";\n        else if (stage.colorBias != 3 && stage.colorScale == 3) fs << \"    cOut *= 0.5;\\n\";\n"
+      },
+      {
+        "startLine": 280,
+        "old": "        if (stage.alphaOp == 0) { \n",
+        "new": "        if (stage.alphaBias == 3) {\n            fs << \"    aOut = aIn[3] + (\" << compare(stage.alphaScale, stage.alphaOp, true)\n               << \" ? float(int(round(aIn[2] * 255.0)) & 255) / 255.0 : 0.0);\\n\";\n        } else if (stage.alphaOp == 0) { \n"
+      },
+      {
+        "startLine": 288,
+        "old": "        if (stage.alphaScale == 1) fs << \"    aOut *= 2.0;\\n\";\n        else if (stage.alphaScale == 2) fs << \"    aOut *= 4.0;\\n\";\n        else if (stage.alphaScale == 3) fs << \"    aOut *= 0.5;\\n\";\n",
+        "new": "        if (stage.alphaBias != 3 && stage.alphaScale == 1) fs << \"    aOut *= 2.0;\\n\";\n        else if (stage.alphaBias != 3 && stage.alphaScale == 2) fs << \"    aOut *= 4.0;\\n\";\n        else if (stage.alphaBias != 3 && stage.alphaScale == 3) fs << \"    aOut *= 0.5;\\n\";\n"
+      },
+      {
+        "startLine": 295,
+        "old": "",
+        "new": "        fs << \"    }\\n\";\n"
+      }
+    ],
+    "src/hle/texture_cache_gl.cpp": [
+      {
+        "startLine": 0,
+        "old": "",
+        "new": "#include <algorithm>\n#include <vector>\n#include \"stock_texture_observation.h\"\n"
+      },
+      {
+        "startLine": 117,
+        "old": "    if (cache.size() > 512)\n        clear();\n",
+        "new": "    if (cache.size() > 512) {\n        GLint active = 0, units = 0;\n        glGetIntegerv(GL_ACTIVE_TEXTURE, &active);\n        glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &units);\n        std::vector<GLuint> bound;\n        for (GLint unit = 0; unit < units; ++unit) {\n            glActiveTexture(GL_TEXTURE0 + unit);\n            GLint texture = 0;\n            glGetIntegerv(GL_TEXTURE_BINDING_2D, &texture);\n            bound.push_back(GLuint(texture));\n        }\n        glActiveTexture(active);\n        for (auto item = cache.begin(); item != cache.end();) {\n            if (std::find(bound.begin(), bound.end(), item->second) != bound.end()) {\n                ++item;\n            } else {\n                glDeleteTextures(1, &item->second);\n                item = cache.erase(item);\n            }\n        }\n    }\n"
+      },
+      {
+        "startLine": 121,
+        "old": "",
+        "new": "    openshsm::experiment::observe_texture(ctx, stage, hash, img);\n"
+      }
+    ]
+  },
+  "textureEvictionStage": {
+    "bytes": 15363,
+    "sha256": "07b4963265bc9a8561f12f1a08a98523ae6b0f2fcc614f7421c635d27b2836b5"
+  },
+  "textureLatePatch": [
+    "    Image img = decode_texture(ctx, stage);\n    openshsm::experiment::observe_texture(ctx, stage, hash, img);",
+    "    const auto source_before = openshsm::experiment::begin_texture_source(ctx, stage);\n    Image img = decode_texture(ctx, stage);\n    openshsm::experiment::observe_texture(ctx, stage, hash, img, source_before);"
+  ],
+  "textureHeader": {
+    "headerPatches": [
+      [
+        "#include <tuple>",
+        "#include <tuple>\n#include <chrono>\n#include \"stock_movie_capture_gate.h\"\n#include \"stock_texture_coherence.h\""
+      ],
+      [
+        "    static unsigned sequence = 0;",
+        "    static stock_movie_capture_gate::Gate gate(std::getenv(\"NWII_TEXTURE_CAPTURE_AFTER_MS\"));\n    if (!gate.valid) {\n        return;\n    }\n    if (gate.delay_us != 0) {\n        const auto now_us = std::chrono::duration_cast<std::chrono::microseconds>(\n            std::chrono::steady_clock::now().time_since_epoch()).count();\n        if (!gate.accept(uint64_t(now_us))) {\n            return;\n        }\n    }\n    static unsigned sequence = 0;"
+      ]
+    ],
+    "headerHelpers": "inline stock_movie_capture_gate::Gate& texture_observation_gate() {\n    static stock_movie_capture_gate::Gate value(std::getenv(\"NWII_TEXTURE_CAPTURE_AFTER_MS\"));\n    return value;\n}\ninline uint64_t texture_observation_host_us() {\n    return uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(\n        std::chrono::steady_clock::now().time_since_epoch()).count());\n}\ninline TextureSourceSample begin_texture_source(nwii::runtime::CPUContext& ctx,\n    const nwii::runtime::gx::TexStage& stage) {\n    if (!std::getenv(\"NWII_TEXTURE_OBSERVE\") || !std::getenv(\"NWII_TEXTURE_COHERENCE\")) {\n        return {};\n    }\n    static stock_movie_capture_gate::Gate gate(std::getenv(\"NWII_TEXTURE_CAPTURE_AFTER_MS\"));\n    const auto now = texture_observation_host_us();\n    if (!gate.accept(now) || stage.width == 0 || stage.height == 0 ||\n        stage.width > 1024 || stage.height > 1024) {\n        return {};\n    }\n    static unsigned samples = 0;\n    static uint64_t copied = 0;\n    const auto size = nwii::runtime::hle::texture_data_size(stage.width, stage.height, stage.format);\n    if (samples >= 128 || copied + size > 96 * 1024 * 1024) {\n        return {};\n    }\n    auto sample = sample_texture_source(ctx, stage.base_addr, size, now);\n    if (!sample.bytes.empty()) {\n        ++samples;\n        copied += sample.bytes.size();\n    }\n    return sample;\n}\n",
+    "headerCoherencePatches": [
+      [
+        "uint32_t hash, const Image& image) {",
+        "uint32_t hash, const Image& image, const TextureSourceSample& before = {}) {"
+      ],
+      [
+        "bytes_written + size + rgba_size + palette >",
+        "bytes_written + size + rgba_size + palette + before.bytes.size() >"
+      ],
+      [
+        "    data.write(reinterpret_cast<const char*>(raw), size);",
+        "    TextureSourceSample after;\n    if (!before.bytes.empty()) {\n        after = sample_texture_source(ctx, stage.base_addr, size, texture_observation_host_us());\n        if (after.bytes.empty()) {\n            return;\n        }\n        std::ofstream earlier(prefix + \".before.raw\", std::ios::binary);\n        std::ofstream coherence(prefix + \".coherence.txt\");\n        if (!earlier || !coherence) {\n            return;\n        }\n        earlier.write(reinterpret_cast<const char*>(before.bytes.data()), before.bytes.size());\n        const auto difference = compare_texture_sources(before, after);\n        coherence << before.host_us << ' ' << after.host_us << ' ' << before.hash << ' ' << after.hash\n            << ' ' << difference.comparable << ' ' << difference.changed << ' '\n            << difference.first << ' ' << difference.last << '\\n';\n        if (!earlier || !coherence) {\n            return;\n        }\n        bytes_written += before.bytes.size();\n        raw = after.bytes.data();\n    }\n    data.write(reinterpret_cast<const char*>(raw), size);"
+      ]
+    ]
+  },
+  "outputs": {
+    "src/hle/gx.cpp": {
+      "bytes": 18520,
+      "sha256": "71e63f48e31b7b714e12364cdb96d4aed155682aecdcc592eccf92093c13e460"
+    },
+    "src/hle/gx/fifo_parser.cpp": {
+      "bytes": 57031,
+      "sha256": "9799c648f5242169b5a398b17b72284ff29dd9640c978fa257ad23af7261fb6d"
+    },
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 39758,
+      "sha256": "3efcf70442ff3fcde31e072b2398a6f639f0736f0071c21fabe1e5fc8189d1a0"
+    },
+    "src/hle/gx/tev_shader_gen.cpp": {
+      "bytes": 18413,
+      "sha256": "94de2da371767dbf2012fc7ded2a0d6c7e9dd184cc780077ab46f206e131ad2e"
+    },
+    "src/hle/texture_cache_gl.cpp": {
+      "bytes": 15465,
+      "sha256": "71dc862dacf3af4ea2ccfed14ef39a31c485a548b144b9568c916949915de302"
+    },
+    "include/runtime/gx/fifo_parser.h": {
+      "bytes": 2025,
+      "sha256": "f00634b1ac81182fbc3d5ff2010428acf008a635a948aec2a4baf6021a617cd6"
+    },
+    "stock_texture_observation.h": {
+      "bytes": 6511,
+      "sha256": "f4a6d98812a63064f36b58ac119f6081b3d9f5a32423a7fd2e73125bb7429e3b"
+    },
+    "include/runtime/gx_state.h": {
+      "bytes": 3922,
+      "sha256": "f2f06b6bd5cdbc64293f9e728473bf5470b3d9903fa1693f16b56130b4a26cc7"
+    }
+  },
+  "strippedObjectSha256MacosArm64": {
+    "gx.cpp.o": "e0cefd57f2f4c42a725a8ff470656256a2cd1503cb23a28e4f0d9e14e919be90",
+    "fifo_parser.cpp.o": "a221a68223673f5bc55ecac494291aade6905f85cdb06d4b8e0ef07b4d3d6a38",
+    "renderer_gl.cpp.o": "c6a82460b4b7ed34121b2f4e938bafd41fd402be534973ce18856530e67c05e7",
+    "tev_shader_gen.cpp.o": "55f9b2700d27bbadd67c9f264aa3b2c0baa205ade0db2c0462413fda0cbba81a",
+    "texture_cache_gl.cpp.o": "257cc36c7812c3aa73d6a5a6c8d38a98719c3bb162f26d20cc5b36dbb0653f79"
+  },
+  "completionBatchOutputs": {
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 48182,
+      "sha256": "8db107f932acab4f8b1f5e2c90162a72511607e06a476b1e0be6518eb4bad1af"
+    },
+    "src/hle/gx/fifo_parser.cpp": {
+      "bytes": 57277,
+      "sha256": "ae78393bfacbf793d741a9070b317c8e589cb9fe1fa7629d5c9707da7617bac4"
+    },
+    "include/runtime/gx/fifo_parser.h": {
+      "bytes": 2216,
+      "sha256": "f541dfd693c501c41f1cff842f7e586cfb3d362c278e9b8d2279362c8c8d9c19"
+    }
+  },
+  "depthPersistenceOutputs": {
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 48368,
+      "sha256": "3d16620b18474b61552b858301dc5719a2b99b35dff1a386c0c124aa94029c45"
+    }
+  },
+  "wiiAddressOutputs": {
+    "src/hle/texture_cache_gl.cpp": {
+      "bytes": 15465,
+      "sha256": "50bf31f58d040140030dfb982e2b65b1dfbf6d446bd65c15acdbf17e204f84b0"
+    },
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 48368,
+      "sha256": "fc3150f72feb56a39914097e2abea7fab9e9a07c9a553497beee879b5e1bea41"
+    }
+  },
+  "indexedViewOutputs": {
+    "include/runtime/texture_cache_gl.h": {
+      "bytes": 4856,
+      "sha256": "907dcf137ba1c1e31b03604bf3c6e311e0de9c425b5d2ba5e03e72be5574208d"
+    },
+    "src/hle/texture_cache_gl.cpp": {
+      "bytes": 18138,
+      "sha256": "f8322cc61261e1d4be0f09857529c6d3371b6c935224cd13a49757c06fd57ea1"
+    },
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 55124,
+      "sha256": "42b9f8a0867ec9cdf89764c30ccb1d999f08459d6c343451347a86616b26a1c8"
+    }
+  },
+  "snapshotTimingOutputs": {
+    "src/hle/gx/fifo_parser.cpp": {
+      "bytes": 57538,
+      "sha256": "4101730513a6b4f18c2116a4dbbc25aaf8aa388c74c648b2704f61eda0ba3a9d"
+    },
+    "src/hle/gx.cpp": {
+      "bytes": 18616,
+      "sha256": "571d3ac406011c9cbbcf2a63eceb4ac11cca50d9dc73bc4ec3eacf4da13be311"
+    }
+  },
+  "vertexSizeOutputs": {
+    "src/hle/gx/fifo_parser.cpp": {
+      "bytes": 57925,
+      "sha256": "b009345cfcb6eab10b4070a466f33fab552e888a7602c0808bfe44c7bd0e35a7"
+    }
+  },
+  "commandWorkspaceOutputs": {
+    "src/hle/gx.cpp": {
+      "bytes": 18856,
+      "sha256": "8419b9afd458702a13f06d949dabc0996d6928aa720ca609986ba3fc012bad58"
+    }
+  },
+  "profileWindowOutputs": {
+    "src/hle/gx.cpp": {
+      "bytes": 19351,
+      "sha256": "4646ffbf1b59e7af3e1605bd9f56e323e4d13670deb57ef76620caa459797b6d"
+    }
+  },
+  "vertexHotpathOutputs": {
+    "src/hle/gx/renderer_gl.cpp": {
+      "bytes": 55466,
+      "sha256": "c81a1f380a94d9147259059be86a4221ef310bedd4dfd18310c7ab12fddfad5b"
+    }
+  }
+}

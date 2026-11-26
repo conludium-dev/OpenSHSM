@@ -1,0 +1,50 @@
+    extern uint64_t g_stat_frames;
+    auto reset_completion = [&]() {
+        bus.write32(0xCC00100A, 0x0F);
+        hw::pi_intsr = 0;
+        calls = 0;
+        expected_before = {0};
+        gx::g_state.frame_ready = false;
+    };
+    reset_completion();
+    auto frames = g_stat_frames;
+    append(0x45, 2);
+    ProcessGXFifo();
+    assert(calls == 1 && hw::g_pe_sr.load() == 8);
+    assert(!gx::g_state.frame_ready && g_stat_frames == frames);
+
+    reset_completion();
+    append(0x52, 0x4000);
+    append(0x45, 2);
+    ProcessGXFifo();
+    assert(gx::g_state.frame_ready && g_stat_frames == frames + 1);
+    assert(calls == 0 && hw::g_pe_sr.load() == 0);
+    gx::g_state.frame_ready = false;
+    ProcessGXFifo();
+    assert(calls == 1 && hw::g_pe_sr.load() == 8);
+    assert(!gx::g_state.frame_ready && g_stat_frames == frames + 1);
+
+    reset_completion();
+    frames = g_stat_frames;
+    append(0x52, 0x4000);
+    append(0x52, 0x4000);
+    append(0x48, 0xABCD);
+    ProcessGXFifo();
+    assert(gx::g_state.frame_ready && g_stat_frames == frames + 1);
+    assert(calls == 0 && hw::g_pe_sr.load() == 0);
+    gx::g_state.frame_ready = false;
+    ProcessGXFifo();
+    assert(calls == 1 && hw::g_pe_sr.load() == 4);
+    assert(bus.read32(0xCC00100E) == 0xABCD);
+    assert(!gx::g_state.frame_ready && g_stat_frames == frames + 1);
+
+    reset_completion();
+    frames = g_stat_frames;
+    append(0x52, 0);
+    append(0x47, 0x5678);
+    ProcessGXFifo();
+    assert(calls == 1 && hw::g_pe_sr.load() == 0);
+    assert(bus.read32(0xCC00100E) == 0x5678);
+    assert(!gx::g_state.frame_ready && g_stat_frames == frames);
+    assert(glGetError() == GL_NO_ERROR);
+    std::puts("COMPLETED_COPY_READY_STATS_DEFERRED_PE_REAL_GL_PASS4");

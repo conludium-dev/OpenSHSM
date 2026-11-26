@@ -1,0 +1,15 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "outputs": {
+    "include/input/input_manager.h": {
+      "bytes": 1321,
+      "sha256": "57fb5ff4cd5fba1f358b7550dc38d1b077157fa106a335c2f595875e5f0cc8a9"
+    },
+    "src/input/input_manager.cpp": {
+      "bytes": 2968,
+      "sha256": "df4a23c46ad98c065d33ae3e344918f889656586f182a14b1d20394f532b9119"
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "observerEdits": [
+    {
+      "startLine": 0,
+      "old": "",
+      "new": "#include \"stock_scheduler_observation.h\"\n#include \"stock_cache_irq_observation.h\"\n#include \"stock_context_observation.h\"\n#include <sstream>\n"
+    },
+    {
+      "startLine": 705,
+      "old": "",
+      "new": "  stock_loading_observation::observe_context(ctx, 0, c);\n  openshsm::experiment::observe_cache_irq(ctx, 0, c);\n"
+    },
+    {
+      "startLine": 729,
+      "old": "  for (int i = 0; i < 32; i++) {\n    uint64_t d;\n    std::memcpy(&d, &ctx.fpr[i], 8);\n    ctx.mmu.write64(c + 0x90 + i * 8, d);\n  }\n  ctx.mmu.write32(c + 0x194, ctx.fpscr);\n",
+      "new": ""
+    },
+    {
+      "startLine": 739,
+      "old": "  for (int i = 0; i < 32; i++) {\n    uint64_t d;\n    std::memcpy(&d, &ctx.ps1[i], 8);\n    ctx.mmu.write64(c + 0x1C8 + i * 8, d);\n  }\n",
+      "new": "  openshsm::experiment::observe_cache_irq(ctx, 1, c);\n"
+    },
+    {
+      "startLine": 751,
+      "old": "",
+      "new": "  stock_loading_observation::observe_context(ctx, 2, c);\n  openshsm::experiment::observe_cache_irq(ctx, 2, c);\n"
+    },
+    {
+      "startLine": 764,
+      "old": "  for (int i = 0; i < 32; i++) {\n    uint64_t d = ctx.mmu.read64(c + 0x90 + i * 8);\n    std::memcpy(&ctx.fpr[i], &d, 8);\n  }\n  ctx.fpscr = ctx.mmu.read32(c + 0x194);\n",
+      "new": ""
+    },
+    {
+      "startLine": 771,
+      "old": "  for (int i = 0; i < 32; i++) {\n    uint64_t d = ctx.mmu.read64(c + 0x1C8 + i * 8);\n    std::memcpy(&ctx.ps1[i], &d, 8);\n  }\n",
+      "new": ""
+    },
+    {
+      "startLine": 776,
+      "old": "  ctx.msr = ctx.mmu.read32(c + 0x19C); \n",
+      "new": "  ctx.msr = ctx.mmu.read32(c + 0x19C);\n  stock_loading_observation::observe_context(ctx, 3, c);\n  openshsm::experiment::observe_cache_irq(ctx, 3, c); \n"
+    },
+    {
+      "startLine": 790,
+      "old": "  if (std::getenv(\"NWII_SAMPLE\")) {\n",
+      "new": "  static const bool sample_enabled = std::getenv(\"NWII_SAMPLE\") != nullptr;\n  if (sample_enabled) {\n"
+    },
+    {
+      "startLine": 819,
+      "old": "      if ((hits++ % 200000) == 0)\n",
+      "new": "      if ((hits++ % 200000) == 0) {\n        {\n            std::ostringstream line;\n            line << \"[LoopStack] pc=0x\" << std::hex << ctx.pc << \" lr=0x\" << ctx.lr << \" frames=\";\n            uint32_t frame = ctx.gpr[1];\n            for (unsigned i = 0; i < 16; ++i) {\n                const uint32_t physical = frame & 0x1FFFFFFF;\n                const bool ram = (physical >= 0x4000 && physical <= 0x017FFFF8)\n                    || (physical >= 0x10000000 && physical <= 0x13FFFFF8);\n                if (!ram || (frame & 3)) {\n                    break;\n                }\n                const uint32_t previous = ctx.mmu.read32(frame);\n                line << \" \" << frame << \":\" << ctx.mmu.read32(frame + 4);\n                if (previous <= frame) {\n                    break;\n                }\n                frame = previous;\n            }\n            auto& bus = MMIODispatcher::get();\n            line << \" cp=\";\n            for (uint32_t address : {0xCC000000u, 0xCC000002u, 0xCC000030u,\n                    0xCC000032u, 0xCC000034u, 0xCC000036u, 0xCC000038u,\n                    0xCC00003Au, 0xCC00003Cu, 0xCC00003Eu}) {\n                line << \" \" << bus.read32(address);\n            }\n            line << \"\\n\";\n            std::cout << line.str();\n        }\n        if (const char *peek = std::getenv(\"NWII_PEEK\")) {\n            char *tail = nullptr;\n            const uint32_t address = (uint32_t)std::strtoul(peek, &tail, 16);\n            const unsigned words = tail && *tail == ',' ? (unsigned)std::strtoul(tail + 1, nullptr, 10) : 4;\n            const uint32_t physical = address & 0x3FFFFFFF;\n            const bool ram = (physical >= 0x4000 && physical <= 0x01800000 - words * 4)\n                || (physical >= 0x10000000 && physical <= 0x14000000 - words * 4);\n            if (words >= 1 && words <= 64 && !(address & 3) && ram) {\n                std::cout << \"[LoopPeek] pc=0x\" << std::hex << ctx.pc\n                          << \" address=0x\" << address << \" words=\";\n                for (unsigned i = 0; i < words; ++i) {\n                    std::cout << \" \" << ctx.mmu.read32(address + i * 4);\n                }\n                std::cout << std::dec << \"\\n\";\n            }\n        }\n        if (std::getenv(\"NWII_LOOPCHAIN\")) {\n            uint32_t node = ctx.gpr[6];\n            uint32_t seen[64] = {};\n            unsigned count = 0;\n            const char *root_env = std::getenv(\"NWII_LOOPROOT\");\n            if (root_env) {\n                const uint32_t root = (uint32_t)std::strtoul(root_env, nullptr, 16);\n                const uint32_t physical = root & 0x3FFFFFFF;\n                if (!(root & 3) && ((physical >= 0x4000 && physical <= 0x017FFFFC)\n                    || (physical >= 0x10000000 && physical <= 0x13FFFFFC))) {\n                    node = ctx.mmu.read32(root);\n                    std::cout << \"[LoopRoot] addr=0x\" << std::hex << root\n                              << \" head=0x\" << node << \" r6=0x\" << ctx.gpr[6]\n                              << \" r13=0x\" << ctx.gpr[13] << \"\\n\";\n                }\n            }\n            std::cout << \"[LoopChain] pc=0x\" << std::hex << ctx.pc\n                      << \" lr=0x\" << ctx.lr << \" r4=0x\" << ctx.gpr[4]\n                      << \" r5=0x\" << ctx.gpr[5] << \" r6=0x\" << node << \"\\n\";\n            while (node && count < 64) {\n                const uint32_t physical = node & 0x1FFFFFFF;\n                const bool ram = (physical < 0x01800000 && physical <= 0x017FFFF0)\n                    || (physical >= 0x10000000 && physical <= 0x13FFFFF0);\n                if (!ram || (node & 3)) {\n                    std::cout << \"[LoopChain] invalid=0x\" << node << \"\\n\";\n                    break;\n                }\n                bool repeated = false;\n                for (unsigned i = 0; i < count; ++i) {\n                    if (seen[i] == node) {\n                        repeated = true;\n                    }\n                }\n                if (repeated) {\n                    std::cout << \"[LoopChain] cycle=0x\" << node << \"\\n\";\n                    break;\n                }\n                seen[count++] = node;\n                const uint32_t next = ctx.mmu.read32(node);\n                std::cout << \"[LoopChain] node=0x\" << node << \" next=0x\" << next\n                          << \" prev=0x\" << ctx.mmu.read32(node + 4)\n                          << \" size=0x\" << ctx.mmu.read32(node + 8)\n                          << \" flags=0x\" << ctx.mmu.read32(node + 12) << \"\\n\";\n                node = next;\n            }\n            std::cout << \"[LoopChain] count=\" << std::dec << count\n                      << \" terminal=0x\" << std::hex << node << std::dec << \"\\n\";\n        }\n"
+    },
+    {
+      "startLine": 825,
+      "old": "",
+      "new": "      }\n"
+    },
+    {
+      "startLine": 866,
+      "old": "",
+      "new": "    stock_loading_observation::observe_context(ctx, 1, ctx.dispatch_saved_ctx);\n"
+    },
+    {
+      "startLine": 867,
+      "old": "      uint32_t current_thread = ctx.mmu.read32(0x800000E4);\n      if (current_thread != 0 && current_thread != ctx.dispatch_saved_ctx) {\n        ctx.mmu.write32(0x800000D4, current_thread);\n      } else {\n        ctx.mmu.write32(0x800000D4, ctx.dispatch_saved_ctx);\n      }\n      ctx.dispatch_saved_ctx = 0;\n",
+      "new": "        if (Config::get().game_profile.ext_interrupt_dispatch != 0) {\n            uint32_t current_thread = ctx.mmu.read32(0x800000E4);\n            if (current_thread != 0 && current_thread != ctx.dispatch_saved_ctx) {\n                ctx.mmu.write32(0x800000D4, current_thread);\n            } else {\n                ctx.mmu.write32(0x800000D4, ctx.dispatch_saved_ctx);\n            }\n        }\n        ctx.dispatch_saved_ctx = 0;\n"
+    },
+    {
+      "startLine": 1074,
+      "old": "      {\n          static uint32_t dec_same_pc_count = 0;\n          static uint32_t dec_last_pc = 0;\n          if (ctx.pc == dec_last_pc) {\n              dec_same_pc_count++;\n          } else {\n              dec_same_pc_count = 0;\n              dec_last_pc = ctx.pc;\n          }\n\n          if (dec_same_pc_count == 64) {\n              dec_same_pc_count = 0;\n              if (ctx.gpr[13] != 0) {\n                  uint64_t now_tb = ctx.read_timebase();\n                  uint32_t now_hi = (uint32_t)(now_tb >> 32);\n                  uint32_t now_lo = (uint32_t)(now_tb & 0xFFFFFFFF);\n                  uint32_t base = ctx.gpr[13];\n                  for (int i = 0; i < 512; i++) {\n                      uint32_t addr = base - (uint32_t)(i * 4);\n                      if (addr < 0x80000000u || addr > 0x81FFFFFFu) continue;\n                      uint32_t handler = ctx.mmu.read32(addr + 0x18);\n                      if (handler < 0x80000000u || handler >= 0x82000000u) continue;\n                      uint32_t fire_hi = ctx.mmu.read32(addr + 0x08);\n                      uint32_t fire_lo = ctx.mmu.read32(addr + 0x0C);\n                      if (fire_hi == 0 && fire_lo == 0) continue;\n                      if (fire_hi < now_hi || (fire_hi == now_hi && fire_lo <= now_lo))\n                          continue;\n                      ctx.mmu.write32(addr + 0x08, now_hi);\n                      ctx.mmu.write32(addr + 0x0C, now_lo);\n                      static uint32_t forced_count = 0;\n                      if ((forced_count++ % 32) == 0)\n                          std::cout << \"[HLE DEC] force-expired alarm 0x\"\n                                    << std::hex << addr << \" handler=0x\"\n                                    << handler << std::dec << \"\\n\";\n                  }\n              }\n              return false;\n          }\n      }\n\n      \n",
+      "new": ""
+    },
+    {
+      "startLine": 1117,
+      "old": "",
+      "new": "          stock_scheduler_observation::observe(ctx);\n"
+    },
+    {
+      "startLine": 1293,
+      "old": "",
+      "new": "              else if (active_ints & 0x00000200) { os_intr = 18; bit_to_clear = 0x00000200; } \n"
+    },
+    {
+      "startLine": 1294,
+      "old": "              else if (active_ints & 0x00000200) { os_intr = 18; bit_to_clear = 0x00000200; } \n",
+      "new": ""
+    }
+  ],
+  "patches": {
+    "decEeGate": [
+      "if (ctx.dec_expired() && (ctx.msr & 0x8000) && !ctx.in_callback) {",
+      "if ((ctx.msr & 0x8000) && !ctx.in_callback && ctx.dec_expired()) {"
+    ],
+    "viBusyLatch": [
+      "!(nwii::runtime::hw::pi_intsr & 0x100) &&\n                      (c.dispatch_saved_ctx == 0 || c.mmu.read32(0x800000E4) == 0)",
+      "!(nwii::runtime::hw::pi_intsr & 0x100)"
+    ],
+    "hardwareWhileCallback": [
+      "  if (ctx.in_callback) {\n    if (std::getenv(\"NWII_SAMPLE\") && (nwii::runtime::hw::pi_intsr & 0x4000)) {\n        static uint64_t n = 0;\n        if ((n++ % 100000) == 0)\n            std::cout << \"[IPC] irq pending but in_callback pc=0x\" << std::hex\n                      << ctx.pc << \" lr=0x\" << ctx.lr << \" depth=\"\n                      << std::dec << ctx.callback_depth << \"\\n\";\n    }\n    return false;\n  }\n\n  // Periodically raise VI (PI_INTSR bit 8 = 0x100, Dolphin INT_CAUSE_VI)\n\n  \n\n  \n\n  \n\n  \n\n  \n  \n  {\n      static bool vi_registered = false;\n      if (!vi_registered) {\n          vi_registered = true;\n\n          \n          uint64_t vi_period = ctx.tb_freq / 60;\n          if (vi_period == 0) vi_period = 500000;\n          nwii::runtime::EventScheduler::get().schedule_recurring(\n              vi_period, [](CPUContext& c, uint64_t) {\n\n                  \n                  \n                  if ((nwii::runtime::hw::pi_intmr & 0x100) && !c.in_callback &&\n                      !(nwii::runtime::hw::pi_intsr & 0x100)) {\n                      nwii::runtime::hw::vi_trigger_interrupt();\n                  }\n              });\n      }\n      nwii::runtime::EventScheduler::get().advance(ctx, ctx.read_timebase());\n  }\n",
+      "  // Periodically raise VI (PI_INTSR bit 8 = 0x100, Dolphin INT_CAUSE_VI)\n\n  \n\n  \n\n  \n\n  \n\n  \n  \n  {\n      static bool vi_registered = false;\n      if (!vi_registered) {\n          vi_registered = true;\n\n          \n          uint64_t vi_period = ctx.tb_freq / 60;\n          if (vi_period == 0) vi_period = 500000;\n          nwii::runtime::EventScheduler::get().schedule_recurring(\n              vi_period, [](CPUContext& c, uint64_t) {\n\n                  \n                  \n                  if ((nwii::runtime::hw::pi_intmr & 0x100) && !c.in_callback &&\n                      !(nwii::runtime::hw::pi_intsr & 0x100)) {\n                      nwii::runtime::hw::vi_trigger_interrupt();\n                  }\n              });\n      }\n      nwii::runtime::EventScheduler::get().advance(ctx, ctx.read_timebase());\n  }\n  if (ctx.in_callback) {\n    if (std::getenv(\"NWII_SAMPLE\") && (nwii::runtime::hw::pi_intsr & 0x4000)) {\n        static uint64_t n = 0;\n        if ((n++ % 100000) == 0)\n            std::cout << \"[IPC] irq pending but in_callback pc=0x\" << std::hex\n                      << ctx.pc << \" lr=0x\" << ctx.lr << \" depth=\"\n                      << std::dec << ctx.callback_depth << \"\\n\";\n    }\n    return false;\n  }\n\n"
+    ],
+    "callbackSampleCache": [
+      "    if (std::getenv(\"NWII_SAMPLE\") && (nwii::runtime::hw::pi_intsr & 0x4000)) {",
+      "    if (sample_enabled && (nwii::runtime::hw::pi_intsr & 0x4000)) {"
+    ]
+  },
+  "stages": {
+    "observer": {
+      "bytes": 50706,
+      "sha256": "e33741734334df55bd4a8dd81365d714c3ccff1a3883ab26930040d6b586b8af"
+    },
+    "decEeGate": {
+      "bytes": 50706,
+      "sha256": "60dd4bccdbcd2b37046f53de45f40b2c7b05def7b7fdcbc04eddb9389dc679b7"
+    },
+    "viBusyLatch": {
+      "bytes": 50620,
+      "sha256": "b44f1de5e0250d0a9785f240bef8e637dc608ba89544a16a72458914f9d12a1c"
+    },
+    "hardwareWhileCallback": {
+      "bytes": 50620,
+      "sha256": "c8ec4e67fe8b9012f94aad7045221b218c1b3b608a6077f67b2b1b53373bdeeb"
+    },
+    "callbackSampleCache": {
+      "bytes": 50608,
+      "sha256": "698b4b09830e5c5ee659d7cbc7a11db50c62870f183e917c13ce032b6f670723"
+    }
+  },
+  "strippedObjectSha256MacosArm64": "7ac0d70dc1d24c7263d715da19bb6257f7ebec1a66f633a9e4942fcb52aa7059"
+}

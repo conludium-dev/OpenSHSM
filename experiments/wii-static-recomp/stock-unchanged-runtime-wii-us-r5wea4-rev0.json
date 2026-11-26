@@ -1,0 +1,205 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "units": [
+    {
+      "source": "src/hle/ax.cpp",
+      "member": "ax.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 1300,
+        "sha256": "e1ecafba1d0fdfcc8ac18dcf87f5df2dab26218b7e1480af1acb07978a903e6b"
+      },
+      "strippedObjectSha256MacosArm64": "0f69de692d38f4681001f7f0a541b47216caa96337f43d817623a6a7670a7440"
+    },
+    {
+      "source": "src/core/config.cpp",
+      "member": "config.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 5925,
+        "sha256": "62f3ca9073fd74e2381117430228bb0b33dedd38c5ef4ef22c1b7d6fe34426e6"
+      },
+      "strippedObjectSha256MacosArm64": "85173fb99ca0fde76fcb82c2ac9000c26d515f06bf5061d709a9c40f5f6e09d6"
+    },
+    {
+      "source": "src/hle/devices/di_device.cpp",
+      "member": "di_device.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 6713,
+        "sha256": "04494f29bb5dd65392e4b002b3df6b8573bb4d0a57bd8602f2017e4aee82bfcb"
+      },
+      "strippedObjectSha256MacosArm64": "62ed35342f93e6a766633978158adca0dfa4d1e410a923a6c0e7e304e443bc31"
+    },
+    {
+      "source": "src/hle/dvd.cpp",
+      "member": "dvd.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2292,
+        "sha256": "42d458816966433915d0fe6f167f94aa9566695567d8242d8c37c62eeb57cfb8"
+      },
+      "strippedObjectSha256MacosArm64": "b2e3d99df345f8c5e86876700c4b3ffc801219ac022f13f0aaf145c0096a9d7b"
+    },
+    {
+      "source": "src/platform/gc_platform.cpp",
+      "member": "gc_platform.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 1209,
+        "sha256": "ff6cb43d7d93a38d716ac0c7025a5bfedf374fef75a2ed4cb58f16f615d0f508"
+      },
+      "strippedObjectSha256MacosArm64": "43a086b5e33da2f965a81f2eaff10bd2292c94fa94fd997e7d6da8d9767efeb5"
+    },
+    {
+      "source": "src/hle/gx/gx_matrix_seam.cpp",
+      "member": "gx_matrix_seam.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2908,
+        "sha256": "33fb9491a518aac4e331ab90154616266a75740766874eff774f87ecd68bae09"
+      },
+      "strippedObjectSha256MacosArm64": "53dfca5595be967425f26341601bfd01f17197a8daa846440a485224bd1e91ca"
+    },
+    {
+      "source": "src/hle/gx/gx_state_seam.cpp",
+      "member": "gx_state_seam.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 3858,
+        "sha256": "583dc0cbd36867f3c1c75e5dfa553840f6688e22b20c9592dacbaf6cd615ba4c"
+      },
+      "strippedObjectSha256MacosArm64": "23559b31cec80c98cd25db9449b51e4b69c21fb2033d56c82e7add7ca40b034e"
+    },
+    {
+      "source": "src/hw/hw_all.cpp",
+      "member": "hw_all.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2428,
+        "sha256": "99e5a4a012df8ed930b1eb8f287adc2d5eb96c507ceffc0e277b7a514b5f762f"
+      },
+      "strippedObjectSha256MacosArm64": "7d83dc79e7872b019029702522d55c05d243f4c6529246f0f8923477f37751f8"
+    },
+    {
+      "source": "src/hw/hw_di.cpp",
+      "member": "hw_di.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 6978,
+        "sha256": "47f2af2a926c98beb4c7816ade6c02aa37715a8d1cd294f3329270775341620e"
+      },
+      "strippedObjectSha256MacosArm64": "c43fb4b24e58f9c129a453403b4dec1fc96d65f2394f41a8e8f61b730ed0d815"
+    },
+    {
+      "source": "src/hw/hw_pe.cpp",
+      "member": "hw_pe.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2437,
+        "sha256": "3a8fc001c0e749ae48b02533afed2e03f03509ff34383ec64525a11ecd9238e7"
+      },
+      "strippedObjectSha256MacosArm64": "7d90c557c142593316e3702564032a616039b22cd2daaf5058847a7f8569a4a3"
+    },
+    {
+      "source": "src/hw/hw_vi.cpp",
+      "member": "hw_vi.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2928,
+        "sha256": "3ef5026e007ab1277e64645bc9584c73850e2c079110115bed4bc6a748015c60"
+      },
+      "strippedObjectSha256MacosArm64": "b355974639cfd927bf6d9a55052a271490a935d814b137968a7f34190455061e"
+    },
+    {
+      "source": "src/core/loader.cpp",
+      "member": "loader.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 8203,
+        "sha256": "5966945e8b60859cb6112e1c06d76ee7856828908b952044cee90dc786bad883"
+      },
+      "strippedObjectSha256MacosArm64": "e003d56d6c8a8020ef95add1520ee4a8f83eca36e8c7da40755a197ff9e4bd10"
+    },
+    {
+      "source": "src/hle/memory.cpp",
+      "member": "memory.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 5609,
+        "sha256": "f27f976fe75e5216b4fc9f039c3fadd7c3515697c29295f6da42315dde62fe50"
+      },
+      "strippedObjectSha256MacosArm64": "40488dfc5d819300ce0bd4ed22e7338250efdd4086e767703a7b8c71b7e1a240"
+    },
+    {
+      "source": "src/hw/mmio_dispatcher.cpp",
+      "member": "mmio_dispatcher.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 2508,
+        "sha256": "38bb97cafbc661382fffd05e9bc35b81e235c1ca6aa493598cbbe4b983c20ba2"
+      },
+      "strippedObjectSha256MacosArm64": "642c900d724b66a1fefc1fc71bc73a3e31a502e4461eadf04b899b33fc4a3563"
+    },
+    {
+      "source": "src/hle/pad.cpp",
+      "member": "pad.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 3061,
+        "sha256": "4dc9e7d139bc77fb28a76c96fb46535d046e64300a4aff225119bb8e08e6b66c"
+      },
+      "strippedObjectSha256MacosArm64": "561d6f43369a28c285a2288ed311645c2cc510f4381affb1472f98cc995930cf"
+    },
+    {
+      "source": "src/input/sources/phone_source.cpp",
+      "member": "phone_source.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 3117,
+        "sha256": "8462fe830b8c7fd04966179695ee6ab7377100e5f080da2d8146c33f9364804c"
+      },
+      "strippedObjectSha256MacosArm64": "3f2484d9ed65eb8b918b7e390b9b6bfed2505b30f4df81dfb46b64ee1b58794f"
+    },
+    {
+      "source": "src/platform/platform.cpp",
+      "member": "platform.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 648,
+        "sha256": "17db194bb2d2eba381e89c5a274b48ae03c2c7a0ad6aa2be297c8041e43002bb"
+      },
+      "strippedObjectSha256MacosArm64": "f2c82ea8b1257fd098de5d7cf2e67cdcff649dd96c77ad4c21e5c05058d2b2d5"
+    },
+    {
+      "source": "src/hle/gx/renderer_factory.cpp",
+      "member": "renderer_factory.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 412,
+        "sha256": "2b6e53442bd8a0d8a312f2022143d5fe1217d85f4979d9d29d6e9ebf01bb543f"
+      },
+      "strippedObjectSha256MacosArm64": "b5fb3b4bcb793bd47d06cea0c10428279adb0d1f1c8a88f9e7ecf231ebe2643a"
+    },
+    {
+      "source": "src/hle/gx/renderer_metal.mm",
+      "member": "renderer_metal.mm.o",
+      "sourceFingerprint": {
+        "bytes": 1002,
+        "sha256": "d2ac236fdc6209d7bc3cadacd5946b07832a7336bc962db435a166b3311540f1"
+      },
+      "strippedObjectSha256MacosArm64": "6a4e96e4fd1b3e6d73ce30decf4544d03bccd9fb7179e20e78f8bcd9ab0f46f8"
+    },
+    {
+      "source": "src/hle/devices/stm_device.cpp",
+      "member": "stm_device.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 873,
+        "sha256": "ae8b7050021e99d5981575211865831275e545865606a7794a4bb69c501c9f6b"
+      },
+      "strippedObjectSha256MacosArm64": "5a6c72c7869e6c55824f1266e4a0b0ad3131b25a949242197466392b496ff4ac"
+    },
+    {
+      "source": "src/hle/devices/usb_device.cpp",
+      "member": "usb_device.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 6344,
+        "sha256": "53897cd94225cfb37988e860ae1084c5e6779ebbcda808875af31d2b34b3db3f"
+      },
+      "strippedObjectSha256MacosArm64": "d6ab58f9b985640e7974ca375179dce7d530359d5441294599e423f3d97ac2f0"
+    },
+    {
+      "source": "src/hle/virtual_disc.cpp",
+      "member": "virtual_disc.cpp.o",
+      "sourceFingerprint": {
+        "bytes": 6488,
+        "sha256": "8fc4b3646f2070083547be61309735bc7bb79cb33221283d0a562309f36a4c34"
+      },
+      "strippedObjectSha256MacosArm64": "978df6c51f15353bc61a3b71185e66d5b10800ec6f970b80d38912061d126a23"
+    }
+  ]
+}

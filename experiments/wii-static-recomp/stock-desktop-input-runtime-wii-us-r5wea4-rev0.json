@@ -1,0 +1,51 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-pause-input-runtime-wii-us-r5wea4-rev0.json",
+  "files": {
+    "mouse_keyboard_source.cpp": {
+      "bytes": 4796,
+      "sha256": "48b330e30712429e3f6300971ec9f1d4dfcfda36314f51e1edccd9db68343026"
+    },
+    "gamepad_source.cpp": {
+      "bytes": 7777,
+      "sha256": "dbff0c61a0ae1c0cadb62b605eb3ca46858b4b62a4bef5a44f8c2ef1728ba5f1"
+    },
+    "src/input/input_manager.cpp": {
+      "bytes": 3202,
+      "sha256": "a9b197c07a0b68f9bd0cf51f705281dabec4b339a10773c8ce88227bec8aae00"
+    },
+    "include/input/input_manager.h": {
+      "bytes": 1321,
+      "sha256": "57fb5ff4cd5fba1f358b7550dc38d1b077157fa106a335c2f595875e5f0cc8a9"
+    }
+  },
+  "motionOutputs": {
+    "mouse_keyboard_source.cpp": {
+      "bytes": 5497,
+      "sha256": "c5b486d9a1f5749268270bdb56293af92296aed8f4ef633646a11bb1e53e7283"
+    },
+    "gamepad_source.cpp": {
+      "bytes": 9479,
+      "sha256": "96942fb6a92e624561c013b4fa67256c475e23d62324a76c2bec5f4de9c3891b"
+    }
+  },
+  "lookOutputs": {
+    "include/input/input_manager.h": {
+      "bytes": 1405,
+      "sha256": "ea1d1553d616b4503cf60d5c56a832a93b68af50306b71bf7390dd3c16e76679"
+    },
+    "src/input/input_manager.cpp": {
+      "bytes": 4747,
+      "sha256": "752636b743591c650915b12ccaa800b50a7655ced5f734f141bafae4be33838a"
+    },
+    "mouse_keyboard_source.cpp": {
+      "bytes": 7696,
+      "sha256": "d41fd016610fc2261b7ae0817bd13ebab59f5e53f012ea7bad7c690c1d999afb"
+    },
+    "gamepad_source.cpp": {
+      "bytes": 13806,
+      "sha256": "bf77519381b36413c20bf585f4fe26fec070511e62902c84289c6d7adbc07dc5"
+    }
+  }
+}

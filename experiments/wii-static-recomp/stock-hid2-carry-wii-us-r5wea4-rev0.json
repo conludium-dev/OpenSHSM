@@ -1,0 +1,461 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-optimized-wii-us-r5wea4-rev0.json",
+  "transformations": [
+    "stock_hid2_guest_patch.lower_hid2",
+    "carry_lowering.lower(stock=True)"
+  ],
+  "units": {
+    "output_0.cpp": {
+      "bytes": 326,
+      "sha256": "3fd9d2a20ba69c89ba7396f0b1f76ac34abc06ef7b317b3e75406f5484fe8c77",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_1.cpp": {
+      "bytes": 3852417,
+      "sha256": "597f513cf2960d9f130e751edb62345a8513baf39756b543a0d8f95e59c787fd",
+      "hid2Sites": 0,
+      "carrySites": 36
+    },
+    "output_2.cpp": {
+      "bytes": 3888319,
+      "sha256": "c7f906c95d69d354aeb1a76f2c031a0f4db2e009a513e1d2ac435732c0871ea4",
+      "hid2Sites": 0,
+      "carrySites": 38
+    },
+    "output_3.cpp": {
+      "bytes": 3856540,
+      "sha256": "7b8d5f111388ff7122aeac4636503848e8b6c8cbe849984d469a09dd41dbb982",
+      "hid2Sites": 0,
+      "carrySites": 46
+    },
+    "output_4.cpp": {
+      "bytes": 3895773,
+      "sha256": "7231966bb4da8c264d00902d8cdc9b28a02bf2d76eda9766e752527b0f5c0a86",
+      "hid2Sites": 0,
+      "carrySites": 53
+    },
+    "output_5.cpp": {
+      "bytes": 3877321,
+      "sha256": "888ef35660b7eb7dc0cce9e669800bf961207f2bb1fb4ac54175cce05268a805",
+      "hid2Sites": 0,
+      "carrySites": 4
+    },
+    "output_6.cpp": {
+      "bytes": 3991508,
+      "sha256": "11035f6ef91aa20a78acd81b69be38f8135eb2359332937d81dd6ee478e46609",
+      "hid2Sites": 0,
+      "carrySites": 36
+    },
+    "output_7.cpp": {
+      "bytes": 3826664,
+      "sha256": "f1f94d3a80d0989dfeaba6bad51910d140d892f534bb1fbd17c4c9299630aba1",
+      "hid2Sites": 0,
+      "carrySites": 13
+    },
+    "output_8.cpp": {
+      "bytes": 3840889,
+      "sha256": "2aa2258edfbe0bf8b5d8c804b0503b8e8c04cbaec86ad341767ae20771d1c924",
+      "hid2Sites": 0,
+      "carrySites": 12
+    },
+    "output_9.cpp": {
+      "bytes": 3828052,
+      "sha256": "a37f94a8b37fb9cd2169c163584b2cd649f5af84b08f1c2d8c91f77af5780029",
+      "hid2Sites": 0,
+      "carrySites": 15
+    },
+    "output_10.cpp": {
+      "bytes": 3850405,
+      "sha256": "6e43c5daa4df22964f5dd9c4f55656a89e60ba28a8781ffa596ca6bdfeb81a0c",
+      "hid2Sites": 0,
+      "carrySites": 24
+    },
+    "output_11.cpp": {
+      "bytes": 3769328,
+      "sha256": "7491b2a56cf9ddc7ea3b86a5aa0324a414eda227c32b3bac22527a23a512f744",
+      "hid2Sites": 0,
+      "carrySites": 2
+    },
+    "output_12.cpp": {
+      "bytes": 3886960,
+      "sha256": "ea8ac1c23a800ba6837292ed9d6ffeff86e9597de0dc7fdcdad3b0896240ee8a",
+      "hid2Sites": 0,
+      "carrySites": 21
+    },
+    "output_13.cpp": {
+      "bytes": 3854171,
+      "sha256": "5fc910038a2ff3d6a26bcce2bbf0e168cc33d122487b5fbc9df368fdc301b703",
+      "hid2Sites": 0,
+      "carrySites": 16
+    },
+    "output_14.cpp": {
+      "bytes": 3804318,
+      "sha256": "e501cf191a165e464a5c16725d34c16fd7490a4a575ec9a975180859ab1f2b8f",
+      "hid2Sites": 0,
+      "carrySites": 20
+    },
+    "output_15.cpp": {
+      "bytes": 3853830,
+      "sha256": "59b56a0fadfe61d1de8feaab7a893bb0fd0b1f4c5307e8b982e950537b658b08",
+      "hid2Sites": 0,
+      "carrySites": 17
+    },
+    "output_16.cpp": {
+      "bytes": 3850910,
+      "sha256": "1272ee103080eb64090000d995210f9e45c89a0243dfc33de4444adfc6cf0e81",
+      "hid2Sites": 0,
+      "carrySites": 49
+    },
+    "output_17.cpp": {
+      "bytes": 3870411,
+      "sha256": "74b6f7c29257153bd574afbc190fb6ecf1a9e44f01b63549aa3c33e748562881",
+      "hid2Sites": 0,
+      "carrySites": 115
+    },
+    "output_18.cpp": {
+      "bytes": 3807856,
+      "sha256": "2b7dd0b4d01ef596d089e5cad586771bd4243e8dd15d25fdca1ae83a9dd5d8f9",
+      "hid2Sites": 0,
+      "carrySites": 62
+    },
+    "output_19.cpp": {
+      "bytes": 3835221,
+      "sha256": "294bda5db6391bdae70fcafa9dff48a22dda9de1db95dc9b7e26395c0530f464",
+      "hid2Sites": 0,
+      "carrySites": 14
+    },
+    "output_20.cpp": {
+      "bytes": 4059646,
+      "sha256": "34912780ab8f32befd2b5eff11fa0150934797e835bfa8daec596154ebca762f",
+      "hid2Sites": 0,
+      "carrySites": 27
+    },
+    "output_21.cpp": {
+      "bytes": 3846718,
+      "sha256": "c1b84b740c1a52608357c060c8993331ca5c80667d0ef3c796e784f480a445d3",
+      "hid2Sites": 0,
+      "carrySites": 159
+    },
+    "output_22.cpp": {
+      "bytes": 3956179,
+      "sha256": "b0935030440fbb5950bc56bd3b17d4017aef858923f18374a34281048486b679",
+      "hid2Sites": 0,
+      "carrySites": 116
+    },
+    "output_23.cpp": {
+      "bytes": 3839627,
+      "sha256": "0794b002a0d72b6ee7a45f9042b8cffa3b2b42e00ba98d2b701d130e369eb066",
+      "hid2Sites": 0,
+      "carrySites": 49
+    },
+    "output_24.cpp": {
+      "bytes": 3822593,
+      "sha256": "dab4a0e005331653028c257938c578cf4995c8e5d9112aa1ad30331530ea9030",
+      "hid2Sites": 0,
+      "carrySites": 19
+    },
+    "output_25.cpp": {
+      "bytes": 3845415,
+      "sha256": "a5c2ba47d24c9e75aaa10ddc3266936c13f0252847f0487ff03956d1d76249e6",
+      "hid2Sites": 0,
+      "carrySites": 2
+    },
+    "output_26.cpp": {
+      "bytes": 3895642,
+      "sha256": "c670fea78ff19d5a577e84064a0e26233349340efdbda581da77d516ccdf0879",
+      "hid2Sites": 0,
+      "carrySites": 8
+    },
+    "output_27.cpp": {
+      "bytes": 3833630,
+      "sha256": "f8bbcaaf424f475726a6748f1901229279ae80eee15aaf3db23199cb89216859",
+      "hid2Sites": 0,
+      "carrySites": 8
+    },
+    "output_28.cpp": {
+      "bytes": 3846811,
+      "sha256": "7a92c79ca9f2a09edc0437aeaeda0a4723e9e957217152e409c6b284b07c7903",
+      "hid2Sites": 0,
+      "carrySites": 14
+    },
+    "output_29.cpp": {
+      "bytes": 3897046,
+      "sha256": "b2cc0c4813d15050a9587dae4cec3b86954aafb7ca0542c5c5f8e7a0cae39075",
+      "hid2Sites": 0,
+      "carrySites": 26
+    },
+    "output_30.cpp": {
+      "bytes": 3837118,
+      "sha256": "8f14b8497d000b3c7d1e7993dc4c5fdf0761b324034f522caf291d2ff622ef6a",
+      "hid2Sites": 3,
+      "carrySites": 76
+    },
+    "output_31.cpp": {
+      "bytes": 3733837,
+      "sha256": "ee76c4aa03826bb18b6493beb291c33dcd6e83cb5c3795499af00a99c2cbd5b5",
+      "hid2Sites": 0,
+      "carrySites": 100
+    },
+    "output_32.cpp": {
+      "bytes": 3864203,
+      "sha256": "2bc77c112b833945d964a606e6557b5679ac85e347dd8781bcb85b3c1647b64d",
+      "hid2Sites": 0,
+      "carrySites": 38
+    },
+    "output_33.cpp": {
+      "bytes": 3825893,
+      "sha256": "3cabeaf702684257424fba25845db90ed88e8f0fc8b32c7f57cb16a8a4ae4e99",
+      "hid2Sites": 0,
+      "carrySites": 87
+    },
+    "output_34.cpp": {
+      "bytes": 3832512,
+      "sha256": "e3f3da26e414b2ec00a4409d7825d07430490eb3bf804bffbf9bdc5136c1fee2",
+      "hid2Sites": 0,
+      "carrySites": 72
+    },
+    "output_35.cpp": {
+      "bytes": 3816640,
+      "sha256": "8373eb21f98b7cb3776231d6938b65e562c9ea5d31fb9a7885a66f72fbc1729b",
+      "hid2Sites": 0,
+      "carrySites": 3
+    },
+    "output_36.cpp": {
+      "bytes": 3864776,
+      "sha256": "443f730f516aebfb4220fc6b0696fa0ea9f556f3f706662c1139fed021b76a0e",
+      "hid2Sites": 0,
+      "carrySites": 8
+    },
+    "output_37.cpp": {
+      "bytes": 3882775,
+      "sha256": "18bef4f3568dede3744d09311af906899c743ea2a0e77d6efb15bf49aa0b5ddc",
+      "hid2Sites": 0,
+      "carrySites": 58
+    },
+    "output_38.cpp": {
+      "bytes": 3855074,
+      "sha256": "9811ea28c2865899262aac8ba785ed5711095dfe2a0145ae6412bcc430fee1af",
+      "hid2Sites": 11,
+      "carrySites": 67
+    },
+    "output_39.cpp": {
+      "bytes": 3862730,
+      "sha256": "65d51e38fc3c9aacb1cc7925ef815d32a9c312041c678a710341e321aa27ff39",
+      "hid2Sites": 0,
+      "carrySites": 24
+    },
+    "output_40.cpp": {
+      "bytes": 3828389,
+      "sha256": "ac71f71e0df90520a6b74648167c195f783fa15281e548b90d830f7788173145",
+      "hid2Sites": 0,
+      "carrySites": 15
+    },
+    "output_41.cpp": {
+      "bytes": 3764532,
+      "sha256": "e09e9ce7de72889135411f892776fe9cbc2f05285008806409ace9f355847183",
+      "hid2Sites": 0,
+      "carrySites": 40
+    },
+    "output_42.cpp": {
+      "bytes": 3771553,
+      "sha256": "697720348a95160ecd9790473eb08524bbbb08940868bac07a8d139417b70416",
+      "hid2Sites": 0,
+      "carrySites": 37
+    },
+    "output_43.cpp": {
+      "bytes": 3791139,
+      "sha256": "7b092724ef58772b41d2252e3713fb5e6649aea6c44a44042dc1e9addef75f92",
+      "hid2Sites": 0,
+      "carrySites": 5
+    },
+    "output_44.cpp": {
+      "bytes": 3784582,
+      "sha256": "72d62a2c71fc71a2b8bfa103c638502481a23b5e01f81b16c04edd9f2a71fc91",
+      "hid2Sites": 0,
+      "carrySites": 15
+    },
+    "output_45.cpp": {
+      "bytes": 3779796,
+      "sha256": "1d1334fd1c1dbe3e8c4985553abde0f75fc043af0d4b498e1c02cdf60cfd4c4e",
+      "hid2Sites": 0,
+      "carrySites": 56
+    },
+    "output_46.cpp": {
+      "bytes": 3870910,
+      "sha256": "402bf8c713021ebc778a2571d140fb8f731aec3b511424a969a502738192ac39",
+      "hid2Sites": 0,
+      "carrySites": 66
+    },
+    "output_47.cpp": {
+      "bytes": 3813803,
+      "sha256": "8d2453f3dfa636128615009f174cce59de5f9a47497f995a06e6d74d6b6902cc",
+      "hid2Sites": 0,
+      "carrySites": 17
+    },
+    "output_48.cpp": {
+      "bytes": 3882722,
+      "sha256": "5ecbe3a7a33ca5f332da251028603f48cd478ed130910d1c56044136c453b51a",
+      "hid2Sites": 0,
+      "carrySites": 10
+    },
+    "output_49.cpp": {
+      "bytes": 3808026,
+      "sha256": "547f59d23782d8a9826b8bc3c05031eceeaf1be114b0dcda244738e4e6b72d87",
+      "hid2Sites": 0,
+      "carrySites": 18
+    },
+    "output_50.cpp": {
+      "bytes": 3782583,
+      "sha256": "c80e07dd985af9fba73f3cd3c6ff8fe2dcf80554d61b167fe705d0a6ed43a228",
+      "hid2Sites": 0,
+      "carrySites": 17
+    },
+    "output_51.cpp": {
+      "bytes": 3902444,
+      "sha256": "02704e81d212c09902473b0382669e950def3fb70f0b29a564e37126f8609a2e",
+      "hid2Sites": 0,
+      "carrySites": 19
+    },
+    "output_52.cpp": {
+      "bytes": 3809154,
+      "sha256": "a2b6d1a20d99c55ddc9218d1f1566d2fbba64a11d37fcc2286c6d6890cfa62e2",
+      "hid2Sites": 0,
+      "carrySites": 17
+    },
+    "output_53.cpp": {
+      "bytes": 3846586,
+      "sha256": "5d9ee1458c9b0ed1a55588b653f71ac95488606064d2bc2d2f8a94ba59694f91",
+      "hid2Sites": 0,
+      "carrySites": 6
+    },
+    "output_54.cpp": {
+      "bytes": 3880523,
+      "sha256": "87c8d93e92ef3f8015e2eb96b92a90098345019edecb12008884c6e7b2c12547",
+      "hid2Sites": 0,
+      "carrySites": 22
+    },
+    "output_55.cpp": {
+      "bytes": 3821613,
+      "sha256": "b03a810791e92f99e0f8db10a09b5cc2a7a2e0d508b8f92a50a2510c82916ba3",
+      "hid2Sites": 0,
+      "carrySites": 15
+    },
+    "output_56.cpp": {
+      "bytes": 3768474,
+      "sha256": "758b893a0f9472797d5e5953f22faaa75078f95592845bcfbf6144f391509088",
+      "hid2Sites": 0,
+      "carrySites": 10
+    },
+    "output_57.cpp": {
+      "bytes": 3721857,
+      "sha256": "cb1ae4fd77ce6f55ea67337de654b80b143f9b54532c2a210123114edb306d7f",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_58.cpp": {
+      "bytes": 3743287,
+      "sha256": "d61a32f51bc59c6f7ffc661b7cca5539e7fdbd12f60124cb1ea76f50bd36e411",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_59.cpp": {
+      "bytes": 4059404,
+      "sha256": "a2e571c676676c28337420d1c23f067e605d5054e748349b4cd818a0c2e2305f",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_60.cpp": {
+      "bytes": 4058344,
+      "sha256": "0dddc376f3bf972a569d47b52b9369ab0d6d950454a3b8af2b82907690e2e08c",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_61.cpp": {
+      "bytes": 4049054,
+      "sha256": "ba6c7b65d053354fa0c28a8d51c97bda8f76b6e789bfe74549dbfc405dacf897",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_62.cpp": {
+      "bytes": 3777524,
+      "sha256": "6cfd13f99e0de008137564f511d1d0cdfc38870db9b8fbe6f70ab33a00716cac",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_63.cpp": {
+      "bytes": 3817006,
+      "sha256": "d6bffc0575276bcda1e1c3b212ec914046fc3c12aacfacdcd40a5e0d91283afd",
+      "hid2Sites": 0,
+      "carrySites": 15
+    },
+    "output_64.cpp": {
+      "bytes": 3950611,
+      "sha256": "145657964ad88d922ee36e0a9fbe9386ef7c13540e03c575665935d441da576e",
+      "hid2Sites": 0,
+      "carrySites": 20
+    },
+    "output_65.cpp": {
+      "bytes": 3877653,
+      "sha256": "44bede266405f46ea465c059e3026614950c97582fc5d31690d88ecc24de7c49",
+      "hid2Sites": 0,
+      "carrySites": 16
+    },
+    "output_66.cpp": {
+      "bytes": 3785966,
+      "sha256": "88c7af5bc50e7e2c090eaa7f1e6445b1e7559bf65172921a43ea848c7c1bed33",
+      "hid2Sites": 0,
+      "carrySites": 25
+    },
+    "output_67.cpp": {
+      "bytes": 4007617,
+      "sha256": "8f72f237d19e5c7600b445efb7399195944f2a50d38b9b060b2cc291f71368ca",
+      "hid2Sites": 0,
+      "carrySites": 23
+    },
+    "output_68.cpp": {
+      "bytes": 3687517,
+      "sha256": "ae73d09449b1cab2a219ee7ba23a3e35145faf42709a4c6f73f41c59ad23ef85",
+      "hid2Sites": 0,
+      "carrySites": 0
+    },
+    "output_69.cpp": {
+      "bytes": 3887552,
+      "sha256": "caff4e134a6e47100c16056d66d4162853a9e1c9eb8f269f09525c63828dca47",
+      "hid2Sites": 0,
+      "carrySites": 22
+    },
+    "output_70.cpp": {
+      "bytes": 3835912,
+      "sha256": "dd40deb791795937f5b5fae18fad5291bb92228232758ae6ba5f76da3da2dbba",
+      "hid2Sites": 0,
+      "carrySites": 1
+    },
+    "output_71.cpp": {
+      "bytes": 3831085,
+      "sha256": "a0ceea93f70be8ca531cccbe2353e62f6ee11cd90035fcdf1562d2fb5cb0aa7d",
+      "hid2Sites": 0,
+      "carrySites": 10
+    },
+    "output_72.cpp": {
+      "bytes": 3868113,
+      "sha256": "64fd7eb5d2e39e06db3283ac2575fba71995630028636a921566ffe933e8f9e8",
+      "hid2Sites": 0,
+      "carrySites": 8
+    },
+    "output_73.cpp": {
+      "bytes": 3902372,
+      "sha256": "5331e64ed405b7729806c651b2ee2d09d9f8c44d9a010f69387ce35fadcfdba7",
+      "hid2Sites": 0,
+      "carrySites": 7
+    },
+    "output_74.cpp": {
+      "bytes": 1527922,
+      "sha256": "cc7c29142f38cf0563394ed3eb91b20ed207eb3eff156b403b06d89b612b5122",
+      "hid2Sites": 0,
+      "carrySites": 1
+    }
+  }
+}

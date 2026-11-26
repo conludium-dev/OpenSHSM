@@ -1,0 +1,9 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "source": "stock-export-wii-us-r5wea4-rev0.json",
+  "ipc": {
+    "bytes": 4711,
+    "sha256": "1c049b48d322f92a4ad17d1d0c6a92c3dc518f74d1f3f638049d53d7ec2be66e"
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "gameId": "R5WEA4",
+  "revision": 0,
+  "layout": "extracted-DATA",
+  "files": [
+    {
+      "path": "cert.bin",
+      "bytes": 2560,
+      "sha256": "e126560d5c500693452c39c2ef0293f1253d1a56ade750e9395cccfd37624530"
+    },
+    {
+      "path": "disc/header.bin",
+      "bytes": 256,
+      "sha256": "ade4f785dbdb6f08d02922b125969bf52a5ee268c5bde6f4e6865e51a6495d05"
+    },
+    {
+      "path": "disc/region.bin",
+      "bytes": 32,
+      "sha256": "a83acb517ddea7c663904629cec0f051b31cb066022f6bf505c7dc5b0ea60058"
+    },
+    {
+      "path": "files/MOVIES/CREDITS",
+      "bytes": 97556352,
+      "sha256": "d63cc49f686a016ca024eb922f3d285b532356cfbc346708a64aa249f81a519a"
+    },
+    {
+      "path": "files/MOVIES/HM1PLY",
+      "bytes": 1540704,
+      "sha256": "56eb89d30f3c6c6f203ee3534b05f524a3b4262dcdc8438723dc96d727b032b3"
+    },
+    {
+      "path": "files/MOVIES/HM1RWD",
+      "bytes": 2092352,
+      "sha256": "c610074e9877f72a8296b2c5966ce2aa254e9c88b60933b527db421fb736b1c8"
+    },
+    {
+      "path": "files/MOVIES/HM2PLY",
+      "bytes": 2984704,
+      "sha256": "4bbc2a8f4890d230616234a4c56284757070494b969a1edc35951acf78787551"
+    },
+    {
+      "path": "files/MOVIES/HM2RWD",
+      "bytes": 4059872,
+      "sha256": "5262470a56df76efd38c7f20193dc22586848602fb8700ec0213f757e3c1cb73"
+    },
+    {
+      "path": "files/MOVIES/HM3PLY",
+      "bytes": 2970624,
+      "sha256": "f421397a5f8b8c36e4e10e2f0014b31781d1cb8144962a55f245a9f4b5166093"
+    },
+    {
+      "path": "files/MOVIES/HM3RWD",
+      "bytes": 2022912,
+      "sha256": "0e751a4f97f2bfe504b2ed6ef692bbbc6af876d3c1106c162706c3e58c52d6cc"
+    },
+    {
+      "path": "files/MOVIES/IGC49a",
+      "bytes": 89161664,
+      "sha256": "4408a7bb3ffbd7ce33cc734c4086ec30b2a079c9c70d6d23a47e9de57f5ad642"
+    },
+    {
+      "path": "files/MOVIES/IGC49b",
+      "bytes": 73864448,
+      "sha256": "27a1d224c9c0cdbe285d6ca19fa7609a7f4ff0c23020ef6b2c72e75a46028bd6"
+    },
+    {
+      "path": "files/MOVIES/IGC49c0",
+      "bytes": 96465056,
+      "sha256": "9455b5c46d7bc8eb7cd3d482d0cd39b82577cde090dec2f7f9cded40c4e4ea5a"
+    },
+    {
+      "path": "files/MOVIES/IGC49c1",
+      "bytes": 96217376,
+      "sha256": "43b3382a460fee001eeadc0cd7e3a9db1efae7095e17fac75e8fb9192ac304f5"
+    },
+    {
+      "path": "files/MOVIES/IGC49c2",
+      "bytes": 96406560,
+      "sha256": "f7716a69dc2b0c899b6e7fab6b0845f436d2f8417005f0b1229842bf489562c8"
+    },
+    {
+      "path": "files/MOVIES/IGC49d",
+      "bytes": 86361568,
+      "sha256": "3dd184f0492d3c213f695789da7515fc5be6a4ff664a6e13cde1b78588433fa2"
+    },
+    {
+      "path": "files/MOVIES/INTRO",
+      "bytes": 6649856,
+      "sha256": "81936246c5ebe85e6a1104e28a82a86fd0263baab00531bb9f89ef8d856dbaf5"
+    },
+    {
+      "path": "files/MOVIES/LOOP",
+      "bytes": 14282880,
+      "sha256": "1760548e8eccd60d094a26fbc5333a6eec55fccdb6f9a4cb991220fd2e454849"
+    },
+    {
+      "path": "files/MOVIES/MONTAGE",
+      "bytes": 136079840,
+      "sha256": "128bc4f3fc92f591521cf00826c39e387876a239cc9477b330fa703fbdc16001"
+    },
+    {
+      "path": "files/MOVIES/NOISE",
+      "bytes": 5082976,
+      "sha256": "c66672546389dc432719e7cc96f22ac98eb83df7a70f1d8a3ddeab453a46a646"
+    },
+    {
+      "path": "files/MOVIES/OUTRO",
+      "bytes": 7371360,
+      "sha256": "c70172e8ffe1fb82c92adc8a019c6635d2c140e1c12b6c57d561f9184ea9d79b"
+    },
+    {
+      "path": "files/MOVIES/PUBDEV",
+      "bytes": 1389888,
+      "sha256": "389954a82304dead3b96bda3e5d71361114f7b2407cca9e5de42e4e63361a80a"
+    },
+    {
+      "path": "files/MOVIES/UFO",
+      "bytes": 26370400,
+      "sha256": "a9853dee9cd864c8cc942288b89bc41747542022a8eac2af4521a0db0d695c56"
+    },
+    {
+      "path": "files/data.arc",
+      "bytes": 1500508160,
+      "sha256": "cf60c35b1a5f24cfb53d914cf71bd2772480fcdcb8334462e401674692c624cb"
+    },
+    {
+      "path": "files/igc.arc",
+      "bytes": 1376569344,
+      "sha256": "3627439a8e045f59a740e8628f8ea4762d0f0a87069b11c31166bb3c94a2c688"
+    },
+    {
+      "path": "files/opening.bnr",
+      "bytes": 339112,
+      "sha256": "42e82186fcce042bca752d84389e7f037b56121725448b29c0bff824674d0946"
+    },
+    {
+      "path": "h3.bin",
+      "bytes": 98304,
+      "sha256": "d0e4880f717bd2e0620538dfe00e51e39beb0ccfddd2b3cd62aa60186ebe9586"
+    },
+    {
+      "path": "sys/apploader.img",
+      "bytes": 241412,
+      "sha256": "c840376898231c3c5077fdeb4cb319d03a3472ae6b94004346014e6ba28441ad"
+    },
+    {
+      "path": "sys/bi2.bin",
+      "bytes": 8192,
+      "sha256": "d4097e7300c0df4d2ae44256a5bc4c1b7e3524e7b313b61758458b746016de81"
+    },
+    {
+      "path": "sys/boot.bin",
+      "bytes": 1088,
+      "sha256": "09c7d7761fd411927db0f9a8f2732a19a116a440d4d4dd829b46c2876f02300b"
+    },
+    {
+      "path": "sys/fst.bin",
+      "bytes": 476,
+      "sha256": "9608ad3eda291894ecc2acfd1d93c24b0884a3769096d135372019ad0b616074"
+    },
+    {
+      "path": "sys/main.dol",
+      "bytes": 4565440,
+      "sha256": "ef1a39ea96367ddc0c0070923c247c9bbe56c7c64045795a13430e1e9b00ae6f"
+    },
+    {
+      "path": "ticket.bin",
+      "bytes": 676,
+      "sha256": "aecde1c92a98aa7d81a94326110528e4ea837492752a17d91f8a01997129b84d"
+    },
+    {
+      "path": "tmd.bin",
+      "bytes": 520,
+      "sha256": "73a119bee29ca8249d709fa48bce935dd787b3f2b55edc87b9cff19d388c2760"
+    }
+  ]
+}
